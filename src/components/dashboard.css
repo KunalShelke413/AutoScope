@@ -1,0 +1,73 @@
+* {
+    color: white;
+}
+
+body {
+    margin: 0%;
+    padding: 0%;
+}
+
+.dmain {
+    height: 100vh;
+    margin: 0% 0.1%;
+    /* position: relative;
+    top: 0%;
+    left: 1px; */
+}
+
+.dcont {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.dcontainer {
+    display: grid;
+}
+
+.dfirst,
+.dsecond {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.dcol {
+    margin: 0.5px;
+    border: solid 1px gray;
+    height: 15vh
+}
+
+.dcol1 {
+    margin: 0.5px;
+    border: solid 1px gray;
+    height: 30vh;
+}
+
+.dsidechart {
+    margin: 0.5px;
+    border: solid 1px gray;
+    height: calc(45vh + 1px)
+}
+
+.dlower {
+    height: calc(55vh - 6px);
+    width: calc(100% - 3px);
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.dchart {
+    margin: 0%;
+    border: solid 1px gray;
+}
+
+#chart1 {
+    margin-top: 1px;
+    margin-left: 1px;
+    width: 100%;
+}
+
+#chart2 {
+    margin-top: 1px;
+    margin-left: 2px;
+    width: 100%;
+}
