@@ -1,0 +1,203 @@
+X-Axis,Y-Axis
+months,performance
+month,score
+departments,revenue
+department,growth
+teams,marks
+team,attendance
+products,progress
+product,ranking
+regions,completion
+region,distribution
+quarters,count
+quarter,admissions
+subjects,population
+subject,reach
+class levels,usage
+class level,conversion
+level,clicks
+students,crashes
+student,capacity
+schools,productivity
+school,status
+assignments,frequency
+assignment,mastery
+age groups,preference
+age group,views
+age,literacy
+diseases,beneficiaries
+disease,issued
+hospitals,rating
+hospital,delays
+cities,volume
+city,reps
+weeks,duration
+week,calories
+campaigns,amount
+campaign,ratings
+platforms,coverage
+platform,output
+target segments,stats
+segment,participation
+ad types,GDP
+ad type,income
+devices,traffic
+device,purchase
+app versions,redemption
+version,footfall
+features,impressions
+feature,popularity
+days of the week,engagement
+day,consumption
+error types,complaints
+error type,mood
+countries,mood rating
+country,satisfaction
+states,speed
+state,points
+zones,money
+zone,journal entry
+income brackets,correct answer
+income group,difficulty
+bracket,taken
+genders,earned
+gender,temperature
+years,temperatures
+year,usages
+time slots,transactions
+slot,response
+seasons,pending
+season,orders
+warehouse IDs,damage
+warehouse,fixed
+product categories,bugs
+category,placed
+suppliers,return
+supplier,amounts
+delivery routes,abandonment
+route,avg value
+shipment dates,repeat purchase
+shipment date,satisfaction score
+storage sections,goals
+section,scored
+developers,ranking point
+developer,slept
+modules,completed
+module,answers
+sprints,scores
+sprint,average
+bug types,total
+bug type,rate
+tasks,percentage
+task,ratio
+product types,variance
+product type,mean
+payment methods,median
+payment method,mode
+customer age group,std deviation
+customer,range
+coupon codes,success rate
+coupon,failure count
+store branches,error rate
+branch,growth rate
+shopping hours,net profit
+hour,gross margin
+content types,expenses
+content type,ROI
+influencers,CPC
+influencer,CTR
+hashtags,CPL
+hashtag,revenue per user
+posting times,retention rate
+posting time,engagement rate
+post time,conversion rate
+audience segments,bounce rate
+audience segment,customer lifetime value
+districts,sessions
+district,views per session
+schemes,active users
+scheme,downloads
+utility types,click-through rate
+utility,open rate
+complaint types,delivery rate
+complaint type,completion time
+license categories,response time
+license category,
+players,
+player,
+matches,
+match,
+events,
+event,
+training days,
+training,
+exercises,
+exercise,
+sleep days,
+sleep day,
+meals,
+meal,
+expense categories,
+expense category,
+books read,
+book,
+workouts,
+workout,
+courses,
+course,
+topics,
+topic,
+quiz attempts,
+attempt,
+instructors,
+instructor,
+skill levels,
+skill level,
+skill,
+learning modes,
+learning mode,
+mode,
+Sale,
+Unit,
+Units,
+Time,
+Times,
+Number,
+Case,
+Bed,
+Patient,
+Patients,
+Vaccination,
+Lead,
+Leads,
+Ad,
+User,
+API,
+Download,
+Visitor,
+Visitors,
+Line,
+Lines,
+Dev,
+Commit,
+Commits,
+Cart,
+Repeat,
+Purchases,
+Like,
+Likes,
+Share,
+Shares,
+Follower,
+Followers,
+Beneficiary,
+Beneficiaries,
+Budget,
+Budgets,
+Project,
+Projects,
+Subsidy,
+Subsidies,
+Peer,
+Certificate,
+Certificates,

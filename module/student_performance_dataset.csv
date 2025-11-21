@@ -1,0 +1,11 @@
+Student_ID,Name,Gender,Age,Class,Maths,Science,English,History,Attendance (%),Study_Hours_per_Day,Participation_Score,Final_Grade
+101,Aarav,Male,16,10,88,92,85,80,96,2.5,8,A
+102,Siya,Female,15,10,76,81,79,74,88,1.5,7,B
+103,Rahul,Male,17,11,65,70,72,68,75,1.2,5,C
+104,Meera,Female,16,10,90,95,94,89,98,3.0,10,A
+105,Karan,Male,15,9,58,62,60,55,72,1.0,4,D
+106,Anika,Female,17,11,85,87,88,83,91,2.8,9,B
+107,Dev,Male,16,10,70,75,78,72,80,2.0,6,C
+108,Isha,Female,15,9,95,97,92,90,99,3.5,10,A
+109,Ayaan,Male,17,11,60,63,65,61,68,1.1,4,D
+110,Neha,Female,16,10,82,85,83,80,89,2.4,7,B
