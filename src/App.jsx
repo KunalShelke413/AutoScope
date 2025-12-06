@@ -32,7 +32,7 @@ const App = () => {
                 <div className="hero">
                   <Detail />
                   <div className="upload">
-                    <h2>Upload Your Code</h2>
+                    <h2>Upload Your File</h2>
                     <Upload />
                   </div>
                 </div>
