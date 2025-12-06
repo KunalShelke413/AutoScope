@@ -3,38 +3,91 @@ const multer = require('multer');
 const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
-const csv = require('csvtojson'); // for CSV parsing
+const csv = require('csvtojson');
+const XLSX = require('xlsx');
+const axios = require('axios');  // <--- Added to call Python API
 
 const app = express();
 const PORT = 3000;
 
 app.use(cors());
 
-const upload = multer({ dest: 'uploads/' });
+// --------------------------------
+// CLEAR UPLOAD FOLDER
+// --------------------------------
+function clearUploadFolder() {
+  const directory = path.join(__dirname, 'uploads');
+  fs.readdir(directory, (err, files) => {
+    if (err) return;
+    files.forEach(file => fs.unlink(path.join(directory, file), () => {}));
+  });
+}
 
-app.post('/upload', upload.single('file'), async (req, res) => {
-  if (!req.file) return res.sendStatus(400);
+// --------------------------------
+// Multer upload system
+// --------------------------------
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, 'uploads/'),
+  filename: (req, file, cb) => cb(null, file.originalname)
+});
+const upload = multer({ storage });
 
-  const originalPath = path.join(__dirname, req.file.path);
-  const jsonPath = path.join(__dirname, 'uploads', `${req.file.filename}.json`);
+// --------------------------------
+// Upload Route
+// --------------------------------
+app.post('/upload', (req, res, next) => {
+  clearUploadFolder();
+  next();
+}, upload.single('file'), async (req, res) => {
+
+  if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+
+  const filePath = path.join(__dirname, 'uploads', req.file.originalname);
+  const ext = path.extname(req.file.originalname).toLowerCase();
+
+  let rawData;
 
   try {
-    const fileContent = fs.readFileSync(originalPath, 'utf8');
+    // 📌 CSV
+    if (ext === ".csv") {
+      const content = fs.readFileSync(filePath, "utf8");
+      rawData = await csv().fromString(content);
+    }
+    // 📌 TXT
+    else if (ext === ".txt") {
+      const content = fs.readFileSync(filePath, "utf8");
+      rawData = content.split("\n").map(line => line.trim());
+    }
+    // 📌 XLSX
+    else if (ext === ".xlsx") {
+      const workbook = XLSX.readFile(filePath);
+      const sheet = workbook.Sheets[workbook.SheetNames[0]];
+      rawData = XLSX.utils.sheet_to_json(sheet);
+    }
+    // 📌 JSON
+    else if (ext === ".json") {
+      rawData = JSON.parse(fs.readFileSync(filePath, "utf8"));
+    }
 
-    // Convert CSV to JSON (optional, if CSV file)
-    const jsonArray = await csv().fromString(fileContent);
+    // --------------------------------------------
+    // SEND rawData → PYTHON SERVER FOR PROCESSING
+    // --------------------------------------------
+    const pythonResponse = await axios.post(
+      "http://localhost:5000/process",
+      { rawData }
+    );
 
-    // Save JSON file
-    fs.writeFileSync(jsonPath, JSON.stringify(jsonArray, null, 2), 'utf8');
+    return res.json({
+      message: "Processed successfully",
+      result: pythonResponse.data   // <--- Python output
+    });
 
-    console.log(`Saved JSON to ${jsonPath}`);
-    res.status(200).json({ message: 'File uploaded and saved as JSON successfully', jsonFile: `${req.file.originalPath}.json` });
   } catch (err) {
-    console.error("Error handling file:", err);
-    res.status(500).json({ error: 'Failed to convert and save file as JSON' });
+    console.error(err);
+    return res.status(500).json({ error: "Processing failed" });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Node server running at http://localhost:${PORT}`);
 });
