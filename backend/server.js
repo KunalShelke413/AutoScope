@@ -5,89 +5,108 @@ const fs = require('fs');
 const path = require('path');
 const csv = require('csvtojson');
 const XLSX = require('xlsx');
-const axios = require('axios');  // <--- Added to call Python API
 
 const app = express();
 const PORT = 3000;
 
 app.use(cors());
 
-// --------------------------------
+// ------------------------------
 // CLEAR UPLOAD FOLDER
-// --------------------------------
+// ------------------------------
 function clearUploadFolder() {
   const directory = path.join(__dirname, 'uploads');
+
   fs.readdir(directory, (err, files) => {
-    if (err) return;
-    files.forEach(file => fs.unlink(path.join(directory, file), () => {}));
+    if (err) return console.error("Failed to read upload folder:", err);
+
+    for (const file of files) {
+      fs.unlink(path.join(directory, file), err => {
+        if (err) console.error("Failed to delete file:", file, err);
+      });
+    }
   });
 }
 
-// --------------------------------
-// Multer upload system
-// --------------------------------
+// ------------------------------
+// MULTER STORAGE
+// ------------------------------
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, 'uploads/'),
   filename: (req, file, cb) => cb(null, file.originalname)
 });
+
 const upload = multer({ storage });
 
-// --------------------------------
-// Upload Route
-// --------------------------------
+// ------------------------------
+// FILE PROCESSING ROUTE
+// ------------------------------
 app.post('/upload', (req, res, next) => {
   clearUploadFolder();
   next();
 }, upload.single('file'), async (req, res) => {
-
+  
   if (!req.file) return res.status(400).json({ error: "No file uploaded" });
 
   const filePath = path.join(__dirname, 'uploads', req.file.originalname);
   const ext = path.extname(req.file.originalname).toLowerCase();
 
-  let rawData;
-
   try {
-    // 📌 CSV
-    if (ext === ".csv") {
-      const content = fs.readFileSync(filePath, "utf8");
-      rawData = await csv().fromString(content);
+    let rawData;
+
+    // -------------------------
+    // CSV → JSON
+    // -------------------------
+    if (ext === '.csv') {
+      const fileContent = fs.readFileSync(filePath, 'utf8');
+      rawData = await csv().fromString(fileContent);
     }
-    // 📌 TXT
-    else if (ext === ".txt") {
-      const content = fs.readFileSync(filePath, "utf8");
-      rawData = content.split("\n").map(line => line.trim());
+
+    // -------------------------
+    // TXT → JSON
+    // -------------------------
+    else if (ext === '.txt') {
+      const fileContent = fs.readFileSync(filePath, 'utf8');
+      rawData = fileContent.split('\n').map(line => line.trim());
     }
-    // 📌 XLSX
-    else if (ext === ".xlsx") {
+
+    // -------------------------
+    // XLSX → JSON
+    // -------------------------
+    else if (ext === '.xlsx') {
       const workbook = XLSX.readFile(filePath);
-      const sheet = workbook.Sheets[workbook.SheetNames[0]];
-      rawData = XLSX.utils.sheet_to_json(sheet);
-    }
-    // 📌 JSON
-    else if (ext === ".json") {
-      rawData = JSON.parse(fs.readFileSync(filePath, "utf8"));
+      const sheetName = workbook.SheetNames[0];
+      rawData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
     }
 
-    // --------------------------------------------
-    // SEND rawData → PYTHON SERVER FOR PROCESSING
-    // --------------------------------------------
-    const pythonResponse = await axios.post(
-      "http://localhost:5000/process",
-      { rawData }
-    );
+    // -------------------------
+    // JSON → JSON
+    // -------------------------
+    else if (ext === '.json') {
+      const fileContent = fs.readFileSync(filePath, 'utf8');
+      rawData = JSON.parse(fileContent);
+    }
 
-    return res.json({
-      message: "Processed successfully",
-      result: pythonResponse.data   // <--- Python output
+    // Unsupported type
+    else {
+      return res.status(400).json({ error: "Unsupported file format" });
+    }
+
+    // Return raw JSON to frontend
+    res.status(200).json({
+      message: "File processed successfully",
+      rawData
     });
 
   } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: "Processing failed" });
+    console.error("Error:", err);
+    res.status(500).json({ error: "File processing failed" });
   }
 });
 
+// ------------------------------
+// START SERVER
+// ------------------------------
 app.listen(PORT, () => {
-  console.log(`Node server running at http://localhost:${PORT}`);
+  console.log(`Server running at http://localhost:${PORT}`);
 });
