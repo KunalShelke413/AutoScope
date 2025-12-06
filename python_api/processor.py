@@ -6,7 +6,7 @@ import numpy as np
 import re
 import random
 import os
-# import plotly.graph_objects as go
+import plotly.graph_objects as go
 app = FastAPI()
 
 app.add_middleware(
@@ -605,176 +605,176 @@ for i in df.columns:
 print(df.head())
 print(df.tail())
 
-# #graph col:-
-# X_Qualitative=[]
-# X_Quantitative=[]
-# X_Location=[]
-# X_Time=[]
+#graph col:-
+X_Qualitative=[]
+X_Quantitative=[]
+X_Location=[]
+X_Time=[]
 
-# for i in column_name:
-#     a=len(df[i].unique())
-#     if a<=15 :
-#         if i in alpha_columns:
-#             X_Qualitative.append(i)
-#         elif i in numerical_columns:
-#             X_Quantitative.append(i)
-#         elif i in date_columns:
-#             X_Time.append(i)
-# print(X_Qualitative)
-# print(X_Quantitative)
-# print(X_Time)
+for i in column_name:
+    a=len(df[i].unique())
+    if a<=15 :
+        if i in alpha_columns:
+            X_Qualitative.append(i)
+        elif i in numerical_columns:
+            X_Quantitative.append(i)
+        elif i in date_columns:
+            X_Time.append(i)
+print(X_Qualitative)
+print(X_Quantitative)
+print(X_Time)
 
-# single=[]
-# N_single=[]
-# P_single=[]
-# mix=[]
-# N_mix=[]
-# L_mix=[]
-# P_mix=[]
-# dia=[single,N_single,P_single,mix,N_mix,L_mix,P_mix]
-# Dia_ID=[]
-# Access=[]
+single=[]
+N_single=[]
+P_single=[]
+mix=[]
+N_mix=[]
+L_mix=[]
+P_mix=[]
+dia=[single,N_single,P_single,mix,N_mix,L_mix,P_mix]
+Dia_ID=[]
+Access=[]
 
-# # Bar charts>>>
-# j=0
-# k=0
+# Bar charts>>>
+j=0
+k=0
 
-# for col_index, col_name in enumerate(X_Qualitative):
-#     unique_vals = df[col_name].unique()
-#     if len(unique_vals) < 3 or len(unique_vals)>15:
-#         single.append([])
-#         grouped = df.groupby(col_name)[numerical_columns].sum()
-#         i=0
-#         for category in unique_vals:
-#             fig = go.Figure()
-#             fig.add_trace(go.Bar(
-#                 x=numerical_columns,
-#                 y=grouped.loc[category],
-#                 text=grouped.loc[category],
-#                 hovertemplate=
-#                 "<b>Column:</b> %{x}<br>" +
-#                 "<b>Value:</b> %{y}<br>" +
-#                 "<extra></extra>"
-#             ))
-#             fig.update_layout(
-#                 title=f"{category} summary for column {col_name}",
-#                 xaxis_title="Numerical Columns",
-#                 yaxis_title="Sum",
-#                 hoverlabel=dict(bgcolor="white")
-#             )
-#             single[j].append([])
-#             single[j][i].append(fig)
-#             i=i+1
-#         j=j+1
-#     else:
-#         mix.append([])
-#         si=0
-#         for num_col in numerical_columns:
-#             grouped = df.groupby(col_name)[num_col].sum()
-#             fig = go.Figure()
-#             fig.add_trace(go.Bar(
-#                 x=grouped.index,
-#                 y=grouped.values,
-#                 text=grouped.values,
-#                 hovertemplate=
-#                 "<b>Category:</b> %{x}<br>" +
-#                 "<b>Value:</b> %{y}<br>" +
-#                 "<extra></extra>"
-#             ))
-#             fig.update_layout(
-#                 title=f"{num_col} by {col_name}",
-#                 xaxis_title=col_name,
-#                 yaxis_title=num_col
-#             )
-#             mix[k].append([])
-#             mix[k][si].append(fig)
-#             si=si+1
-#         k=k+1
+for col_index, col_name in enumerate(X_Qualitative):
+    unique_vals = df[col_name].unique()
+    if len(unique_vals) < 3 or len(unique_vals)>15:
+        single.append([])
+        grouped = df.groupby(col_name)[numerical_columns].sum()
+        i=0
+        for category in unique_vals:
+            fig = go.Figure()
+            fig.add_trace(go.Bar(
+                x=numerical_columns,
+                y=grouped.loc[category],
+                text=grouped.loc[category],
+                hovertemplate=
+                "<b>Column:</b> %{x}<br>" +
+                "<b>Value:</b> %{y}<br>" +
+                "<extra></extra>"
+            ))
+            fig.update_layout(
+                title=f"{category} summary for column {col_name}",
+                xaxis_title="Numerical Columns",
+                yaxis_title="Sum",
+                hoverlabel=dict(bgcolor="white")
+            )
+            single[j].append([])
+            single[j][i].append(fig)
+            i=i+1
+        j=j+1
+    else:
+        mix.append([])
+        si=0
+        for num_col in numerical_columns:
+            grouped = df.groupby(col_name)[num_col].sum()
+            fig = go.Figure()
+            fig.add_trace(go.Bar(
+                x=grouped.index,
+                y=grouped.values,
+                text=grouped.values,
+                hovertemplate=
+                "<b>Category:</b> %{x}<br>" +
+                "<b>Value:</b> %{y}<br>" +
+                "<extra></extra>"
+            ))
+            fig.update_layout(
+                title=f"{num_col} by {col_name}",
+                xaxis_title=col_name,
+                yaxis_title=num_col
+            )
+            mix[k].append([])
+            mix[k][si].append(fig)
+            si=si+1
+        k=k+1
 
-# j=0
-# k=0
-
-
-# for col_index, col_name in enumerate(X_Quantitative):
-#     unique_vals = df[col_name].unique()
-#     if len(unique_vals) < 3:
-#         N_single.append([])
-#         grouped = df.groupby(col_name)[numerical_columns].sum()
-#         i=0
-#         for category in unique_vals:
-#             fig = go.Figure()
-#             fig.add_trace(go.Bar(
-#                 x=numerical_columns,
-#                 y=grouped.loc[category],
-#                 text=grouped.loc[category],
-#                 hovertemplate=
-#                 "<b>Column:</b> %{x}<br>" +
-#                 "<b>Value:</b> %{y}<br>" +
-#                 "<extra></extra>"
-#             ))
-#             fig.update_layout(
-#                 title=f"{category} summary for column {col_name}",
-#                 xaxis_title="Numerical Columns",
-#                 yaxis_title="Sum",
-#                 hoverlabel=dict(bgcolor="white")
-#             )
-#             N_single[j].append([])
-#             N_single[j][i].append(fig)
-#             i=i+1
-#         j=j+1
+j=0
+k=0
 
 
-#     else:
-#         N_mix.append([])
-#         si=0
-#         for num_col in numerical_columns:
-#             grouped = df.groupby(col_name)[num_col].sum()
-#             fig = go.Figure()
-#             fig.add_trace(go.Bar(
-#                 x=grouped.index,
-#                 y=grouped.values,
-#                 text=grouped.values,
-#                 hovertemplate=
-#                 "<b>Category:</b> %{x}<br>" +
-#                 "<b>Value:</b> %{y}<br>" +
-#                 "<extra></extra>"
-#             ))
-#             fig.update_layout(
-#                 title=f"{num_col} by {col_name}",
-#                 xaxis_title=col_name,
-#                 yaxis_title=num_col
-#             )
-#             N_mix[k].append([])
-#             N_mix[k][si].append(fig)
-#             si=si+1
-#         k=k+1
+for col_index, col_name in enumerate(X_Quantitative):
+    unique_vals = df[col_name].unique()
+    if len(unique_vals) < 3:
+        N_single.append([])
+        grouped = df.groupby(col_name)[numerical_columns].sum()
+        i=0
+        for category in unique_vals:
+            fig = go.Figure()
+            fig.add_trace(go.Bar(
+                x=numerical_columns,
+                y=grouped.loc[category],
+                text=grouped.loc[category],
+                hovertemplate=
+                "<b>Column:</b> %{x}<br>" +
+                "<b>Value:</b> %{y}<br>" +
+                "<extra></extra>"
+            ))
+            fig.update_layout(
+                title=f"{category} summary for column {col_name}",
+                xaxis_title="Numerical Columns",
+                yaxis_title="Sum",
+                hoverlabel=dict(bgcolor="white")
+            )
+            N_single[j].append([])
+            N_single[j][i].append(fig)
+            i=i+1
+        j=j+1
 
-# j=0
 
-# for col_index, col_name in enumerate(location_columns):
-#     L_mix.append([])
-#     si=0
-#     for num_col in numerical_columns:
-#         grouped = df.groupby(col_name)[num_col].sum()
-#         fig = go.Figure()
-#         fig.add_trace(go.Bar(
-#             x=grouped.index,
-#             y=grouped.values,
-#             text=grouped.values,
-#             hovertemplate=
-#             "<b>Category:</b> %{x}<br>" +
-#             "<b>Value:</b> %{y}<br>" +
-#             "<extra></extra>"
-#         ))
-#         fig.update_layout(
-#             title=f"{num_col} by {col_name}",
-#             xaxis_title=col_name,
-#             yaxis_title=num_col
-#         )
-#         L_mix[j].append([])
-#         L_mix[j][si].append(fig)
-#         si=si+1
-#     j=j+1
+    else:
+        N_mix.append([])
+        si=0
+        for num_col in numerical_columns:
+            grouped = df.groupby(col_name)[num_col].sum()
+            fig = go.Figure()
+            fig.add_trace(go.Bar(
+                x=grouped.index,
+                y=grouped.values,
+                text=grouped.values,
+                hovertemplate=
+                "<b>Category:</b> %{x}<br>" +
+                "<b>Value:</b> %{y}<br>" +
+                "<extra></extra>"
+            ))
+            fig.update_layout(
+                title=f"{num_col} by {col_name}",
+                xaxis_title=col_name,
+                yaxis_title=num_col
+            )
+            N_mix[k].append([])
+            N_mix[k][si].append(fig)
+            si=si+1
+        k=k+1
+
+j=0
+
+for col_index, col_name in enumerate(location_columns):
+    L_mix.append([])
+    si=0
+    for num_col in numerical_columns:
+        grouped = df.groupby(col_name)[num_col].sum()
+        fig = go.Figure()
+        fig.add_trace(go.Bar(
+            x=grouped.index,
+            y=grouped.values,
+            text=grouped.values,
+            hovertemplate=
+            "<b>Category:</b> %{x}<br>" +
+            "<b>Value:</b> %{y}<br>" +
+            "<extra></extra>"
+        ))
+        fig.update_layout(
+            title=f"{num_col} by {col_name}",
+            xaxis_title=col_name,
+            yaxis_title=num_col
+        )
+        L_mix[j].append([])
+        L_mix[j][si].append(fig)
+        si=si+1
+    j=j+1
 
 # for col_index, col_name in enumerate(X_Time):
 #     for num_col in numerical_columns:
@@ -795,55 +795,100 @@ print(df.tail())
 #                     yaxis_title=num_col
 #                 )
 #                 fig.show()
-# # <-------------------------------------------------------------------------------->
+# <-------------------------------------------------------------------------------->
 
-# #Pie charts>>>
-# j=0
+#Pie charts>>>
+j=0
 
-# for i in column_name:
-#     si=0
-#     if len(df[i].unique()) <= 8:
-#         P_single.append([])
-#         counts = df[i].value_counts()
-#         fig = go.Figure()
-#         fig.add_trace(go.Pie(
-#             labels=counts.index,
-#             values=counts.values,
-#             hole=0.4,
-#             hovertemplate="<b>%{label}</b><br>Count: %{value}<extra></extra>"
-#         ))
-#         fig.update_layout(
-#             title=f"Distribution of {i}",
-#             legend_title="Categories"
-#         )
-#         P_single[j].append([])
-#         P_single[j][si].append(fig)
-#         si=si+1
-#         j=j+1
+for i in column_name:
+    si=0
+    if len(df[i].unique()) <= 8:
+        P_single.append([])
+        counts = df[i].value_counts()
+        fig = go.Figure()
+        fig.add_trace(go.Pie(
+            labels=counts.index,
+            values=counts.values,
+            hole=0.4,
+            hovertemplate="<b>%{label}</b><br>Count: %{value}<extra></extra>"
+        ))
+        fig.update_layout(
+            title=f"Distribution of {i}",
+            legend_title="Categories"
+        )
+        P_single[j].append([])
+        P_single[j][si].append(fig)
+        si=si+1
+        j=j+1
 
-# j=0
-# for i in X_Qualitative:
-#     P_mix.append([])
-#     for l in numerical_columns:
-#         si=0
-#         grouped = df.groupby(i)[l].sum()
-#         fig = go.Figure()
-#         fig.add_trace(go.Pie(
-#             labels=grouped.index,
-#             values=grouped.values,
-#             hole=0.4,
-#             hovertemplate="<b>%{label}</b><br>Value: %{value}<extra></extra>"
-#         ))
+j=0
+for i in X_Qualitative:
+    P_mix.append([])
+    for l in numerical_columns:
+        si=0
+        grouped = df.groupby(i)[l].sum()
+        fig = go.Figure()
+        fig.add_trace(go.Pie(
+            labels=grouped.index,
+            values=grouped.values,
+            hole=0.4,
+            hovertemplate="<b>%{label}</b><br>Value: %{value}<extra></extra>"
+        ))
 
-#         fig.update_layout(
-#             title=f"Distribution of {l} by {i}",
-#             legend_title=i
-#         )
-#         P_mix[j].append([])
-#         P_mix[j][si].append(fig)
-#         si=si+1
-#     j=j+1
+        fig.update_layout(
+            title=f"Distribution of {l} by {i}",
+            legend_title=i
+        )
+        P_mix[j].append([])
+        P_mix[j][si].append(fig)
+        si=si+1
+    j=j+1
 
+
+def ensure_datetime(series):
+    try:
+        return pd.to_datetime(series, errors='coerce')
+    except:
+        return series
+
+for d in date_columns:
+    df[d] = ensure_datetime(df[d])
+    if not pd.api.types.is_datetime64_any_dtype(df[d]):
+        continue
+    for num_col in numerical_columns:
+
+# Bar Chart (Aggregated by Month/Year)
+        df['year'] = df[d].dt.year
+        df['month'] = df[d].dt.month
+
+        monthly = df.groupby('month')[num_col].sum().reset_index()
+        yearly = df.groupby('year')[num_col].sum().reset_index()
+
+Dia_ID=[]
+i=-1
+for all in dia:
+    i+=1
+    for j in range(0,len(all)):
+        for k in range(len(all[j])):
+            for l in range(len(all[j][k])):
+                Dia_ID.append(str(i)+str(j)+str(k)+str(l))
+
+Access=[]
+for i in range(int(max(Dia_ID)[0])+1):
+    Access.append([])
+    for val in (Dia_ID):
+        if val[0]==str(i):
+            Access[i].append(val)
+Access[:] = [x for x in Access if x]
+
+count=0
+for all in dia:
+    for i in range(0,len(all)):
+        for j in range(len(all[i])):
+            for k in range(len(all[i][j])):
+                # all[i][j][k].show()
+                count+=1
+print("Total graphs displayed:",count)
 
 # def ensure_datetime(series):
 #     try:
@@ -856,7 +901,55 @@ print(df.tail())
 #     if not pd.api.types.is_datetime64_any_dtype(df[d]):
 #         continue
 #     for num_col in numerical_columns:
-
+# # #Line Chart
+# #         fig_line = go.Figure()
+# #         fig_line.add_trace(go.Scatter(
+# #             x=df[d],
+# #             y=df[num_col],
+# #             mode='lines',
+# #             hovertemplate=
+# #                 "<b>Date:</b> %{x}<br>" +
+# #                 f"<b>{num_col}:</b> %{y}<extra></extra>"
+# #         ))
+# #         fig_line.update_layout(
+# #             title=f"Line Chart: {num_col} over {d}",
+# #             xaxis_title=d,
+# #             yaxis_title=num_col
+# #         )
+# #         fig_line.show()
+# # Scatter Plot
+#         # fig_scatter = go.Figure()
+#         # fig_scatter.add_trace(go.Scatter(
+#         #     x=df[d],
+#         #     y=df[num_col],
+#         #     mode='markers',
+#         #     hovertemplate=
+#         #         "<b>Date:</b> %{x}<br>" +
+#         #         f"<b>{num_col}:</b> %{y}<extra></extra>"
+#         # ))
+#         # fig_scatter.update_layout(
+#         #     title=f"Scatter Plot: {num_col} vs {d}",
+#         #     xaxis_title=d,
+#         #     yaxis_title=num_col
+#         # )
+#         # fig_scatter.show()
+# # Area Chart
+#         # fig_area = go.Figure()
+#         # fig_area.add_trace(go.Scatter(
+#         #     x=df[d],
+#         #     y=df[num_col],
+#         #     fill='tozeroy',
+#         #     mode='lines',
+#         #     hovertemplate=
+#         #         "<b>Date:</b> %{x}<br>" +
+#         #         f"<b>{num_col}:</b> %{y}<extra></extra>"
+#         # ))
+#         # fig_area.update_layout(
+#         #     title=f"Area Chart: {num_col} over {d}",
+#         #     xaxis_title=d,
+#         #     yaxis_title=num_col
+#         # )
+#         # fig_area.show()
 # # Bar Chart (Aggregated by Month/Year)
 #         df['year'] = df[d].dt.year
 #         df['month'] = df[d].dt.month
@@ -864,116 +957,21 @@ print(df.tail())
 #         monthly = df.groupby('month')[num_col].sum().reset_index()
 #         yearly = df.groupby('year')[num_col].sum().reset_index()
 
-# Dia_ID=[]
-# i=-1
-# for all in dia:
-#     i+=1
-#     for j in range(0,len(all)):
-#         for k in range(len(all[j])):
-#             for l in range(len(all[j][k])):
-#                 Dia_ID.append(str(i)+str(j)+str(k)+str(l))
-# print(Dia_ID)
+# # # Rolling Average Chart (7-day)
+# #         df['rolling'] = df[num_col].rolling(7).mean()
 
-# Access=[]
-# for i in range(int(max(Dia_ID)[0])+1):
-#     Access.append([])
-#     for val in (Dia_ID):
-#         if val[0]==str(i):
-#             Access[i].append(val)
-# Access[:] = [x for x in Access if x]
-# print(Access)
-
-# count=0
-# for all in dia:
-#     for i in range(0,len(all)):
-#         for j in range(len(all[i])):
-#             for k in range(len(all[i][j])):
-#                 # all[i][j][k].show()
-#                 count+=1
-# print("Total graphs displayed:",count)
-
-# # def ensure_datetime(series):
-# #     try:
-# #         return pd.to_datetime(series, errors='coerce')
-# #     except:
-# #         return series
-
-# # for d in date_columns:
-# #     df[d] = ensure_datetime(df[d])
-# #     if not pd.api.types.is_datetime64_any_dtype(df[d]):
-# #         continue
-# #     for num_col in numerical_columns:
-# # # #Line Chart
-# # #         fig_line = go.Figure()
-# # #         fig_line.add_trace(go.Scatter(
-# # #             x=df[d],
-# # #             y=df[num_col],
-# # #             mode='lines',
-# # #             hovertemplate=
-# # #                 "<b>Date:</b> %{x}<br>" +
-# # #                 f"<b>{num_col}:</b> %{y}<extra></extra>"
-# # #         ))
-# # #         fig_line.update_layout(
-# # #             title=f"Line Chart: {num_col} over {d}",
-# # #             xaxis_title=d,
-# # #             yaxis_title=num_col
-# # #         )
-# # #         fig_line.show()
-# # # Scatter Plot
-# #         # fig_scatter = go.Figure()
-# #         # fig_scatter.add_trace(go.Scatter(
-# #         #     x=df[d],
-# #         #     y=df[num_col],
-# #         #     mode='markers',
-# #         #     hovertemplate=
-# #         #         "<b>Date:</b> %{x}<br>" +
-# #         #         f"<b>{num_col}:</b> %{y}<extra></extra>"
-# #         # ))
-# #         # fig_scatter.update_layout(
-# #         #     title=f"Scatter Plot: {num_col} vs {d}",
-# #         #     xaxis_title=d,
-# #         #     yaxis_title=num_col
-# #         # )
-# #         # fig_scatter.show()
-# # # Area Chart
-# #         # fig_area = go.Figure()
-# #         # fig_area.add_trace(go.Scatter(
-# #         #     x=df[d],
-# #         #     y=df[num_col],
-# #         #     fill='tozeroy',
-# #         #     mode='lines',
-# #         #     hovertemplate=
-# #         #         "<b>Date:</b> %{x}<br>" +
-# #         #         f"<b>{num_col}:</b> %{y}<extra></extra>"
-# #         # ))
-# #         # fig_area.update_layout(
-# #         #     title=f"Area Chart: {num_col} over {d}",
-# #         #     xaxis_title=d,
-# #         #     yaxis_title=num_col
-# #         # )
-# #         # fig_area.show()
-# # # Bar Chart (Aggregated by Month/Year)
-# #         df['year'] = df[d].dt.year
-# #         df['month'] = df[d].dt.month
-
-# #         monthly = df.groupby('month')[num_col].sum().reset_index()
-# #         yearly = df.groupby('year')[num_col].sum().reset_index()
-
-# # # # Rolling Average Chart (7-day)
-# # #         df['rolling'] = df[num_col].rolling(7).mean()
-
-# # #         fig_roll = go.Figure()
-# # #         fig_roll.add_trace(go.Scatter(
-# # #             x=df[d],
-# # #             y=df['rolling'],
-# # #             mode="lines",
-# # #             hovertemplate=
-# # #                 "<b>Date:</b> %{x}<br>" +
-# # #                 f"<b>Rolling Avg ({num_col}):</b> %{y}<extra></extra>"
-# # #         ))
-# # #         fig_roll.update_layout(
-# # #             title=f"7-Day Rolling Average of {num_col}",
-# # #             xaxis_title=d,
-# # #             yaxis_title=num_col
-# # #         )
-# # #         fig_roll.show()
+# #         fig_roll = go.Figure()
+# #         fig_roll.add_trace(go.Scatter(
+# #             x=df[d],
+# #             y=df['rolling'],
+# #             mode="lines",
+# #             hovertemplate=
+# #                 "<b>Date:</b> %{x}<br>" +
+# #                 f"<b>Rolling Avg ({num_col}):</b> %{y}<extra></extra>"
+# #         ))
+# #         fig_roll.update_layout(
+# #             title=f"7-Day Rolling Average of {num_col}",
+# #             xaxis_title=d,
+# #             yaxis_title=num_col
+# #         )
+# #         fig_roll.show()
