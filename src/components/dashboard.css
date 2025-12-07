@@ -33,13 +33,21 @@ body {
 .dcol {
     margin: 0.5px;
     border: solid 1px gray;
-    height: 15vh
+    height: 15vh;
+    display: grid;
+    grid-template-rows: 1fr 2fr;
+    align-items: top;
+    justify-items: center;
 }
 
 .dcol1 {
     margin: 0.5px;
     border: solid 1px gray;
     height: 30vh;
+    display: grid;
+    grid-template-rows: 0.1fr 2.9fr;
+    align-items: top;
+    justify-items: center;
 }
 
 .dsidechart {

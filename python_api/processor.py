@@ -975,5 +975,26 @@ print("Total graphs displayed:",count)
 # #             yaxis_title=num_col
 # #         )
 # #         fig_roll.show()
+print(Dia_ID)
+@app.get("/process")
+def process_data():
+    
 
-
+    return {
+    "onename":numerical_columns[0],
+    "one":df[numerical_columns[0]].sum(),
+    "twoname": numerical_columns[1],
+    "two": df[numerical_columns[1]].sum(),
+    "threename": numerical_columns[2],
+    "three": df[numerical_columns[2]].sum(),
+    "fourname": numerical_columns[3],
+    "four": df[numerical_columns[3]].sum(),
+    "five": 123,
+    "six": 456,
+    "seven":789,
+    "eight": 101112,
+    "sidechart":"Chart",
+    "chart1":"Graph",
+    "chart2": "Diagram",
+    "summary": summary,
+    }
