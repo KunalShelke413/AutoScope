@@ -33,7 +33,11 @@ function clearUploadFolder() {
 // ------------------------------
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, 'uploads/'),
-  filename: (req, file, cb) => cb(null, file.originalname)
+
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    cb(null, "data" + ext);   // <-- change file name here
+  }
 });
 
 const upload = multer({ storage });
@@ -45,65 +49,46 @@ app.post('/upload', (req, res, next) => {
   clearUploadFolder();
   next();
 }, upload.single('file'), async (req, res) => {
-  
+
   if (!req.file) return res.status(400).json({ error: "No file uploaded" });
 
-  const filePath = path.join(__dirname, 'uploads', req.file.originalname);
-  const ext = path.extname(req.file.originalname).toLowerCase();
+  const filePath = path.join(__dirname, "uploads", req.file.filename);
+  const ext = path.extname(req.file.filename).toLowerCase();
 
   try {
     let rawData;
 
-    // -------------------------
-    // CSV → JSON
-    // -------------------------
     if (ext === '.csv') {
       const fileContent = fs.readFileSync(filePath, 'utf8');
       rawData = await csv().fromString(fileContent);
     }
-
-    // -------------------------
-    // TXT → JSON
-    // -------------------------
-    else if (ext === '.txt') {
-      const fileContent = fs.readFileSync(filePath, 'utf8');
-      rawData = fileContent.split('\n').map(line => line.trim());
-    }
-
-    // -------------------------
-    // XLSX → JSON
-    // -------------------------
     else if (ext === '.xlsx') {
       const workbook = XLSX.readFile(filePath);
       const sheetName = workbook.SheetNames[0];
       rawData = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
     }
-
-    // -------------------------
-    // JSON → JSON
-    // -------------------------
     else if (ext === '.json') {
       const fileContent = fs.readFileSync(filePath, 'utf8');
       rawData = JSON.parse(fileContent);
     }
-
-    // Unsupported type
+    else if (ext === '.txt') {
+      const fileContent = fs.readFileSync(filePath, 'utf8');
+      rawData = fileContent.split('\n').map(line => line.trim());
+    }
     else {
       return res.status(400).json({ error: "Unsupported file format" });
     }
 
-    // Return raw JSON to frontend
     res.status(200).json({
       message: "File processed successfully",
       rawData
     });
 
   } catch (err) {
-    console.error("Error:", err);
+    console.error(err);
     res.status(500).json({ error: "File processing failed" });
   }
 });
-
 // ------------------------------
 // START SERVER
 // ------------------------------

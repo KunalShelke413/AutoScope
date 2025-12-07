@@ -15,9 +15,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-last_file = max(glob.glob("D:/mine/react/AutoScope/backend/uploads/*"), key=os.path.getctime)
+last_file = "../backend/uploads/data.csv"
 ext = os.path.splitext(last_file)[1]
+
 
 character_columns=['name', 'department', 'departments', 'team', 'teams', 'product', 'products',
  'region', 'regions', 'subject', 'subjects', 'class', 'school', 'schools',
@@ -135,6 +135,7 @@ elif ext==".xlsx" or ext==".xls":
    df=pd.read_excel(last_file)
 elif ext==".json":
    df=pd.read_json(last_file)
+
 
 total_column_count=0
 total_row_count=0
@@ -975,6 +976,9 @@ print("Total graphs displayed:",count)
 # #             yaxis_title=num_col
 # #         )
 # #         fig_roll.show()
+
+a=df[numerical_columns[0]].sum()
+
 print(Dia_ID)
 @app.get("/process")
 def process_data():
@@ -982,13 +986,13 @@ def process_data():
 
     return {
     "onename":numerical_columns[0],
-    "one":df[numerical_columns[0]].sum(),
-    "twoname": numerical_columns[1],
-    "two": df[numerical_columns[1]].sum(),
-    "threename": numerical_columns[2],
-    "three": df[numerical_columns[2]].sum(),
-    "fourname": numerical_columns[3],
-    "four": df[numerical_columns[3]].sum(),
+    "one":int(a),
+    # "twoname": numerical_columns[1],
+    # "two": df[numerical_columns[1]].sum(),
+    # "threename": numerical_columns[2],
+    # "three": df[numerical_columns[2]].sum(),
+    # "fourname": numerical_columns[3],
+    # "four": df[numerical_columns[3]].sum(),
     "five": 123,
     "six": 456,
     "seven":789,
