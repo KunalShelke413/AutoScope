@@ -1,5 +1,5 @@
 * {
-    color: white;
+    color: rgb(253, 253, 253);
 }
 
 body {
@@ -31,6 +31,7 @@ body {
 }
 
 .dcol {
+    color:black;
     margin: 0.5px;
     border: solid 1px gray;
     height: 15vh;
@@ -38,16 +39,17 @@ body {
     grid-template-rows: 1fr 2fr;
     align-items: top;
     justify-items: center;
+    background-color: rgb(252, 252, 252);
 }
 
 .dcol1 {
     margin: 0.5px;
     border: solid 1px gray;
     height: 30vh;
-    display: grid;
+    /* display: grid;
     grid-template-rows: 0.1fr 2.9fr;
     align-items: top;
-    justify-items: center;
+    justify-items: center; */
 }
 
 .dsidechart {

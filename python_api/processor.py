@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from storage import get_data
 import glob
+import json
 import pandas as pd
 import numpy as np
 import re
@@ -552,7 +553,7 @@ for col_index, col_name in enumerate(X_Qualitative):
                 title=f"{category} summary for column {col_name}",
                 xaxis_title="Numerical Columns",
                 yaxis_title="Sum",
-                hoverlabel=dict(bgcolor="white")
+                hoverlabel=dict(bgcolor="white"),
             )
             single[j].append([])
             single[j][i].append(fig)
@@ -698,15 +699,21 @@ for i in column_name:
         P_single.append([])
         counts = df[i].value_counts()
         fig = go.Figure()
+        labels = counts.index.astype("category").codes
+        # convert to smallest dtype
+        labels = labels.astype("int16")
+
+        values = counts.values.astype("int16")
         fig.add_trace(go.Pie(
-            labels=counts.index,
-            values=counts.values,
+            labels=labels,
+            values=values,
             hole=0.4,
             hovertemplate="<b>%{label}</b><br>Count: %{value}<extra></extra>"
         ))
         fig.update_layout(
             title=f"Distribution of {i}",
-            legend_title="Categories"
+            # legend_title="Categories",
+            margin=dict(t=30, b=10, l=10, r=10)
         )
         P_single[j].append([])
         P_single[j][si].append(fig)
@@ -727,10 +734,10 @@ for i in X_Qualitative:
             hovertemplate="<b>%{label}</b><br>Value: %{value}<extra></extra>"
         ))
 
-        fig.update_layout(
-            title=f"Distribution of {l} by {i}",
-            legend_title=i
-        )
+        # fig.update_layout(
+        #     title=f"Distribution of {l} by {i}",
+        #     legend_title=i
+        # )
         P_mix[j].append([])
         P_mix[j][si].append(fig)
         si=si+1
@@ -867,24 +874,59 @@ print("Total graphs displayed:",count)
 # #         fig_roll.show()
 
 
+pc=2
+for i in range(len(Access[pc])):
+    if i ==0:
+        p1=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+    elif i==1:
+        p2=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+    elif i==2:
+        p3=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+    elif i==3:
+        p4=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
 
+# print(p1,p2,p3,p4)
 
+# p1=dia[2][0][0][0]
+# p2=dia[2][1][0][0]
+# p3=dia[2][2][0][0]
+# p4=dia[2][3][0][0]
+# print(Access)
+print("fst",p1)
+print("snd",p3)
 
-sidechart=dia[1][0][0][0]
+@app.get("/p1plot")
+def p1_plot():
+    fig_json = p1.to_plotly_json()   # <--- KEY STEP
+    return JSONResponse(content=fig_json)
+@app.get("/p2plot")
+def p1_plot():
+    fig_json = p2.to_plotly_json()   # <--- KEY STEP
+    return JSONResponse(content=fig_json)
+@app.get("/p3plot")
+def p3_plot():
+    fig_json = p3.to_plotly_json()   # <--- KEY STEP
+    return JSONResponse(content=fig_json)
+@app.get("/p4plot")
+def p4_plot():
+    fig_json = p4.to_plotly_json()   # <--- KEY STEP
+    return JSONResponse(content=fig_json)
+
+sidechart=dia[0][0][0][0]
 
 @app.get("/sideplot")
 def side_plot():
     fig_json = sidechart.to_plotly_json()   # <--- KEY STEP
     return JSONResponse(content=fig_json)
 
-chart1=dia[1][0][1][0]
+chart1=dia[0][1][0][0]
 
 @app.get("/chart1plot")
 def chart1_plot():
     fig_json = chart1.to_plotly_json()   # <--- KEY STEP
     return JSONResponse(content=fig_json)
 
-chart2=dia[2][0][0][0]
+chart2=dia[0][1][1][0]
 
 @app.get("/chart2plot")
 def chart2_plot():
@@ -895,7 +937,7 @@ a=df[numerical_columns[0]].sum()
 b=df[numerical_columns[1]].sum()
 c=df[numerical_columns[2]].sum()
 d=df[numerical_columns[3]].sum()
-print(Dia_ID)
+# print(Access)
 
 @app.get("/process")
 def process_data():
