@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import './dashboard.css';
+import Plot from "react-plotly.js";
 
 const Dashboard = () => {
 
@@ -12,6 +13,32 @@ const Dashboard = () => {
       .catch(err => console.error("Error:", err));
   }, []);
 
+  const [sidec, PlotData] = useState(null);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/sideplot")   // your API
+      .then(res => res.json())
+      .then(data => PlotData(data))
+      .catch(err => console.error(err));
+  }, []);
+
+  const [c1, PlotData1] = useState(null);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/chart1plot")   // your API
+      .then(res => res.json())
+      .then(data => PlotData1(data))
+      .catch(err => console.error(err));
+  }, []);
+
+  const [c2, PlotData2] = useState(null);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/chart2plot")   // your API
+      .then(res => res.json())
+      .then(data => PlotData2(data))
+      .catch(err => console.error(err));
+  }, []);
   return (
     <div className="dmain">
       <div className="dcont">
@@ -60,7 +87,14 @@ const Dashboard = () => {
         <div className="dsndc">
           <div id="sidechart" className="dsidechart">
             <div>{data ? data.sidechartname : "fst"}</div>
-            <div>{data ? data.sidechart : "nth"}</div>
+            {/* <div>{data ? data.sidechart : "nth"}</div> */}
+            {sidec && (
+            <Plot
+              data={sidec.data}
+              layout={sidec.layout}
+              style={{ width: "100%", height: "100%" }}
+            />
+            )}
           </div>
         </div>
       </div>
@@ -68,11 +102,25 @@ const Dashboard = () => {
       <div className="dlower">
         <div id="chart1" className="dchart">
           {data ? data.chart1name : "fst"}
-          {data ? data.chart1 : "tth"}
+          {/* {data ? data.chart1 : "tth"} */}
+          {c1 && (
+            <Plot
+              data={c1.data}
+              layout={c1.layout}
+              style={{ width: "100%", height: "100%" }}
+            />
+            )}
         </div>
         <div id="chart2" className="dchart">
           {data ? data.chart2name : "fst"}
-          {data ? data.chart2 : "elv"}
+          {/* {data ? data.chart2 : "elv"} */}
+          {c2 && (
+            <Plot
+              data={c2.data}
+              layout={c2.layout}
+              style={{ width: "100%", height: "100%" }}
+            />
+            )}
         </div>
       </div>
 

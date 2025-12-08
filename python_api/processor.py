@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 import glob
 import pandas as pd
 import numpy as np
@@ -599,12 +600,12 @@ for i in numerical_columns:
 for i in location_columns:
     df[i]=df[i].fillna("Unknown")
 
-for i in summary:
-    print(f"{i}:-\n{eval(i)}\n")
-for i in df.columns:
-    print(f"{i}\n{df[i].describe()}\n")
-print(df.head())
-print(df.tail())
+# for i in summary:
+#     print(f"{i}:-\n{eval(i)}\n")
+# for i in df.columns:
+#     print(f"{i}\n{df[i].describe()}\n")
+# print(df.head())
+# print(df.tail())
 
 #graph col:-
 X_Qualitative=[]
@@ -977,8 +978,31 @@ print("Total graphs displayed:",count)
 # #         )
 # #         fig_roll.show()
 
-a=df[numerical_columns[0]].sum()
+sidechart=dia[1][0][0][0]
 
+@app.get("/sideplot")
+def side_plot():
+    fig_json = sidechart.to_plotly_json()   # <--- KEY STEP
+    return JSONResponse(content=fig_json)
+
+chart1=dia[1][0][1][0]
+
+@app.get("/chart1plot")
+def chart1_plot():
+    fig_json = chart1.to_plotly_json()   # <--- KEY STEP
+    return JSONResponse(content=fig_json)
+
+chart2=dia[2][0][0][0]
+
+@app.get("/chart2plot")
+def chart2_plot():
+    fig_json = chart2.to_plotly_json()   # <--- KEY STEP
+    return JSONResponse(content=fig_json)
+
+a=df[numerical_columns[0]].sum()
+b=df[numerical_columns[1]].sum()
+c=df[numerical_columns[2]].sum()
+d=df[numerical_columns[3]].sum()
 print(Dia_ID)
 @app.get("/process")
 def process_data():
@@ -987,18 +1011,18 @@ def process_data():
     return {
     "onename":numerical_columns[0],
     "one":int(a),
-    # "twoname": numerical_columns[1],
-    # "two": df[numerical_columns[1]].sum(),
-    # "threename": numerical_columns[2],
-    # "three": df[numerical_columns[2]].sum(),
-    # "fourname": numerical_columns[3],
-    # "four": df[numerical_columns[3]].sum(),
+    "twoname": numerical_columns[1],
+    "two": int(b),
+    "threename": numerical_columns[2],
+    "three":int(c) ,
+    "fourname": numerical_columns[3],
+    "four": int(d),
     "five": 123,
     "six": 456,
     "seven":789,
     "eight": 101112,
-    "sidechart":"Chart",
-    "chart1":"Graph",
-    "chart2": "Diagram",
+    # "sidechart":print(dia[1][0][0][0]),
+    # "chart1":"Graph",
+    # "chart2": "Diagram",
     "summary": summary,
     }
