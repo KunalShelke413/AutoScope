@@ -565,9 +565,11 @@ for col_index, col_name in enumerate(X_Qualitative):
         for num_col in numerical_columns:
             grouped = df.groupby(col_name)[num_col].sum()
             fig = go.Figure()
+            x_vals = list(grouped.index)
+            y_vals = grouped.values.tolist()
             fig.add_trace(go.Bar(
-                x=grouped.index,
-                y=grouped.values,
+                x=x_vals,
+                y=y_vals,
                 text=grouped.values,
                 hovertemplate=
                 "<b>Category:</b> %{x}<br>" +
@@ -622,10 +624,12 @@ for col_index, col_name in enumerate(X_Quantitative):
         si=0
         for num_col in numerical_columns:
             grouped = df.groupby(col_name)[num_col].sum()
+            x_vals = list(grouped.index)
+            y_vals = grouped.values.tolist()
             fig = go.Figure()
             fig.add_trace(go.Bar(
-                x=grouped.index,
-                y=grouped.values,
+                x=x_vals,
+                y=y_vals,
                 text=grouped.values,
                 hovertemplate=
                 "<b>Category:</b> %{x}<br>" +
@@ -649,10 +653,12 @@ for col_index, col_name in enumerate(location_columns):
     si=0
     for num_col in numerical_columns:
         grouped = df.groupby(col_name)[num_col].sum()
+        x_vals = list(grouped.index)
+        y_vals = grouped.values.tolist()
         fig = go.Figure()
         fig.add_trace(go.Bar(
-            x=grouped.index,
-            y=grouped.values,
+            x=x_vals,
+            y=y_vals,
             text=grouped.values,
             hovertemplate=
             "<b>Category:</b> %{x}<br>" +
@@ -700,9 +706,7 @@ for i in column_name:
         counts = df[i].value_counts()
         fig = go.Figure()
         labels = counts.index.astype("category").codes
-        # convert to smallest dtype
         labels = labels.astype("int16")
-
         values = counts.values.astype("int16")
         fig.add_trace(go.Pie(
             labels=labels,
@@ -727,9 +731,12 @@ for i in X_Qualitative:
         si=0
         grouped = df.groupby(i)[l].sum()
         fig = go.Figure()
+        labels = grouped.index.astype("category").codes
+        labels = labels.astype("int16")
+        values = grouped.values.astype("int16")
         fig.add_trace(go.Pie(
-            labels=grouped.index,
-            values=grouped.values,
+            labels=labels,
+            values=values,
             hole=0.4,
             hovertemplate="<b>%{label}</b><br>Value: %{value}<extra></extra>"
         ))
@@ -771,12 +778,11 @@ for all in dia:
             for l in range(len(all[j][k])):
                 Dia_ID.append(str(i)+str(j)+str(k)+str(l))
 
-for i in range(int(max(Dia_ID)[0])+1):
+for i in range(7):
     Access.append([])
     for val in (Dia_ID):
         if val[0]==str(i):
             Access[i].append(val)
-# Access[:] = [x for x in Access if x]
 
 count=0
 for all in dia:
@@ -873,6 +879,16 @@ print("Total graphs displayed:",count)
 # #         )
 # #         fig_roll.show()
 
+p1=0
+p2=0
+p3=0
+p4=0
+
+def check(i,a,p):
+    if Access[i][a] and (i!=6 and i!=2) and (p==0):
+        p=dia[int(Access[i][a][0])][int(Access[i][a][1])][int(Access[i][a][2])][int(Access[i][a][3])]
+        a+=1
+    return a,p
 
 pc=2
 for i in range(len(Access[pc])):
@@ -884,16 +900,65 @@ for i in range(len(Access[pc])):
         p3=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
     elif i==3:
         p4=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+if p1==0 or p2==0 or p3==0 or p4==0:
+    pc=6
+    if Access[pc]:
+        if p1!=0:
+            if p2!=0:
+                if p3!=0:
+                    if p4!=0:
+                        pass
+                    else:
+                        p4=dia[int(Access[pc][0][0])][int(Access[pc][0][1])][int(Access[pc][0][2])][int(Access[pc][0][3])]
+                else:  
+                    for i in range(len(Access[pc])):
+                        if i ==0:
+                            p3=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+                        elif i==1:
+                            p4=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]   
+            else:
+                for i in range(len(Access[pc])):
+                    if i ==0:
+                        p2=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+                    elif i==1:
+                        p3=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+                    elif i==2:
+                        p4=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]                 
+        else:
+            for i in range(len(Access[pc])):
+                if i ==0:
+                    p1=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+                elif i==1:
+                    p2=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+                elif i==2:
+                    p3=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+                elif i==3:
+                    p4=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
 
-# print(p1,p2,p3,p4)
+a=0
+for i in range(len(Access)):
+    try:
+        a,p1=check(i,a,p1)
+        a,p2=check(i,a,p2)
+        a,p3=check(i,a,p3)
+        a,p4=check(i,a,p4)
+        if p1!=0 and p2!=0 and p3!=0 and p4!=0:
+            break
+        else:
+            a=0
+    except IndexError:
+        continue
+             
+            
+
+
+print(p1,p2,p3,p4)
 
 # p1=dia[2][0][0][0]
 # p2=dia[2][1][0][0]
 # p3=dia[2][2][0][0]
 # p4=dia[2][3][0][0]
 # print(Access)
-print("fst",p1)
-print("snd",p3)
 
 @app.get("/p1plot")
 def p1_plot():
@@ -912,45 +977,48 @@ def p4_plot():
     fig_json = p4.to_plotly_json()   # <--- KEY STEP
     return JSONResponse(content=fig_json)
 
-sidechart=dia[0][0][0][0]
+sidechart=dia[3][0][0][0]
 
 @app.get("/sideplot")
 def side_plot():
     fig_json = sidechart.to_plotly_json()   # <--- KEY STEP
     return JSONResponse(content=fig_json)
 
-chart1=dia[0][1][0][0]
+chart1=dia[3][0][1][0]
 
 @app.get("/chart1plot")
 def chart1_plot():
     fig_json = chart1.to_plotly_json()   # <--- KEY STEP
     return JSONResponse(content=fig_json)
 
-chart2=dia[0][1][1][0]
-
+chart2=dia[3][0][2][0]
+print(chart2)
 @app.get("/chart2plot")
 def chart2_plot():
     fig_json = chart2.to_plotly_json()   # <--- KEY STEP
     return JSONResponse(content=fig_json)
 
-a=df[numerical_columns[0]].sum()
-b=df[numerical_columns[1]].sum()
-c=df[numerical_columns[2]].sum()
-d=df[numerical_columns[3]].sum()
+# a=df[numerical_columns[0]].sum()
+# b=df[numerical_columns[1]].sum()
+# c=df[numerical_columns[2]].sum()
+# d=df[numerical_columns[3]].sum()
+a=1
+b=2
+c=3
+d=4
 # print(Access)
 
 @app.get("/process")
 def process_data():
     
-
     return {
-    "onename":numerical_columns[0],
+    "onename":"a",
     "one":int(a),
-    "twoname": numerical_columns[1],
+    "twoname": "b",
     "two": int(b),
-    "threename": numerical_columns[2],
+    "threename": "c",
     "three":int(c) ,
-    "fourname": numerical_columns[3],
+    "fourname":"d",
     "four": int(d),
     "five": 123,
     "six": 456,
@@ -958,3 +1026,19 @@ def process_data():
     "eight": 101112,
     "summary": summary,
     }
+
+    # return {
+    # "onename":numerical_columns[0],
+    # "one":int(a),
+    # "twoname": numerical_columns[1],
+    # "two": int(b),
+    # "threename": numerical_columns[2],
+    # "three":int(c) ,
+    # "fourname": numerical_columns[3],
+    # "four": int(d),
+    # "five": 123,
+    # "six": 456,
+    # "seven":789,
+    # "eight": 101112,
+    # "summary": summary,
+    # }
