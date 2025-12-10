@@ -10,6 +10,11 @@ import re
 import random
 import os
 import plotly.graph_objects as go
+import time
+import sys
+import requests
+
+
 app = FastAPI()
 
 app.add_middleware(
@@ -522,11 +527,12 @@ dia=[single,N_single,P_single,mix,N_mix,L_mix,P_mix]
 Dia_ID=[]
 Access=[]
 bar_check=[]
-def check(i,a,p):
+def check(i,a,bar_check,p):
     if Access[i][a] and (i!=6 and i!=2) and (p==0):
         p=dia[int(Access[i][a][0])][int(Access[i][a][1])][int(Access[i][a][2])][int(Access[i][a][3])]
+        bar_check.append(Access[i][a])
         a+=1
-    return a,p
+    return a,bar_check,p
 def B_check(i,bar_check,p):
     if Access[i][0] and (i!=6 and i!=2) and (p==0) and Access[i][0] not in bar_check:
         p=dia[int(Access[i][0][0])][int(Access[i][0][1])][int(Access[i][0][2])][int(Access[i][0][3])]
@@ -891,17 +897,20 @@ print("Total graphs displayed:",count)
 # #         )
 # #         fig_roll.show()
 
-
 pc=2
 for i in range(len(Access[pc])):
-    if i ==0:
+    if i ==0:                   
         p1=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+        bar_check.append(Access[pc][i]) 
     elif i==1:
         p2=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+        bar_check.append(Access[pc][i])
     elif i==2:
         p3=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+        bar_check.append(Access[pc][i])
     elif i==3:
         p4=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+        bar_check.append(Access[pc][i])
 if p1==0 or p2==0 or p3==0 or p4==0:
     pc=6
     if Access[pc]:
@@ -912,38 +921,48 @@ if p1==0 or p2==0 or p3==0 or p4==0:
                         pass
                     else:
                         p4=dia[int(Access[pc][0][0])][int(Access[pc][0][1])][int(Access[pc][0][2])][int(Access[pc][0][3])]
+                        bar_check.append(Access[pc][i])
                 else:  
                     for i in range(len(Access[pc])):
                         if i ==0:
                             p3=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+                            bar_check.append(Access[pc][i])
                         elif i==1:
-                            p4=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]   
+                            p4=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+                            bar_check.append(Access[pc][i])  
             else:
                 for i in range(len(Access[pc])):
                     if i ==0:
                         p2=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+                        bar_check.append(Access[pc][i])
                     elif i==1:
                         p3=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+                        bar_check.append(Access[pc][i])
                     elif i==2:
-                        p4=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]                 
+                        p4=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+                        bar_check.append(Access[pc][i])                
         else:
             for i in range(len(Access[pc])):
                 if i ==0:
                     p1=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+                    bar_check.append(Access[pc][i])
                 elif i==1:
                     p2=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+                    bar_check.append(Access[pc][i])
                 elif i==2:
                     p3=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+                    bar_check.append(Access[pc][i])
                 elif i==3:
                     p4=dia[int(Access[pc][i][0])][int(Access[pc][i][1])][int(Access[pc][i][2])][int(Access[pc][i][3])]
+                    bar_check.append(Access[pc][i])
 
 a=0
 for i in range(len(Access)):
     try:
-        a,p1=check(i,a,p1)
-        a,p2=check(i,a,p2)
-        a,p3=check(i,a,p3)
-        a,p4=check(i,a,p4)
+        a,bar_check,p1=check(i,a,bar_check,p1)
+        a,bar_check,p2=check(i,a,bar_check,p2)
+        a,bar_check,p3=check(i,a,bar_check,p3)
+        a,bar_check,p4=check(i,a,bar_check,p4)
         if p1!=0 and p2!=0 and p3!=0 and p4!=0:
             break
         else:
@@ -960,6 +979,15 @@ for i in range(len(Access)):
             break
     except IndexError:
         continue
+if sidechart==0 or chart1==0 or chart2==0:
+    for i in Dia_ID:
+        if i not in bar_check and i not in Access[2] and i not in Access[6]:
+            if sidechart==0:
+                sidechart=dia[int(i[0])][int(i[1])][int(i[2])][int(i[3])]
+            elif chart1==0:
+                chart1=dia[int(i[0])][int(i[1])][int(i[2])][int(i[3])]
+            elif chart2==0:
+                chart2=dia[int(i[0])][int(i[1])][int(i[2])][int(i[3])]
 
 @app.get("/p1plot")
 def p1_plot():
@@ -990,42 +1018,26 @@ def chart2_plot():
     fig_json = chart2.to_plotly_json()   # <--- KEY STEP
     return JSONResponse(content=fig_json)
 
-a=df[numerical_columns[0]].sum()
-b=df[numerical_columns[1]].sum()
-c=df[numerical_columns[2]].sum()
-d=df[numerical_columns[3]].sum()
-# a=1
-# b=2
-# c=3
-# d=4
+# a=df[numerical_columns[0]].sum()
+# b=df[numerical_columns[1]].sum()
+# c=df[numerical_columns[2]].sum()
+# d=df[numerical_columns[3]].sum()
+a=1
+b=2
+c=3
+d=4
 
 @app.get("/process")
 def process_data():
     
-    # return {
-    # "onename":"a",
-    # "one":int(a),
-    # "twoname": "b",
-    # "two": int(b),
-    # "threename": "c",
-    # "three":int(c) ,
-    # "fourname":"d",
-    # "four": int(d),
-    # "five": 123,
-    # "six": 456,
-    # "seven":789,
-    # "eight": 101112,
-    # "summary": summary,
-    # }
-
     return {
-    "onename":numerical_columns[0],
+    "onename":"a",
     "one":int(a),
-    "twoname": numerical_columns[1],
+    "twoname": "b",
     "two": int(b),
-    "threename": numerical_columns[2],
+    "threename": "c",
     "three":int(c) ,
-    "fourname": numerical_columns[3],
+    "fourname":"d",
     "four": int(d),
     "five": 123,
     "six": 456,
@@ -1033,3 +1045,19 @@ def process_data():
     "eight": 101112,
     "summary": summary,
     }
+
+    # return {
+    # "onename":numerical_columns[0],
+    # "one":int(a),
+    # "twoname": numerical_columns[1],
+    # "two": int(b),
+    # "threename": numerical_columns[2],
+    # "three":int(c) ,
+    # "fourname": numerical_columns[3],
+    # "four": int(d),
+    # "five": 123,
+    # "six": 456,
+    # "seven":789,
+    # "eight": 101112,
+    # "summary": summary,
+    # }

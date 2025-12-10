@@ -1,12 +1,15 @@
 import axios from 'axios';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, useContext } from 'react';
+import { UploadContext } from "../UploadContext";
 
 type UploadStatus = 'idle' | 'uploading' | 'success' | 'error';
 
 const Upload: React.FC = () => {
+  const { setIsUploaded } = useContext(UploadContext);
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState<UploadStatus>('idle');
   const [uploadProgress, setUploadProgress] = useState(0);
+  
 
   function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
     if (e.target.files) {
@@ -37,9 +40,11 @@ const Upload: React.FC = () => {
 
       setStatus('success');
       setUploadProgress(100);
+      setIsUploaded(true);
     } catch {
       setStatus('error');
       setUploadProgress(0);
+      setIsUploaded(false);
     }
   }
 
