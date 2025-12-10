@@ -921,7 +921,7 @@ if p1==0 or p2==0 or p3==0 or p4==0:
                         pass
                     else:
                         p4=dia[int(Access[pc][0][0])][int(Access[pc][0][1])][int(Access[pc][0][2])][int(Access[pc][0][3])]
-                        bar_check.append(Access[pc][i])
+                        bar_check.append(Access[pc][0])
                 else:  
                     for i in range(len(Access[pc])):
                         if i ==0:
