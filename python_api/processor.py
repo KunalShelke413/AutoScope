@@ -500,23 +500,17 @@ for i in location_columns:
 # print(df.head())
 # print(df.tail())
 
-#graph col:-
+sidechart=0
+chart1=0
+chart2=0
+p1=0
+p2=0
+p3=0
+p4=0
 X_Qualitative=[]
 X_Quantitative=[]
 X_Location=[]
 X_Time=[]
-
-for i in column_name:
-    a=len(df[i].unique())
-    if a<=15 :
-        if i in alpha_columns:
-            X_Qualitative.append(i)
-        elif i in numerical_columns:
-            X_Quantitative.append(i)
-        elif i in date_columns:
-            X_Time.append(i)
-
-
 single=[]
 N_single=[]
 P_single=[]
@@ -527,6 +521,27 @@ P_mix=[]
 dia=[single,N_single,P_single,mix,N_mix,L_mix,P_mix]
 Dia_ID=[]
 Access=[]
+bar_check=[]
+def check(i,a,p):
+    if Access[i][a] and (i!=6 and i!=2) and (p==0):
+        p=dia[int(Access[i][a][0])][int(Access[i][a][1])][int(Access[i][a][2])][int(Access[i][a][3])]
+        a+=1
+    return a,p
+def B_check(i,bar_check,p):
+    if Access[i][0] and (i!=6 and i!=2) and (p==0) and Access[i][0] not in bar_check:
+        p=dia[int(Access[i][0][0])][int(Access[i][0][1])][int(Access[i][0][2])][int(Access[i][0][3])]
+        bar_check.append(Access[i][0])
+    return bar_check,p
+
+for i in column_name:
+    a=len(df[i].unique())
+    if a<=15 :
+        if i in alpha_columns:
+            X_Qualitative.append(i)
+        elif i in numerical_columns:
+            X_Quantitative.append(i)
+        elif i in date_columns:
+            X_Time.append(i)
 
 # Bar charts>>>
 j=0
@@ -589,7 +604,6 @@ for col_index, col_name in enumerate(X_Qualitative):
 j=0
 k=0
 
-
 for col_index, col_name in enumerate(X_Quantitative):
     unique_vals = df[col_name].unique()
     if len(unique_vals) < 3:
@@ -617,8 +631,6 @@ for col_index, col_name in enumerate(X_Quantitative):
             N_single[j][i].append(fig)
             i=i+1
         j=j+1
-
-
     else:
         N_mix.append([])
         si=0
@@ -879,16 +891,6 @@ print("Total graphs displayed:",count)
 # #         )
 # #         fig_roll.show()
 
-p1=0
-p2=0
-p3=0
-p4=0
-
-def check(i,a,p):
-    if Access[i][a] and (i!=6 and i!=2) and (p==0):
-        p=dia[int(Access[i][a][0])][int(Access[i][a][1])][int(Access[i][a][2])][int(Access[i][a][3])]
-        a+=1
-    return a,p
 
 pc=2
 for i in range(len(Access[pc])):
@@ -948,17 +950,16 @@ for i in range(len(Access)):
             a=0
     except IndexError:
         continue
-             
-            
 
-
-print(p1,p2,p3,p4)
-
-# p1=dia[2][0][0][0]
-# p2=dia[2][1][0][0]
-# p3=dia[2][2][0][0]
-# p4=dia[2][3][0][0]
-# print(Access)
+for i in range(len(Access)):
+    try:
+        bar_check,sidechart=B_check(i,bar_check,sidechart)
+        bar_check,chart1=B_check(i,bar_check,chart1)
+        bar_check,chart2=B_check(i,bar_check,chart2)
+        if chart1!=0 and chart2!=0 and sidechart!=0 :
+            break
+    except IndexError:
+        continue
 
 @app.get("/p1plot")
 def p1_plot():
@@ -976,65 +977,39 @@ def p3_plot():
 def p4_plot():
     fig_json = p4.to_plotly_json()   # <--- KEY STEP
     return JSONResponse(content=fig_json)
-
-sidechart=dia[3][0][0][0]
-
 @app.get("/sideplot")
 def side_plot():
     fig_json = sidechart.to_plotly_json()   # <--- KEY STEP
     return JSONResponse(content=fig_json)
-
-chart1=dia[3][0][1][0]
-
 @app.get("/chart1plot")
 def chart1_plot():
     fig_json = chart1.to_plotly_json()   # <--- KEY STEP
     return JSONResponse(content=fig_json)
-
-chart2=dia[3][0][2][0]
-print(chart2)
 @app.get("/chart2plot")
 def chart2_plot():
     fig_json = chart2.to_plotly_json()   # <--- KEY STEP
     return JSONResponse(content=fig_json)
 
-# a=df[numerical_columns[0]].sum()
-# b=df[numerical_columns[1]].sum()
-# c=df[numerical_columns[2]].sum()
-# d=df[numerical_columns[3]].sum()
-a=1
-b=2
-c=3
-d=4
-# print(Access)
+a=df[numerical_columns[0]].sum()
+b=df[numerical_columns[1]].sum()
+c=df[numerical_columns[2]].sum()
+d=df[numerical_columns[3]].sum()
+# a=1
+# b=2
+# c=3
+# d=4
 
 @app.get("/process")
 def process_data():
     
-    return {
-    "onename":"a",
-    "one":int(a),
-    "twoname": "b",
-    "two": int(b),
-    "threename": "c",
-    "three":int(c) ,
-    "fourname":"d",
-    "four": int(d),
-    "five": 123,
-    "six": 456,
-    "seven":789,
-    "eight": 101112,
-    "summary": summary,
-    }
-
     # return {
-    # "onename":numerical_columns[0],
+    # "onename":"a",
     # "one":int(a),
-    # "twoname": numerical_columns[1],
+    # "twoname": "b",
     # "two": int(b),
-    # "threename": numerical_columns[2],
+    # "threename": "c",
     # "three":int(c) ,
-    # "fourname": numerical_columns[3],
+    # "fourname":"d",
     # "four": int(d),
     # "five": 123,
     # "six": 456,
@@ -1042,3 +1017,19 @@ def process_data():
     # "eight": 101112,
     # "summary": summary,
     # }
+
+    return {
+    "onename":numerical_columns[0],
+    "one":int(a),
+    "twoname": numerical_columns[1],
+    "two": int(b),
+    "threename": numerical_columns[2],
+    "three":int(c) ,
+    "fourname": numerical_columns[3],
+    "four": int(d),
+    "five": 123,
+    "six": 456,
+    "seven":789,
+    "eight": 101112,
+    "summary": summary,
+    }
