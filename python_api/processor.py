@@ -758,11 +758,6 @@ for i in X_Qualitative:
             hole=0.4,
             hovertemplate="<b>%{label}</b><br>Value: %{value}<extra></extra>"
         ))
-
-        # fig.update_layout(
-        #     title=f"Distribution of {l} by {i}",
-        #     legend_title=i
-        # )
         P_mix[j].append([])
         P_mix[j][si].append(fig)
         si=si+1
