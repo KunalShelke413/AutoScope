@@ -527,6 +527,7 @@ dia=[single,N_single,P_single,mix,N_mix,L_mix,P_mix]
 Dia_ID=[]
 Access=[]
 bar_check=[]
+u4=[]
 def check(i,a,bar_check,p):
     if Access[i][a] and (i!=6 and i!=2) and (p==0):
         p=dia[int(Access[i][a][0])][int(Access[i][a][1])][int(Access[i][a][2])][int(Access[i][a][3])]
@@ -538,6 +539,30 @@ def B_check(i,bar_check,p):
         p=dia[int(Access[i][0][0])][int(Access[i][0][1])][int(Access[i][0][2])][int(Access[i][0][3])]
         bar_check.append(Access[i][0])
     return bar_check,p
+def four(column,u4,a,b,c,d,A,B,C,D):
+    for i in column:
+        check=len(df[i].unique())
+        if check>1 and check<5:
+            new=df[i].value_counts()
+            for i in len(new):
+                if new.index[i] not in u4:
+                    if a==0:
+                        a=new.values[i]
+                        u4.append(a)
+                        A=new.index[i]
+                    elif b==0:
+                        b=new.values[i]
+                        u4.append(b)
+                        B=new.index[i]
+                    elif c==0:
+                        c=new.values[i]
+                        u4.append(c)
+                        C=new.index[i]
+                    elif d==0:
+                        d=new.values[i]
+                        u4.append[d]
+                        D=new.index[i]
+    return u4,a,b,c,d,A,B,C,D
 
 for i in column_name:
     a=len(df[i].unique())
@@ -575,6 +600,7 @@ for col_index, col_name in enumerate(X_Qualitative):
                 xaxis_title="Numerical Columns",
                 yaxis_title="Sum",
                 hoverlabel=dict(bgcolor="white"),
+                margin=dict(t=30, b=10, l=10, r=10)
             )
             single[j].append([])
             single[j][i].append(fig)
@@ -600,7 +626,8 @@ for col_index, col_name in enumerate(X_Qualitative):
             fig.update_layout(
                 title=f"{num_col} by {col_name}",
                 xaxis_title=col_name,
-                yaxis_title=num_col
+                yaxis_title=num_col,
+                margin=dict(t=30, b=10, l=10, r=10)
             )
             mix[k].append([])
             mix[k][si].append(fig)
@@ -631,7 +658,8 @@ for col_index, col_name in enumerate(X_Quantitative):
                 title=f"{category} summary for column {col_name}",
                 xaxis_title="Numerical Columns",
                 yaxis_title="Sum",
-                hoverlabel=dict(bgcolor="white")
+                hoverlabel=dict(bgcolor="white"),
+                margin=dict(t=30, b=10, l=10, r=10)
             )
             N_single[j].append([])
             N_single[j][i].append(fig)
@@ -657,7 +685,8 @@ for col_index, col_name in enumerate(X_Quantitative):
             fig.update_layout(
                 title=f"{num_col} by {col_name}",
                 xaxis_title=col_name,
-                yaxis_title=num_col
+                yaxis_title=num_col,
+                margin=dict(t=30, b=10, l=10, r=10)
             )
             N_mix[k].append([])
             N_mix[k][si].append(fig)
@@ -686,7 +715,8 @@ for col_index, col_name in enumerate(location_columns):
         fig.update_layout(
             title=f"{num_col} by {col_name}",
             xaxis_title=col_name,
-            yaxis_title=num_col
+            yaxis_title=num_col,
+            margin=dict(t=30, b=10, l=10, r=10)
         )
         L_mix[j].append([])
         L_mix[j][si].append(fig)
@@ -709,7 +739,8 @@ for col_index, col_name in enumerate(location_columns):
 #                 fig.update_layout(
 #                     title=f"{num_col} by {col_name}",
 #                     xaxis_title=col_name,
-#                     yaxis_title=num_col
+#                     yaxis_title=num_col,
+                      # margin=dict(t=30, b=10, l=10, r=10)
 #                 )
 #                 fig.show()
 # <-------------------------------------------------------------------------------->
@@ -719,13 +750,14 @@ j=0
 
 for i in column_name:
     si=0
-    if len(df[i].unique()) <= 8:
+    if len(df[i].unique()) <= 8 and len(df[i].unique())>1:
         P_single.append([])
         counts = df[i].value_counts()
         fig = go.Figure()
+        # labels = counts.index
         labels = counts.index.astype("category").codes
         labels = labels.astype("int16")
-        values = counts.values.astype("int16")
+        values = counts.values.astype("int")
         fig.add_trace(go.Pie(
             labels=labels,
             values=values,
@@ -734,6 +766,7 @@ for i in column_name:
         ))
         fig.update_layout(
             title=f"Distribution of {i}",
+            title_font=dict(size=13),
             # legend_title="Categories",
             margin=dict(t=30, b=10, l=10, r=10)
         )
@@ -751,13 +784,19 @@ for i in X_Qualitative:
         fig = go.Figure()
         labels = grouped.index.astype("category").codes
         labels = labels.astype("int16")
-        values = grouped.values.astype("int16")
+        values = grouped.values.astype("int")
         fig.add_trace(go.Pie(
             labels=labels,
             values=values,
             hole=0.4,
             hovertemplate="<b>%{label}</b><br>Value: %{value}<extra></extra>"
         ))
+        fig.update_layout(
+           title=f"Distribution of {l} by {i}",
+          #  legend_title=i,
+           title_font=dict(size=13),
+           margin=dict(t=30, b=10, l=10, r=10)
+        )
         P_mix[j].append([])
         P_mix[j][si].append(fig)
         si=si+1
@@ -983,6 +1022,39 @@ if sidechart==0 or chart1==0 or chart2==0:
                 chart1=dia[int(i[0])][int(i[1])][int(i[2])][int(i[3])]
             elif chart2==0:
                 chart2=dia[int(i[0])][int(i[1])][int(i[2])][int(i[3])]
+            
+a=0
+b=0
+c=0
+d=0
+A=0
+B=0
+C=0
+D=0
+
+try:
+    for i in numerical_columns:
+        if df[i].sum() not in u4 and a==0:
+            a=df[i].sum()
+            u4.append(a)
+            A="Total "+i
+        elif df[i].sum() not in u4 and b==0:
+            b=df[i].sum()
+            u4.append(b)
+            B="Total "+i
+        elif df[i].sum() not in u4 and c==0:
+            c=df[i].sum()
+            u4.append(c)
+            C="Total "+i
+        elif df[i].sum() not in u4:
+            d=df[i].sum()
+            u4.append(d)
+            D="Total "+i
+except:
+    try:
+        u4,a,b,c,d,A,B,C,D=four(alpha_columns,u4,a,b,c,d,A,B,C,D)
+    except:
+        u4,a,b,c,d,A,B,C,D=four(location_columns,u4,a,b,c,d,A,B,C,D)
 
 @app.get("/p1plot")
 def p1_plot():
@@ -1013,32 +1085,28 @@ def chart2_plot():
     fig_json = chart2.to_plotly_json()   # <--- KEY STEP
     return JSONResponse(content=fig_json)
 
-# a=df[numerical_columns[0]].sum()
-# b=df[numerical_columns[1]].sum()
-# c=df[numerical_columns[2]].sum()
-# d=df[numerical_columns[3]].sum()
-a=1
-b=2
-c=3
-d=4
+# # a=df[numerical_columns[0]].sum()
+# # b=df[numerical_columns[1]].sum()
+# # c=df[numerical_columns[2]].sum()
+# # d=df[numerical_columns[3]].sum()
+# a=1
+# b=2
+# c=3
+# d=4
 
 @app.get("/process")
 def process_data():
     
     return {
-    "onename":"a",
-    "one":int(a),
-    "twoname": "b",
-    "two": int(b),
-    "threename": "c",
-    "three":int(c) ,
-    "fourname":"d",
-    "four": int(d),
-    "five": 123,
-    "six": 456,
-    "seven":789,
-    "eight": 101112,
-    "summary": summary,
+    "onename":A,
+    "one":a,
+    "twoname": B,
+    "two": b,
+    "threename": C,
+    "three":c ,
+    "fourname":D,
+    "four": d,
+    "summary": "summary"
     }
 
     # return {
