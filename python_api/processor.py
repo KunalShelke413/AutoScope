@@ -2,17 +2,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from storage import get_data
-import glob
-import json
 import pandas as pd
 import numpy as np
 import re
-import random
 import os
 import plotly.graph_objects as go
-import time
-import sys
-import requests
 
 
 app = FastAPI()
