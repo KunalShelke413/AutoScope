@@ -1078,7 +1078,14 @@ def chart1_plot():
 def chart2_plot():
     fig_json = chart2.to_plotly_json()   # <--- KEY STEP
     return JSONResponse(content=fig_json)
-
+@app.get("/alpdes")
+def get_alpdes():
+    alpdes = df.describe(include="object")
+    return alpdes.to_dict()
+@app.get("/numdes")
+def get_numdes():
+    numdes = df.describe()
+    return numdes.to_dict()
 # # a=df[numerical_columns[0]].sum()
 # # b=df[numerical_columns[1]].sum()
 # # c=df[numerical_columns[2]].sum()

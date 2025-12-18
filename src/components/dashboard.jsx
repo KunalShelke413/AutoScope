@@ -3,78 +3,60 @@ import './dashboard.css';
 import Plot from "react-plotly.js";
 
 const Dashboard = () => {
-
+  /* -------------------- STATES -------------------- */
   const [data, setData] = useState(null);
 
+  const [pc1, setPc1] = useState(null);
+  const [pc2, setPc2] = useState(null);
+  const [pc3, setPc3] = useState(null);
+  const [pc4, setPc4] = useState(null);
+
+  const [sidec, setSidec] = useState(null);
+  const [c1, setC1] = useState(null);
+  const [c2, setC2] = useState(null);
+
+  const [des, setDes] = useState(null);   // categorical summary
+  const [ndes, setNdes] = useState(null); // numerical summary
+
+  /* -------------------- FETCHES -------------------- */
   useEffect(() => {
-    fetch("http://localhost:8000/process")   // your API
+    fetch("http://localhost:8000/process")
       .then(res => res.json())
-      .then(result => setData(result))
-      .catch(err => console.error("Error:", err));
+      .then(setData)
+      .catch(console.error);
   }, []);
 
-  const [pc1, Plt1] = useState(null);
-
   useEffect(() => {
-    fetch("http://localhost:8000/p1plot")   // your API
-      .then(res => res.json())
-      .then(data => Plt1(data))
-      .catch(err => console.error(err));
+    fetch("http://localhost:8000/p1plot").then(r => r.json()).then(setPc1);
+    fetch("http://localhost:8000/p2plot").then(r => r.json()).then(setPc2);
+    fetch("http://localhost:8000/p3plot").then(r => r.json()).then(setPc3);
+    fetch("http://localhost:8000/p4plot").then(r => r.json()).then(setPc4);
   }, []);
 
-  const [pc2, Plt2] = useState(null);
-
   useEffect(() => {
-    fetch("http://localhost:8000/p2plot")   // your API
-      .then(res => res.json())
-      .then(data => Plt2(data))
-      .catch(err => console.error(err));
+    fetch("http://localhost:8000/sideplot").then(r => r.json()).then(setSidec);
+    fetch("http://localhost:8000/chart1plot").then(r => r.json()).then(setC1);
+    fetch("http://localhost:8000/chart2plot").then(r => r.json()).then(setC2);
   }, []);
 
-  const [pc3, Plt3] = useState(null);
-
   useEffect(() => {
-    fetch("http://localhost:8000/p3plot")   // your API
-      .then(res => res.json())
-      .then(data => Plt3(data))
-      .catch(err => console.error(err));
+    fetch("http://localhost:8000/alpdes").then(r => r.json()).then(setDes);
+    fetch("http://localhost:8000/numdes").then(r => r.json()).then(setNdes);
   }, []);
 
-const [pc4, Plt4] = useState(null);
+  /* -------------------- LOADING -------------------- */
+  if (!des || !ndes) {
+    return <p style={{ padding: "20px" }}>Loading dashboard...</p>;
+  }
 
-  useEffect(() => {
-    fetch("http://localhost:8000/p4plot")   // your API
-      .then(res => res.json())
-      .then(data => Plt4(data))
-      .catch(err => console.error(err));
-  }, []);
+  /* -------------------- DYNAMIC TABLE DATA -------------------- */
+  const catColumns = Object.keys(des);
+  const catRows = Object.keys(des[catColumns[0]]);
 
-  const [sidec, PlotData] = useState(null);
+  const numColumns = Object.keys(ndes);
+  const numRows = Object.keys(ndes[numColumns[0]]);
 
-  useEffect(() => {
-    fetch("http://localhost:8000/sideplot")   // your API
-      .then(res => res.json())
-      .then(data => PlotData(data))
-      .catch(err => console.error(err));
-  }, []);
 
-  const [c1, PlotData1] = useState(null);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/chart1plot")   // your API
-      .then(res => res.json())
-      .then(data => PlotData1(data))
-      .catch(err => console.error(err));
-  }, []);
-
-  const [c2, PlotData2] = useState(null);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/chart2plot")   // your API
-      .then(res => res.json())
-      .then(data => PlotData2(data))
-      .catch(err => console.error(err));
-  }, []);
   return (
     <div className="dmain">
       <div className="dcont">
@@ -189,10 +171,54 @@ const [pc4, Plt4] = useState(null);
       </div>
       <div className="info">
         <div className="alpha">
-          <div>s</div>
+          <div className="title_name">Categorical Columns</div>
+          <div style={{ maxHeight: "300px", overflow: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead style={{ position: "sticky", top: 0, background: "#f5f5f5" }}>
+                <tr>
+                  <th style={thStyle}>Metric</th>
+                  {catColumns.map(col => (
+                    <th key={col} style={thStyle}>{col}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {catRows.map(row => (
+                  <tr key={row}>
+                    <td style={tdStyle}><b>{row}</b></td>
+                    {catColumns.map(col => (
+                      <td key={col} style={tdStyle}>{des[col][row] ?? "-"}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
         <div className="numb">
-          <div>s</div>
+          <div className="title_name">Numerical Columns</div>
+          <div style={{ maxHeight: "300px", overflow: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse" }}>
+              <thead style={{ position: "sticky", top: 0, background: "#f5f5f5" }}>
+                <tr>
+                  <th style={thStyle}>Metric</th>
+                  {numColumns.map(col => (
+                    <th key={col} style={thStyle}>{col}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {numRows.map(row => (
+                  <tr key={row}>
+                    <td style={tdStyle}><b>{row}</b></td>
+                    {numColumns.map(col => (
+                      <td key={col} style={tdStyle}>{ndes[col][row] ?? "-"}</td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       {/* <div className="summary">
@@ -200,6 +226,18 @@ const [pc4, Plt4] = useState(null);
       </div> */}
     </div>
   );
+};
+
+const thStyle = {
+  border: "1px solid gray",
+  padding: "6px",
+  fontWeight: "bold"
+};
+
+const tdStyle = {
+  border: "1px solid gray",
+  padding: "6px",
+  fontSize: "13px"
 };
 
 export default Dashboard;

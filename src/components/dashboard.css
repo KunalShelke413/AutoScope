@@ -10,6 +10,8 @@ body {
 .dmain {
     height: 100vh;
     margin: 0% 0.1%;
+    overflow-y: auto;
+    scrollbar-width: none;
     /* position: relative;
     top: 0%;
     left: 1px; */
