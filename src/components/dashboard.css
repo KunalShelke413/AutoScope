@@ -81,3 +81,20 @@ body {
     margin-left: 2px;
     width: 100%;
 }
+
+.info{
+    height: 100vh;
+    width: 100%;
+    display: grid;
+    grid-template-rows: 0.5fr 1.5fr;
+}
+.alpha{
+    height: 40vh;
+    width: 100%;
+    border: solid 1px gray;
+}
+.numb{
+    height: 60vh;
+    width: 100%;
+    border: solid 1px gray;
+}

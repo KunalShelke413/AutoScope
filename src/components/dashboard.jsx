@@ -187,10 +187,17 @@ const [pc4, Plt4] = useState(null);
             )}
         </div>
       </div>
-
-      <div className="summary">
-        {data ? data.summary : "change me"}
+      <div className="info">
+        <div className="alpha">
+          <div>s</div>
+        </div>
+        <div className="numb">
+          <div>s</div>
+        </div>
       </div>
+      {/* <div className="summary">
+        {data ? data.summary : "change me"}
+      </div> */}
     </div>
   );
 };
