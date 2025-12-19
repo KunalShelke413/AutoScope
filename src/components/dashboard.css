@@ -111,7 +111,6 @@ body {
     height: max-content;
     margin-top: 5px;
     display: grid;
-    grid-template-rows: 0.1fr 0.9;
 }
 .col_and_grp{
     display: grid;

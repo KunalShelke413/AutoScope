@@ -1050,6 +1050,11 @@ except:
     except:
         u4,a,b,c,d,A,B,C,D=four(location_columns,u4,a,b,c,d,A,B,C,D)
 
+print(A,a)
+print(B,b)
+print(C,c)
+print(D,d)
+
 @app.get("/p1plot")
 def p1_plot():
     fig_json = p1.to_plotly_json()   # <--- KEY STEP
@@ -1094,19 +1099,18 @@ def get_numdes():
 # b=2
 # c=3
 # d=4
-
 @app.get("/process")
 def process_data():
     
     return {
-    "onename":A,
-    "one":a,
-    "twoname": B,
-    "two": b,
-    "threename": C,
-    "three":c ,
-    "fourname":D,
-    "four": d,
+    "onename":str(A),
+    "one":int(a),
+    "twoname": str(B),
+    "two": int(b),
+    "threename": str(C),
+    "three":int(c) ,
+    "fourname":str(D),
+    "four": int(d),
     "summary": "go",
     }
 
