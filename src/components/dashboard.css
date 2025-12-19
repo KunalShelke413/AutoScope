@@ -104,10 +104,14 @@ body {
     overflow-x: auto;
     scrollbar-width: none;
 }
+.summary_title{
+    margin-top: 5px;
+}
 .summary_graph{
+    height: max-content;
     margin-top: 5px;
     display: grid;
-    grid-template-rows: 0.5fr 1fr;
+    grid-template-rows: 0.1fr 0.9;
 }
 .col_and_grp{
     display: grid;
@@ -115,7 +119,7 @@ body {
 }
 .df_grp_box{
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 0.05fr 1fr;
 }
 .df_colname{
     background-color: aliceblue;
@@ -125,12 +129,28 @@ body {
 .df_summary{
     background-color: aliceblue;
     color: black;
-    border: solid 1px black;   
+    border: solid 1px black;  
+    height: 80vh; 
 }
 .grp_type{
     background-color: aliceblue;
     color: black;
-    border: solid 1px black;  
+    border: solid 1px black;
+}
+.grp_type ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+}
+.grp_type ul li{
+    color: black;
+    border: solid 1px gray;
+    margin: 1px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    cursor: pointer;
 }
 .df_grp{
     background-color: aliceblue;

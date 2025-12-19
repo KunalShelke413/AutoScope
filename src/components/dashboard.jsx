@@ -220,20 +220,35 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <div className="summary_title"><p>Describe columns and Grap based on columns:</p></div>
       <div className="summary_graph">
         <div className="df_colname">column name</div>
         <div className="col_and_grp">
           <div className="df_summary">about graph</div>
           <div className="df_grp_box">
-            <div className="grp_type">line,bar,pie</div>
+            <div className="grp_type">
+                <ul>
+                  <li>Bar chart</li>
+                  <li>Line chart</li>
+                  <li>Pie chart</li>
+                  <li>Heat map</li>
+                  <li>Histogram chart</li>
+                  <li>Scatter plot</li>
+                  <li>Box plot</li>
+                  <li>Area chart</li>
+                  <li>Bubble chart</li>
+                  <li>Tree map</li>
+                </ul>
+            </div>
             <div className="df_grp">grp</div>
           </div>
         </div>
       </div>
 
-      {/* <div className="summary">
-        {data ? data.summary : "change me"}
-      </div> */}
+      
+      <div className="summary">
+        {data ? data.summary : "summary"}
+      </div>
     </div>
   );
 };
@@ -248,7 +263,6 @@ const tdStyle = {
   border: "1px solid gray",
   padding: "6px",
   fontSize: "13px"
-  
 };
 
 export default Dashboard;
