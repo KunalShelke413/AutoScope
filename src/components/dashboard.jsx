@@ -144,7 +144,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-
       <div className="dlower">
         <div id="chart1" className="dchart">
           {/* {data ? data.chart1name : "fst"}
@@ -172,9 +171,9 @@ const Dashboard = () => {
       <div className="info">
         <div className="alpha">
           <div className="title_name">Categorical Columns</div>
-          <div style={{ maxHeight: "300px", overflow: "auto" }}>
+          <div >
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead style={{ position: "sticky", top: 0, background: "#f5f5f5" }}>
+              <thead style={{ position: "sticky", top: 0, background: "red" }}>
                 <tr>
                   <th style={thStyle}>Metric</th>
                   {catColumns.map(col => (
@@ -197,9 +196,9 @@ const Dashboard = () => {
         </div>
         <div className="numb">
           <div className="title_name">Numerical Columns</div>
-          <div style={{ maxHeight: "300px", overflow: "auto" }}>
+          <div>
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
-              <thead style={{ position: "sticky", top: 0, background: "#f5f5f5" }}>
+              <thead style={{ position: "sticky", top: 0, background: "red" }}>
                 <tr>
                   <th style={thStyle}>Metric</th>
                   {numColumns.map(col => (
@@ -221,6 +220,17 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+      <div className="summary_graph">
+        <div className="df_colname">column name</div>
+        <div className="col_and_grp">
+          <div className="df_summary">about graph</div>
+          <div className="df_grp_box">
+            <div className="grp_type">line,bar,pie</div>
+            <div className="df_grp">grp</div>
+          </div>
+        </div>
+      </div>
+
       {/* <div className="summary">
         {data ? data.summary : "change me"}
       </div> */}
@@ -230,7 +240,7 @@ const Dashboard = () => {
 
 const thStyle = {
   border: "1px solid gray",
-  padding: "6px",
+  padding: "5px",
   fontWeight: "bold"
 };
 
@@ -238,6 +248,7 @@ const tdStyle = {
   border: "1px solid gray",
   padding: "6px",
   fontSize: "13px"
+  
 };
 
 export default Dashboard;

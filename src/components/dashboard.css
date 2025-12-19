@@ -85,18 +85,55 @@ body {
 }
 
 .info{
-    height: 100vh;
+    height: max-content;
     width: 100%;
     display: grid;
-    grid-template-rows: 0.5fr 1.5fr;
+    grid-template-rows: 0.6fr 1fr;
 }
 .alpha{
-    height: 40vh;
+    height: 100%;
     width: 100%;
     border: solid 1px gray;
+    overflow-x: auto;
+    scrollbar-width: none;
 }
 .numb{
-    height: 60vh;
+    height: 100%;
     width: 100%;
     border: solid 1px gray;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.summary_graph{
+    margin-top: 5px;
+    display: grid;
+    grid-template-rows: 0.5fr 1fr;
+}
+.col_and_grp{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.df_grp_box{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+.df_colname{
+    background-color: aliceblue;
+    color: black;
+    border: solid 1px black;
+}
+.df_summary{
+    background-color: aliceblue;
+    color: black;
+    border: solid 1px black;   
+}
+.grp_type{
+    background-color: aliceblue;
+    color: black;
+    border: solid 1px black;  
+}
+.df_grp{
+    background-color: aliceblue;
+    color: black;
+    border: solid 1px black;  
 }
