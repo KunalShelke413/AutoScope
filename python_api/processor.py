@@ -1113,19 +1113,3 @@ def process_data():
     "four": int(d),
     "summary": "go",
     }
-
-    # return {
-    # "onename":numerical_columns[0],
-    # "one":int(a),
-    # "twoname": numerical_columns[1],
-    # "two": int(b),
-    # "threename": numerical_columns[2],
-    # "three":int(c) ,
-    # "fourname": numerical_columns[3],
-    # "four": int(d),
-    # "five": 123,
-    # "six": 456,
-    # "seven":789,
-    # "eight": 101112,
-    # "summary": summary,
-    # }
