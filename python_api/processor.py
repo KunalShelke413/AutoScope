@@ -1154,10 +1154,14 @@ def chart2_plot():
 @app.get("/alpdes")
 def get_alpdes():
     alpdes = df.describe(include="object")
+    alpdes = alpdes.replace([np.inf, -np.inf], None)
+    alpdes = alpdes.where(alpdes.notna(), None)
     return alpdes.to_dict()
 @app.get("/numdes")
 def get_numdes():
     numdes = df.describe()
+    numdes = numdes.replace([np.inf, -np.inf], None)
+    numdes = numdes.where(numdes.notna(), None)
     return numdes.to_dict()
 # # a=df[numerical_columns[0]].sum()
 # # b=df[numerical_columns[1]].sum()
