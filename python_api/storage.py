@@ -130,5 +130,33 @@ SUM_COLUMNS = [
     "electricity_units", "water_usage", "data_usage"
 ]
 
+COUNT_COLUMNS= [
+    "quantity", "qty", "count", "number", "no", "items", "units",
+    "records", "entries", "cases", "instances", "samples",
+    "observations",
+
+    "form", "submission", "response", "application", "request",
+    "complaint", "feedback",
+
+    "signup", "registration", "login", "logout", "activity",
+    "action", "interaction", "event",
+
+    "page_view", "impression", "hit", "visit", "session",
+    "bounce", "conversion", "lead",
+
+    "error", "warning", "failure", "crash", "alert", "incident",
+    "issue", "ticket",
+
+    "attendance", "enrollment", "exam", "test", "attempt",
+
+    "appointment", "diagnosis", "procedure", "followup",
+
+    "cart", "order_count", "product_view", "wishlist",
+    "return", "shipment", "delivery",
+
+    "status", "flag", "label", "tag", "type", "category"
+]
+
+
 def get_data():
-    return character_columns, time_columns, location_terms, Numerical_columns, Contact, SUM_COLUMNS
+    return character_columns, time_columns, location_terms, Numerical_columns, Contact, SUM_COLUMNS, COUNT_COLUMNS
