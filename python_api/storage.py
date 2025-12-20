@@ -109,5 +109,26 @@ Contact = ["phone","phone_number","mobile","mobile_number","contact","contact_nu
            "contact_no","tel_no","primary_phone","secondary_phone","work_phone","home_phone",
            "office_phone","personal_phone","emergency_contact_number"] 
 
+SUM_COLUMNS = [
+    "amount", "total_amount", "price", "unit_price", "cost", "total_cost",
+    "revenue", "sales", "net_sales", "gross_sales", "income", "profit",
+    "loss", "expense", "expenses", "billing_amount", "invoice_amount",
+    "payment", "paid_amount", "balance", "tax", "gst", "vat", "discount",
+
+    "order_value", "order_amount", "purchase_amount", "sale_amount",
+    "transaction_amount", "transaction_value", "cart_value", "subtotal",
+    "grand_total",
+
+    "weight", "total_weight", "volume", "total_volume", "area",
+    "distance", "total_distance",
+
+    "score", "total_score", "marks", "total_marks", "points", "total_points",
+
+    "time_spent", "duration", "total_time", "hours", "minutes", "seconds",
+
+    "units_consumed", "power_consumption", "fuel_consumption",
+    "electricity_units", "water_usage", "data_usage"
+]
+
 def get_data():
-    return character_columns, time_columns, location_terms, Numerical_columns, Contact
+    return character_columns, time_columns, location_terms, Numerical_columns, Contact, SUM_COLUMNS

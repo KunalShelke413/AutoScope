@@ -20,7 +20,7 @@ app.add_middleware(
 last_file = "../backend/uploads/data.csv"
 ext = os.path.splitext(last_file)[1]
 
-character_columns, time_columns, location_terms, Numerical_columns, Contact= get_data()
+character_columns, time_columns, location_terms, Numerical_columns, Contact, SUM_COLUMNS= get_data()
 
 if ext==".csv":
    df=pd.read_csv(last_file,encoding='unicode_escape')
@@ -474,16 +474,35 @@ for i in alpha_columns:
 df.drop_duplicates(inplace=True)
 shape=list(df.shape)
 
-for i in alpha_columns:
-    df[i]=df[i].str.lower()
-    val=df.loc[0,i]
-    if (val=="yes") or (val=="no") or (val=="y") or (val=="n"):
-        df[i]=df[i].replace({"yes":"Yes","no":"No","y":"Yes","n":"No"})
-    elif (val=="true") or (val=="false"):
-        df[i]=df[i].replace({"true":"True","false":"False"})
-    elif (val=="m") or (val=="f"):
-        df[i].replace({"m":"Male","f":"Female"},inplace=True)
-    df[i]=df[i].str.title()
+for i in numerical_columns:
+    unique_vals=set(df[i].dropna().unique())
+    if unique_vals.issubset({1,0}):
+        SUM_COLUMNS.append(i)
+
+for col in alpha_columns:
+    df[col] = df[col].astype(str).str.lower().str.strip()
+    unique_vals = set(df[col].dropna().unique())
+    if unique_vals.issubset({"yes", "no", "y", "n"}):
+        df[col] = df[col].replace(
+            {"yes": 1, "no": 0, "y": 1, "n": 0}
+        )
+        df[col] = pd.to_numeric(df[col], errors="coerce")
+        numerical_columns.append(col)
+        SUM_COLUMNS.append(col)
+    elif unique_vals.issubset({"true", "false"}):
+        df[col] = df[col].replace(
+            {"true": 1, "false": 0}
+        )
+        df[col] = pd.to_numeric(df[col], errors="coerce")
+        numerical_columns.append(col)
+        SUM_COLUMNS.append(col)
+    elif unique_vals.issubset({"m", "f"}):
+        df[col] = df[col].replace(
+            {"m": "Male", "f": "Female"}
+        )
+    if col not in numerical_columns:
+        df[col] = df[col].str.title()
+alpha_columns = [c for c in alpha_columns if c not in numerical_columns]
 
 for i in alpha_columns:
     df[i]=df[i].fillna("Unknown")
@@ -577,6 +596,10 @@ for col_index, col_name in enumerate(X_Qualitative):
     if len(unique_vals) < 3 or len(unique_vals)>15:
         single.append([])
         grouped = df.groupby(col_name)[numerical_columns].sum()
+        # if numerical_columns in SUM_COLUMNS:
+        #     grouped = df.groupby(col_name)[numerical_columns].sum()
+        # else:
+        #     grouped = df.groupby(col_name)[numerical_columns].count()
         i=0
         for category in unique_vals:
             fig = go.Figure()
@@ -605,6 +628,10 @@ for col_index, col_name in enumerate(X_Qualitative):
         si=0
         for num_col in numerical_columns:
             grouped = df.groupby(col_name)[num_col].sum()
+            # if num_col in SUM_COLUMNS:
+            #     grouped = df.groupby(col_name)[num_col].sum()
+            # else:
+            #     grouped = df.groupby(col_name)[num_col].count()
             fig = go.Figure()
             x_vals = list(grouped.index)
             y_vals = grouped.values.tolist()
@@ -636,6 +663,10 @@ for col_index, col_name in enumerate(X_Quantitative):
     if len(unique_vals) < 3:
         N_single.append([])
         grouped = df.groupby(col_name)[numerical_columns].sum()
+        # if numerical_columns in SUM_COLUMNS:
+        #     grouped = df.groupby(col_name)[numerical_columns].sum()
+        # else:
+        #     grouped = df.groupby(col_name)[numerical_columns].count()
         i=0
         for category in unique_vals:
             fig = go.Figure()
@@ -664,6 +695,10 @@ for col_index, col_name in enumerate(X_Quantitative):
         si=0
         for num_col in numerical_columns:
             grouped = df.groupby(col_name)[num_col].sum()
+            # if num_col in SUM_COLUMNS:
+            #     grouped = df.groupby(col_name)[num_col].sum()
+            # else:
+            #     grouped = df.groupby(col_name)[num_col].count()
             x_vals = list(grouped.index)
             y_vals = grouped.values.tolist()
             fig = go.Figure()
@@ -693,7 +728,12 @@ for col_index, col_name in enumerate(location_columns):
     L_mix.append([])
     si=0
     for num_col in numerical_columns:
+        
         grouped = df.groupby(col_name)[num_col].sum()
+        # if num_col in SUM_COLUMNS:
+        #     grouped = df.groupby(col_name)[num_col].sum()
+        # else:
+        #     grouped = df.groupby(col_name)[num_col].count()
         x_vals = list(grouped.index)
         y_vals = grouped.values.tolist()
         fig = go.Figure()
@@ -719,7 +759,10 @@ for col_index, col_name in enumerate(location_columns):
 
 # for col_index, col_name in enumerate(X_Time):
 #     for num_col in numerical_columns:
-#                 grouped = df.groupby(col_name)[num_col].sum()
+#                 if num_col in SUM_COLUMNS:
+#                     grouped = df.groupby(col_name)[num_col].sum()
+#                 else:
+#                     grouped = df.groupby(col_name)[num_col].count()
 #                 fig = go.Figure()
 #                 fig.add_trace(go.Bar(
 #                     x=grouped.index,
@@ -734,7 +777,7 @@ for col_index, col_name in enumerate(location_columns):
 #                     title=f"{num_col} by {col_name}",
 #                     xaxis_title=col_name,
 #                     yaxis_title=num_col,
-                      # margin=dict(t=30, b=10, l=10, r=10)
+#                       margin=dict(t=30, b=10, l=10, r=10)
 #                 )
 #                 fig.show()
 # <-------------------------------------------------------------------------------->
@@ -812,9 +855,14 @@ for d in date_columns:
 # Bar Chart (Aggregated by Month/Year)
         df['year'] = df[d].dt.year
         df['month'] = df[d].dt.month
-
         monthly = df.groupby('month')[num_col].sum().reset_index()
         yearly = df.groupby('year')[num_col].sum().reset_index()
+        # if num_col in SUM_COLUMNS:
+        #     monthly = df.groupby('month')[num_col].sum().reset_index()
+        #     yearly = df.groupby('year')[num_col].sum().reset_index()
+        # else:
+        #     monthly = df.groupby('month')[num_col].count().reset_index()
+        #     yearly = df.groupby('year')[num_col].count().reset_index()
 
 i=-1
 for all in dia:
