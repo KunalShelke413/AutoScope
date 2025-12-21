@@ -115,7 +115,7 @@ SUM_COLUMNS = [
     "loss", "expense", "expenses", "billing_amount", "invoice_amount",
     "payment", "paid_amount", "balance", "tax", "gst", "vat", "discount",
 
-    "order_value", "order_amount", "purchase_amount", "sale_amount",
+    "order","orders","order_value", "order_amount", "purchase_amount", "sale_amount",
     "transaction_amount", "transaction_value", "cart_value", "subtotal",
     "grand_total",
 
@@ -131,7 +131,7 @@ SUM_COLUMNS = [
 ]
 
 COUNT_COLUMNS= [
-    "quantity", "qty", "count", "number", "no", "items", "units",
+    "quantity", "qty", "count", "number", "ordernumber","order_number", "items", "units",
     "records", "entries", "cases", "instances", "samples",
     "observations",
 

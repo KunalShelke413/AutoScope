@@ -8,9 +8,7 @@ import re
 import os
 import plotly.graph_objects as go
 
-
 app = FastAPI()
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -29,6 +27,10 @@ elif ext==".xlsx" or ext==".xls":
 elif ext==".json":
    df=pd.read_json(last_file)
 
+# csv=["Breast_cancer_data.csv","Canada.csv","categories.csv","Chocolate Sales.csv","Diwali Sales Data.csv","employees.csv","full_order_details.csv","Most Runs - 2022.csv","order_details.csv","Practicle 7 tableau_project_dataset (1).csv","products.csv","remain.csv","sales_data_sample.csv","Sales_Data_Big.csv","Sample - Superstore.csv","student_performance_dataset.csv","superstore_sales.csv","suppliers.csv","test_sheet.csv","try.csv","x_y_axis_terms.csv","Sales_without_NaNs.csv"]
+# i=21
+# df=pd.read_csv(csv[i],encoding='unicode_escape')
+# print(csv[i])
 
 total_column_count=0
 total_row_count=0
@@ -73,7 +75,6 @@ alpha_columns=df.select_dtypes(include=['object','string']).columns.tolist()
 date_columns=df.select_dtypes(include=['datetime']).columns.tolist()
 
 #check date in numerical
-
 from os import replace
 for check_date in numerical_columns:
   check=check_date.translate(str.maketrans("_-/","   ")).split()
@@ -92,7 +93,6 @@ for r in date_columns:
     numerical_columns.remove(r)
 
 #check aplha column to dataset
-
 for j in alpha_columns:
   for i in character_columns:
     if j==i:
@@ -103,7 +103,6 @@ for j in alpha_columns:
     character_columns.append(j)
 
 #check date column from dataset
-
 for i in alpha_columns:
   for j in time_columns:
     if i==j:
@@ -115,7 +114,6 @@ for r in date_columns:
     alpha_columns.remove(r)
 
 #check numerical column from dataset
-
 for i in alpha_columns:
   for j in Numerical_columns:
     if i==j:
@@ -131,7 +129,6 @@ for r in numerical_columns:
     alpha_columns.remove(r)
 
 #numerical detector___________check later
-
 for i in alpha_columns:
     for j in Numerical_columns:
         pattern = (
@@ -164,7 +161,6 @@ for r in numerical_columns:
         alpha_columns.remove(r)
 
 #date time detector
-
 for i in alpha_columns:
     for j in time_columns:
         pattern = (
@@ -232,7 +228,6 @@ for new in new_cols:
     date_columns.append(new)
 
 # filter duplicate date columns
-
 r=[]
 for i in new_cols:
     for j in date_columns:
@@ -253,7 +248,6 @@ for i in r:
 column_name=df.columns
 
 #Location detector
-
 for i in location_terms:
   for j in range(len(location_terms[i])):
     for k in alpha_columns:
@@ -288,7 +282,6 @@ for rn in location_columns:
     numerical_columns.remove(rn)
 
 #non alphabetical pushed to numerical
-
 for i in alpha_columns:
   flag=0
   add=0
@@ -405,7 +398,6 @@ for r in numerical_columns:
     alpha_columns.remove(r)
 
 #non numerical pushed to alphabetical
-
 for i in numerical_columns:
   flag=0
   add=0
@@ -504,6 +496,21 @@ for col in alpha_columns:
         df[col] = df[col].str.title()
 alpha_columns = [c for c in alpha_columns if c not in numerical_columns]
 
+dct=0
+lct=0
+for i in alpha_columns:
+    check=df.loc[0,i]
+    for j in check:
+        if j.isdigit():
+           dct+=1
+        elif j=="-":
+            lct+=1
+    if dct+lct==len(check):
+        print(i)
+        COUNT_COLUMNS.append(i)
+    dct=0
+    lct=0
+
 for i in alpha_columns:
     df[i]=df[i].fillna("Unknown")
 for i in numerical_columns:
@@ -513,15 +520,6 @@ for i in location_columns:
 
 df = df.replace([np.inf, -np.inf], 0)
 df = df.where(pd.notnull(df), 0)
-
-print(df.describe())
-
-# for i in summary:
-#     print(f"{i}:-\n{eval(i)}\n")
-# for i in df.columns:
-#     print(f"{i}\n{df[i].describe()}\n")
-# print(df.head())
-# print(df.tail())
 
 sidechart=0
 chart1=0
@@ -639,6 +637,8 @@ for col_index, col_name in enumerate(X_Qualitative):
                 grouped = df.groupby(col_name)[num_col].sum()
             elif num_col in COUNT_COLUMNS:
                 grouped = df.groupby(col_name)[num_col].count()
+            elif col_name in COUNT_COLUMNS:
+                grouped = df.groupby(col_name)[num_col].count()
             else:
                 grouped = df.groupby(col_name)[num_col].sum()
             fig = go.Figure()
@@ -710,6 +710,8 @@ for col_index, col_name in enumerate(X_Quantitative):
                 grouped = df.groupby(col_name)[num_col].sum()
             elif num_col in COUNT_COLUMNS:
                 grouped = df.groupby(col_name)[num_col].count()
+            elif col_name in COUNT_COLUMNS:
+                grouped = df.groupby(col_name)[num_col].count()
             else:
                 grouped = df.groupby(col_name)[num_col].sum()
             x_vals = list(grouped.index)
@@ -745,7 +747,11 @@ for col_index, col_name in enumerate(location_columns):
         # grouped = df.groupby(col_name)[num_col].sum()
         if num_col in SUM_COLUMNS:
             grouped = df.groupby(col_name)[num_col].sum()
+        elif col_name in SUM_COLUMNS:
+            grouped = df.groupby(col_name)[num_col].sum()
         elif num_col in COUNT_COLUMNS:
+            grouped = df.groupby(col_name)[num_col].count()
+        elif col_name in COUNT_COLUMNS:
             grouped = df.groupby(col_name)[num_col].count()
         else:
             grouped = df.groupby(col_name)[num_col].sum()
@@ -1085,14 +1091,7 @@ if sidechart==0 or chart1==0 or chart2==0:
             elif chart2==0:
                 chart2=dia[int(i[0])][int(i[1])][int(i[2])][int(i[3])]
             
-a=0
-b=0
-c=0
-d=0
-A=0
-B=0
-C=0
-D=0
+a, b, c, d, A, B, C, D = 0, 0, 0, 0, 0, 0, 0, 0
 
 try:
     for i in numerical_columns:
@@ -1118,10 +1117,13 @@ except:
     except:
         u4,a,b,c,d,A,B,C,D=four(location_columns,u4,a,b,c,d,A,B,C,D)
 
-print(A,a)
-print(B,b)
-print(C,c)
-print(D,d)
+# print(p1)
+# print(p2)
+# print(p3)
+# print(p4)
+# print(sidechart)
+# print(chart1)
+# print(chart2)
 
 @app.get("/p1plot")
 def p1_plot():
@@ -1163,14 +1165,6 @@ def get_numdes():
     numdes = numdes.replace([np.inf, -np.inf], None)
     numdes = numdes.where(numdes.notna(), None)
     return numdes.to_dict()
-# # a=df[numerical_columns[0]].sum()
-# # b=df[numerical_columns[1]].sum()
-# # c=df[numerical_columns[2]].sum()
-# # d=df[numerical_columns[3]].sum()
-# a=1
-# b=2
-# c=3
-# d=4
 @app.get("/process")
 def process_data():
     
