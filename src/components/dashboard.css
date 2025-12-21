@@ -131,6 +131,37 @@ body {
     border: solid 1px black;  
     height: 80vh; 
 }
+.df_colname {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  padding: 5px;
+}
+
+.col-btn {
+  padding: 8px 12px;
+  border: 1px solid #333;
+  background: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+  color:black;
+}
+
+.col-btn.active {
+  background: black;
+  color: white;
+}
+
+.col-btn {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.col-btn:hover {
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+  transform: translateY(-2px);
+}
+
 .grp_type{
     background-color: aliceblue;
     color: black;

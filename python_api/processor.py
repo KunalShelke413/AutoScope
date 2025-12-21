@@ -590,6 +590,7 @@ for i in column_name:
         elif i in date_columns:
             X_Time.append(i)
 
+spec_col=[[],[],[],[],[],[],[]]
 # Bar charts>>>
 j=0
 k=0
@@ -605,6 +606,7 @@ for col_index, col_name in enumerate(X_Qualitative):
             grouped = df.groupby(col_name)[numerical_columns].count()
         else:
             grouped = df.groupby(col_name)[numerical_columns].sum()
+        spec_col[0].append([col_name,numerical_columns])
         i=0
         for category in unique_vals:
             fig = go.Figure()
@@ -641,6 +643,7 @@ for col_index, col_name in enumerate(X_Qualitative):
                 grouped = df.groupby(col_name)[num_col].count()
             else:
                 grouped = df.groupby(col_name)[num_col].sum()
+            spec_col[3].append([col_name,num_col])
             fig = go.Figure()
             x_vals = list(grouped.index)
             y_vals = grouped.values.tolist()
@@ -678,6 +681,7 @@ for col_index, col_name in enumerate(X_Quantitative):
             grouped = df.groupby(col_name)[numerical_columns].count()
         else:
             grouped = df.groupby(col_name)[numerical_columns].sum()
+        spec_col[1].append([col_name,numerical_columns])
         i=0
         for category in unique_vals:
             fig = go.Figure()
@@ -716,6 +720,7 @@ for col_index, col_name in enumerate(X_Quantitative):
                 grouped = df.groupby(col_name)[num_col].sum()
             x_vals = list(grouped.index)
             y_vals = grouped.values.tolist()
+            spec_col[4].append([col_name,num_col])
             fig = go.Figure()
             fig.add_trace(go.Bar(
                 x=x_vals,
@@ -757,6 +762,7 @@ for col_index, col_name in enumerate(location_columns):
             grouped = df.groupby(col_name)[num_col].sum()
         x_vals = list(grouped.index)
         y_vals = grouped.values.tolist()
+        spec_col[5].append([col_name,num_col])
         fig = go.Figure()
         fig.add_trace(go.Bar(
             x=x_vals,
@@ -811,6 +817,7 @@ j=0
 for i in column_name:
     si=0
     if len(df[i].unique()) <= 8 and len(df[i].unique())>1:
+        spec_col[2].append([i,"pie"])
         P_single.append([])
         counts = df[i].value_counts()
         fig = go.Figure()
@@ -839,6 +846,7 @@ j=0
 for i in X_Qualitative:
     P_mix.append([])
     for l in numerical_columns:
+        spec_col[6].append([i,l+" pie"])
         si=0
         grouped = df.groupby(i)[l].sum()
         fig = go.Figure()
@@ -863,32 +871,32 @@ for i in X_Qualitative:
     j=j+1
 
 
-def ensure_datetime(series):
-    try:
-        return pd.to_datetime(series, errors='coerce')
-    except:
-        return series
+# def ensure_datetime(series):
+#     try:
+#         return pd.to_datetime(series, errors='coerce')
+#     except:
+#         return series
 
-for d in date_columns:
-    df[d] = ensure_datetime(df[d])
-    if not pd.api.types.is_datetime64_any_dtype(df[d]):
-        continue
-    for num_col in numerical_columns:
+# for d in date_columns:
+#     df[d] = ensure_datetime(df[d])
+#     if not pd.api.types.is_datetime64_any_dtype(df[d]):
+#         continue
+#     for num_col in numerical_columns:
 
-# Bar Chart (Aggregated by Month/Year)
-        df['year'] = df[d].dt.year
-        df['month'] = df[d].dt.month
-        # monthly = df.groupby('month')[num_col].sum().reset_index()
-        # yearly = df.groupby('year')[num_col].sum().reset_index()
-        if num_col in SUM_COLUMNS:
-            monthly = df.groupby('month')[num_col].sum().reset_index()
-            yearly = df.groupby('year')[num_col].sum().reset_index()
-        elif num_col in COUNT_COLUMNS:
-            monthly = df.groupby('month')[num_col].count().reset_index()
-            yearly = df.groupby('year')[num_col].count().reset_index()
-        else:
-            monthly = df.groupby('month')[num_col].sum().reset_index()
-            yearly = df.groupby('year')[num_col].sum().reset_index()
+# # Bar Chart (Aggregated by Month/Year)
+#         df['year'] = df[d].dt.year
+#         df['month'] = df[d].dt.month
+#         # monthly = df.groupby('month')[num_col].sum().reset_index()
+#         # yearly = df.groupby('year')[num_col].sum().reset_index()
+#         if num_col in SUM_COLUMNS:
+#             monthly = df.groupby('month')[num_col].sum().reset_index()
+#             yearly = df.groupby('year')[num_col].sum().reset_index()
+#         elif num_col in COUNT_COLUMNS:
+#             monthly = df.groupby('month')[num_col].count().reset_index()
+#             yearly = df.groupby('year')[num_col].count().reset_index()
+#         else:
+#             monthly = df.groupby('month')[num_col].sum().reset_index()
+#             yearly = df.groupby('year')[num_col].sum().reset_index()
 
 i=-1
 for all in dia:
@@ -1125,6 +1133,8 @@ except:
 # print(chart1)
 # print(chart2)
 
+# print(dia)
+
 @app.get("/p1plot")
 def p1_plot():
     fig_json = p1.to_plotly_json()   # <--- KEY STEP
@@ -1165,6 +1175,38 @@ def get_numdes():
     numdes = numdes.replace([np.inf, -np.inf], None)
     numdes = numdes.where(numdes.notna(), None)
     return numdes.to_dict()
+@app.get("/allcol")
+def get_cols():
+    return {"columns": list(column_name)}
+@app.get("/spec-col")
+def get_spec_col():
+    return spec_col
+def extract_figures(obj):
+    figures = []
+
+    if isinstance(obj, go.Figure):
+        figures.append(obj.to_dict())
+
+    elif isinstance(obj, list):
+        for item in obj:
+            figures.extend(extract_figures(item))
+
+    return figures
+
+
+@app.get("/charts")
+def get_charts():
+    """
+    dia = nested list containing Plotly Figure objects
+    This endpoint converts ALL figures to JSON safely
+    """
+    charts_json = []
+
+    for group in dia:
+        charts_json.append(extract_figures(group))
+
+    return charts_json
+
 @app.get("/process")
 def process_data():
     

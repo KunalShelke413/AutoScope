@@ -18,6 +18,14 @@ const Dashboard = () => {
   const [des, setDes] = useState(null);   // categorical summary
   const [ndes, setNdes] = useState(null); // numerical summary
 
+  const [cols, setCols] = useState([]);
+
+  const [activeCol, setActiveCol] = useState(null);
+
+  const [specCol, setSpecCol] = useState([]);
+  const [filteredSpec, setFilteredSpec] = useState([]);
+  const [charts, setCharts] = useState([]);
+
   /* -------------------- FETCHES -------------------- */
   useEffect(() => {
     fetch("http://localhost:8000/process")
@@ -43,6 +51,25 @@ const Dashboard = () => {
     fetch("http://localhost:8000/alpdes").then(r => r.json()).then(setDes);
     fetch("http://localhost:8000/numdes").then(r => r.json()).then(setNdes);
   }, []);
+
+  useEffect(() => {
+  fetch("http://localhost:8000/allcol")
+    .then(r => r.json())
+    .then(data => setCols(data.columns))
+    .catch(err => console.error(err));
+  }, []);
+
+  useEffect(() => {
+  fetch("http://localhost:8000/spec-col")
+    .then(res => res.json())
+    .then(data => setSpecCol(data));
+  }, []);
+
+  useEffect(() => {
+  fetch("http://localhost:8000/charts")
+    .then(res => res.json())
+    .then(setCharts);
+}, []);
 
   /* -------------------- LOADING -------------------- */
   if (!des || !ndes) {
@@ -222,7 +249,18 @@ const Dashboard = () => {
       </div>
       <div className="summary_title"><p>Describe columns and Grap based on columns:</p></div>
       <div className="summary_graph">
-        <div className="df_colname">column name</div>
+        <div className="df_colname">
+          {cols.map((col, index) => (
+            <button key={index} className={`col-btn ${activeCol === col ? "active" : ""}`}
+            onClick={() => {
+              setActiveCol(col);
+              handleColumnClick(col);
+            }}
+            >
+              {col}
+            </button>
+          ))}
+        </div>
         <div className="col_and_grp">
           <div className="df_summary">about graph</div>
           <div className="df_grp_box">
