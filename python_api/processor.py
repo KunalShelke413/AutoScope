@@ -593,7 +593,7 @@ for i in column_name:
 column_name = df.columns
 result = {col: [] for col in column_name}
 pie_result = {col: [] for col in column_name}
-spec_col=[[],[],[],[],[],[],[]]
+
 # Bar charts>>>
 j=0
 k=0
@@ -609,7 +609,6 @@ for col_index, col_name in enumerate(X_Qualitative):
             grouped = df.groupby(col_name)[numerical_columns].count()
         else:
             grouped = df.groupby(col_name)[numerical_columns].sum()
-        spec_col[0].append([col_name,numerical_columns])
         i=0
         for category in unique_vals:
             fig = go.Figure()
@@ -647,7 +646,6 @@ for col_index, col_name in enumerate(X_Qualitative):
                 grouped = df.groupby(col_name)[num_col].count()
             else:
                 grouped = df.groupby(col_name)[num_col].sum()
-            spec_col[3].append([col_name,num_col])
             fig = go.Figure()
             x_vals = list(grouped.index)
             y_vals = grouped.values.tolist()
@@ -687,7 +685,6 @@ for col_index, col_name in enumerate(X_Quantitative):
             grouped = df.groupby(col_name)[numerical_columns].count()
         else:
             grouped = df.groupby(col_name)[numerical_columns].sum()
-        spec_col[1].append([col_name,numerical_columns])
         i=0
         for category in unique_vals:
             fig = go.Figure()
@@ -727,7 +724,6 @@ for col_index, col_name in enumerate(X_Quantitative):
                 grouped = df.groupby(col_name)[num_col].sum()
             x_vals = list(grouped.index)
             y_vals = grouped.values.tolist()
-            spec_col[4].append([col_name,num_col])
             fig = go.Figure()
             fig.add_trace(go.Bar(
                 x=x_vals,
@@ -771,7 +767,6 @@ for col_index, col_name in enumerate(location_columns):
             grouped = df.groupby(col_name)[num_col].sum()
         x_vals = list(grouped.index)
         y_vals = grouped.values.tolist()
-        spec_col[5].append([col_name,num_col])
         fig = go.Figure()
         fig.add_trace(go.Bar(
             x=x_vals,
@@ -828,7 +823,6 @@ j=0
 for i in column_name:
     si=0
     if len(df[i].unique()) <= 8 and len(df[i].unique())>1:
-        spec_col[2].append([i,"pie"])
         P_single.append([])
         counts = df[i].value_counts()
         fig = go.Figure()
@@ -858,7 +852,6 @@ j=0
 for i in X_Qualitative:
     P_mix.append([])
     for l in numerical_columns:
-        spec_col[6].append([i,l+" pie"])
         si=0
         grouped = df.groupby(i)[l].sum()
         fig = go.Figure()
@@ -920,6 +913,9 @@ pie_result = {
     k: list({id(fig): fig for fig in v}.values())
     for k, v in pie_result.items()
 }
+
+filtered_result = {k: v for k, v in result.items() if v}
+filtered_pie_result = {k: v for k, v in pie_result.items() if v}
 
 i=-1
 for all in dia:
@@ -1201,34 +1197,26 @@ def get_numdes():
 @app.get("/allcol")
 def get_cols():
     return {"columns": list(column_name)}
-@app.get("/spec-col")
-def get_spec_col():
-    return spec_col
-def extract_figures(obj):
-    figures = []
 
-    if isinstance(obj, go.Figure):
-        figures.append(obj.to_dict())
+@app.get("/process_filtered_result")
+def process_data_filtered_result():
+    response = {}
 
-    elif isinstance(obj, list):
-        for item in obj:
-            figures.extend(extract_figures(item))
+    for col, figs in filtered_result.items():
+        if figs:  # only keys with values
+            response[col] = [fig.to_dict() for fig in figs]
 
-    return figures
+    return JSONResponse(content=response)
 
+@app.get("/process_filtered_pie_result")
+def process_data_filtered_pie_result():
+    response = {}
 
-@app.get("/charts")
-def get_charts():
-    """
-    dia = nested list containing Plotly Figure objects
-    This endpoint converts ALL figures to JSON safely
-    """
-    charts_json = []
+    for col, figs in filtered_pie_result.items():
+        if figs:  # only keys with values
+            response[col] = [fig.to_dict() for fig in figs]
 
-    for group in dia:
-        charts_json.append(extract_figures(group))
-
-    return charts_json
+    return JSONResponse(content=response)
 
 @app.get("/process")
 def process_data():

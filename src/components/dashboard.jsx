@@ -6,14 +6,14 @@ const Dashboard = () => {
   /* -------------------- STATES -------------------- */
   const [data, setData] = useState(null);
 
-  const [pc1, setPc1] = useState(null);
-  const [pc2, setPc2] = useState(null);
-  const [pc3, setPc3] = useState(null);
-  const [pc4, setPc4] = useState(null);
+  const [pc1, setPc1] = useState(null); //k_pie1
+  const [pc2, setPc2] = useState(null); //k_pie2
+  const [pc3, setPc3] = useState(null); //k_pie3
+  const [pc4, setPc4] = useState(null); //k_pie4
 
-  const [sidec, setSidec] = useState(null);
-  const [c1, setC1] = useState(null);
-  const [c2, setC2] = useState(null);
+  const [sidec, setSidec] = useState(null); //heatmap
+  const [c1, setC1] = useState(null); //chart1
+  const [c2, setC2] = useState(null); //chart2
 
   const [des, setDes] = useState(null);   // categorical summary
   const [ndes, setNdes] = useState(null); // numerical summary
@@ -21,10 +21,11 @@ const Dashboard = () => {
   const [cols, setCols] = useState([]);
 
   const [activeCol, setActiveCol] = useState(null);
+  const [activeChartType, setActiveChartType] = useState(null);
 
-  const [specCol, setSpecCol] = useState([]);
-  const [filteredSpec, setFilteredSpec] = useState([]);
-  const [charts, setCharts] = useState([]);
+  const [Rcharts, setRCharts] = useState({}); //bar
+
+  const [PRcharts, setPRCharts] = useState({}); //pie
 
   /* -------------------- FETCHES -------------------- */
   useEffect(() => {
@@ -53,23 +54,25 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-  fetch("http://localhost:8000/allcol")
-    .then(r => r.json())
-    .then(data => setCols(data.columns))
-    .catch(err => console.error(err));
+    fetch("http://localhost:8000/allcol")
+      .then(r => r.json())
+      .then(data => setCols(data.columns))
+      .catch(err => console.error(err));
   }, []);
 
   useEffect(() => {
-  fetch("http://localhost:8000/spec-col")
-    .then(res => res.json())
-    .then(data => setSpecCol(data));
+    fetch("http://localhost:8000/process_filtered_result")
+      .then(res => res.json())
+      .then(data => setRCharts(data))
+      .catch(err => console.error(err));
   }, []);
 
   useEffect(() => {
-  fetch("http://localhost:8000/charts")
-    .then(res => res.json())
-    .then(setCharts);
-}, []);
+    fetch("http://localhost:8000/process_filtered_pie_result")
+      .then(res => res.json())
+      .then(data => setPRCharts(data))
+      .catch(err => console.error(err));
+  }, []);
 
   /* -------------------- LOADING -------------------- */
   if (!des || !ndes) {
@@ -162,11 +165,11 @@ const Dashboard = () => {
             {/* <div>{data ? data.sidechartname : "fst"}</div>
             <div>{data ? data.sidechart : "nth"}</div> */}
             {sidec && (
-            <Plot
-              data={sidec.data}
-              layout={sidec.layout}
-              style={{ width: "100%", height: "100%" }}
-            />
+              <Plot
+                data={sidec.data}
+                layout={sidec.layout}
+                style={{ width: "100%", height: "100%" }}
+              />
             )}
           </div>
         </div>
@@ -181,7 +184,7 @@ const Dashboard = () => {
               layout={c1.layout}
               style={{ width: "100%", height: "100%" }}
             />
-            )}
+          )}
         </div>
         <div id="chart2" className="dchart">
           {/* {data ? data.chart2name : "fst"}
@@ -192,7 +195,7 @@ const Dashboard = () => {
               layout={c2.layout}
               style={{ width: "100%", height: "100%" }}
             />
-            )}
+          )}
         </div>
       </div>
       <div className="info">
@@ -252,10 +255,10 @@ const Dashboard = () => {
         <div className="df_colname">
           {cols.map((col, index) => (
             <button key={index} className={`col-btn ${activeCol === col ? "active" : ""}`}
-            onClick={() => {
-              setActiveCol(col);
-              handleColumnClick(col);
-            }}
+              onClick={() => {
+                setActiveCol(col);
+                handleColumnClick(col);
+              }}
             >
               {col}
             </button>
@@ -265,25 +268,36 @@ const Dashboard = () => {
           <div className="df_summary">about graph</div>
           <div className="df_grp_box">
             <div className="grp_type">
-                <ul>
-                  <li>Bar chart</li>
-                  <li>Line chart</li>
-                  <li>Pie chart</li>
-                  <li>Heat map</li>
-                  <li>Histogram chart</li>
-                  <li>Scatter plot</li>
-                  <li>Box plot</li>
-                  <li>Area chart</li>
-                  <li>Bubble chart</li>
-                  <li>Tree map</li>
-                </ul>
+              <ul>
+                {[
+                  "Bar chart",
+                  "Line chart",
+                  "Pie chart",
+                  "Heat map",
+                  "Histogram chart",
+                  "Scatter plot",
+                  "Box plot",
+                  "Area chart",
+                  "Bubble chart",
+                  "Tree map"
+                ].map((type) => (
+                  <li
+                    key={type}
+                    className={activeChartType === type ? "active" : ""}
+                    onClick={() => setActiveChartType(type)}
+                  >
+                    {type}
+                  </li>
+                ))}
+              </ul>
             </div>
+
             <div className="df_grp">grp</div>
           </div>
         </div>
       </div>
 
-      
+
       <div className="summary">
         {data ? data.summary : "summary"}
       </div>
