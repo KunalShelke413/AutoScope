@@ -590,6 +590,9 @@ for i in column_name:
         elif i in date_columns:
             X_Time.append(i)
 
+column_name = df.columns
+result = {col: [] for col in column_name}
+pie_result = {col: [] for col in column_name}
 spec_col=[[],[],[],[],[],[],[]]
 # Bar charts>>>
 j=0
@@ -628,6 +631,7 @@ for col_index, col_name in enumerate(X_Qualitative):
             )
             single[j].append([])
             single[j][i].append(fig)
+            result[col_name].append(fig)
             i=i+1
         j=j+1
     else:
@@ -664,6 +668,8 @@ for col_index, col_name in enumerate(X_Qualitative):
             )
             mix[k].append([])
             mix[k][si].append(fig)
+            result[col_name].append(fig)
+            result[num_col].append(fig)
             si=si+1
         k=k+1
 
@@ -703,6 +709,7 @@ for col_index, col_name in enumerate(X_Quantitative):
             )
             N_single[j].append([])
             N_single[j][i].append(fig)
+            result[col_name].append(fig)
             i=i+1
         j=j+1
     else:
@@ -739,6 +746,8 @@ for col_index, col_name in enumerate(X_Quantitative):
             )
             N_mix[k].append([])
             N_mix[k][si].append(fig)
+            result[col_name].append(fig)
+            result[num_col].append(fig)
             si=si+1
         k=k+1
 
@@ -781,6 +790,8 @@ for col_index, col_name in enumerate(location_columns):
         )
         L_mix[j].append([])
         L_mix[j][si].append(fig)
+        result[col_name].append(fig)
+        result[num_col].append(fig)
         si=si+1
     j=j+1
 
@@ -839,6 +850,7 @@ for i in column_name:
         )
         P_single[j].append([])
         P_single[j][si].append(fig)
+        pie_result[i].append(fig)
         si=si+1
         j=j+1
 
@@ -867,6 +879,8 @@ for i in X_Qualitative:
         )
         P_mix[j].append([])
         P_mix[j][si].append(fig)
+        pie_result[i].append(fig)
+        pie_result[l].append(fig)
         si=si+1
     j=j+1
 
@@ -897,6 +911,15 @@ for i in X_Qualitative:
 #         else:
 #             monthly = df.groupby('month')[num_col].sum().reset_index()
 #             yearly = df.groupby('year')[num_col].sum().reset_index()
+
+result = {
+    k: list({id(fig): fig for fig in v}.values())
+    for k, v in result.items()
+}
+pie_result = {
+    k: list({id(fig): fig for fig in v}.values())
+    for k, v in pie_result.items()
+}
 
 i=-1
 for all in dia:
