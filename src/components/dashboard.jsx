@@ -27,6 +27,11 @@ const Dashboard = () => {
 
   const [PRcharts, setPRCharts] = useState({}); //pie
 
+
+  const [currentIndex, setCurrentIndex] = useState(0); //grp setting
+  const [currentFigures, setCurrentFigures] = useState([]); //grp setting
+
+
   /* -------------------- FETCHES -------------------- */
   useEffect(() => {
     fetch("http://localhost:8000/process")
@@ -73,6 +78,37 @@ const Dashboard = () => {
       .then(data => setPRCharts(data))
       .catch(err => console.error(err));
   }, []);
+  /*------------------------grp_setting------------------------*/
+
+  useEffect(() => {
+    setCurrentIndex(0);
+  }, [activeCol, activeChartType]);
+
+
+  useEffect(() => {
+    if (!activeCol || !activeChartType) {
+      setCurrentFigures([]);
+      return;
+    }
+
+    let selectedCharts = null;
+
+    if (activeChartType === "Bar chart") {
+      selectedCharts = Rcharts;
+    } else if (activeChartType === "Pie chart") {
+      selectedCharts = PRcharts;
+    } else {
+      setCurrentFigures([]);
+      return;
+    }
+
+    const figs = selectedCharts?.[activeCol] || [];
+    setCurrentFigures(figs);
+
+  }, [activeCol, activeChartType, Rcharts, PRcharts]);
+
+
+  /*------------------------grp_setting------------------------*/
 
   /* -------------------- LOADING -------------------- */
   if (!des || !ndes) {
@@ -257,7 +293,6 @@ const Dashboard = () => {
             <button key={index} className={`col-btn ${activeCol === col ? "active" : ""}`}
               onClick={() => {
                 setActiveCol(col);
-                handleColumnClick(col);
               }}
             >
               {col}
@@ -292,7 +327,53 @@ const Dashboard = () => {
               </ul>
             </div>
 
-            <div className="df_grp">grp</div>
+            <div className="df_grp">
+              {currentFigures.length > 0 ? (
+                <>
+                  {currentFigures[currentIndex] && (
+                    <Plot
+                      data={currentFigures[currentIndex].data}
+                      layout={currentFigures[currentIndex].layout}
+                      style={{ width: "100%", height: "400px" }}
+                    />
+                  )}
+
+                  {currentFigures.length > 1 && (
+                    <div className="nav_buttons">
+                      <button
+                        onClick={() =>
+                          setCurrentIndex(i => Math.max(i - 1, 0))
+                        }
+                        disabled={currentIndex === 0}
+                      >
+                        ◀
+                      </button>
+
+                      <span style={{ margin: "0 10px" }}>
+                        {currentIndex + 1} / {currentFigures.length}
+                      </span>
+
+                      <button
+                        onClick={() =>
+                          setCurrentIndex(i =>
+                            Math.min(i + 1, currentFigures.length - 1)
+                          )
+                        }
+                        disabled={currentIndex === currentFigures.length - 1}
+                      >
+                        ▶
+                      </button>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <p style={{ padding: "10px" }}>
+                  Select a column and chart type
+                </p>
+              )}
+            </div>
+
+
           </div>
         </div>
       </div>

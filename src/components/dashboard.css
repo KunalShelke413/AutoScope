@@ -187,3 +187,24 @@ body {
     color: black;
     border: solid 1px black;  
 }
+.grp_type li {
+  cursor: pointer;
+  padding: 8px;
+}
+
+.grp_type li.active {
+  background-color: #000;
+  color: #fff;
+}
+
+.nav_buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.nav_buttons button {
+  padding: 5px 12px;
+  cursor: pointer;
+}
