@@ -2,11 +2,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from storage import get_data
+import json
 import pandas as pd
 import numpy as np
 import re
 import os
 import plotly.graph_objects as go
+import plotly.express as px
 
 app = FastAPI()
 app.add_middleware(
@@ -539,7 +541,14 @@ mix=[]
 N_mix=[]
 L_mix=[]
 P_mix=[]
-dia=[single,N_single,P_single,mix,N_mix,L_mix,P_mix]
+line_charts=[]
+heat_maps=[]
+histogram_charts=[]
+scatter_plots=[]
+box_plots=[]
+area_charts=[]
+bubble_charts=[]
+dia=[single,N_single,P_single,mix,N_mix,L_mix,P_mix,line_charts,heat_maps,histogram_charts,scatter_plots,box_plots,area_charts,bubble_charts]
 Dia_ID=[]
 Access=[]
 bar_check=[]
@@ -593,6 +602,13 @@ for i in column_name:
 column_name = df.columns
 result = {col: [] for col in column_name}
 pie_result = {col: [] for col in column_name}
+line_result = {col: [] for col in column_name}
+heat_result = {col: [] for col in column_name}
+histogram_result = {col: [] for col in column_name}
+scatter_result = {col: [] for col in column_name}
+box_result = {col: [] for col in column_name}
+area_result = {col: [] for col in column_name}
+bubble_result = {col: [] for col in column_name}
 
 # Bar charts>>>
 j=0
@@ -790,33 +806,6 @@ for col_index, col_name in enumerate(location_columns):
         si=si+1
     j=j+1
 
-# for col_index, col_name in enumerate(X_Time):
-#     for num_col in numerical_columns:
-#                 if num_col in SUM_COLUMNS:
-#                     grouped = df.groupby(col_name)[num_col].sum()
-#                 elif num_col in COUNT_COLUMNS:
-#                     grouped = df.groupby(col_name)[num_col].count()
-#                 else:
-#                     grouped = df.groupby(col_name)[num_col].sum()
-#                 fig = go.Figure()
-#                 fig.add_trace(go.Bar(
-#                     x=grouped.index,
-#                     y=grouped.values,
-#                     text=grouped.values,
-#                     hovertemplate=
-#                     "<b>Category:</b> %{x}<br>" +
-#                     "<b>Value:</b> %{y}<br>" +
-#                     "<extra></extra>"
-#                 ))
-#                 fig.update_layout(
-#                     title=f"{num_col} by {col_name}",
-#                     xaxis_title=col_name,
-#                     yaxis_title=num_col,
-#                       margin=dict(t=30, b=10, l=10, r=10)
-#                 )
-#                 fig.show()
-# <-------------------------------------------------------------------------------->
-
 #Pie charts>>>
 j=0
 
@@ -876,34 +865,301 @@ for i in X_Qualitative:
         pie_result[l].append(fig)
         si=si+1
     j=j+1
+# line chart
+
+def line_chart(date_col, num_col, freq="ME"):
+    temp = df[[date_col, num_col]].dropna()
+
+    temp[date_col] = pd.to_datetime(
+        temp[date_col],
+        errors="coerce",
+        dayfirst=True
+    )
+
+    temp = temp.dropna(subset=[date_col])
+
+    temp = (
+        temp
+        .set_index(date_col)
+        .resample(freq)[num_col]
+        .mean()
+        .reset_index()
+    )
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=temp[date_col],
+        y=temp[num_col],
+        mode="lines+markers"
+    ))
+
+    fig.update_layout(
+        title=f"Line Chart: {num_col} over time",
+        xaxis_title=date_col,
+        yaxis_title=num_col
+    )
+
+    return fig
 
 
-# def ensure_datetime(series):
-#     try:
-#         return pd.to_datetime(series, errors='coerce')
-#     except:
-#         return series
+i=0
+j=0
+for d in date_columns:
+    line_charts.append([])
+    for n in numerical_columns:
+        fig = line_chart(d, n)
+        line_charts[i].append([])
+        line_charts[i][j].append(fig)
+        line_result[d].append(fig)
+        line_result[n].append(fig)
+        j+=1
+    i+=1
+    j=0
 
-# for d in date_columns:
-#     df[d] = ensure_datetime(df[d])
-#     if not pd.api.types.is_datetime64_any_dtype(df[d]):
-#         continue
-#     for num_col in numerical_columns:
 
-# # Bar Chart (Aggregated by Month/Year)
-#         df['year'] = df[d].dt.year
-#         df['month'] = df[d].dt.month
-#         # monthly = df.groupby('month')[num_col].sum().reset_index()
-#         # yearly = df.groupby('year')[num_col].sum().reset_index()
-#         if num_col in SUM_COLUMNS:
-#             monthly = df.groupby('month')[num_col].sum().reset_index()
-#             yearly = df.groupby('year')[num_col].sum().reset_index()
-#         elif num_col in COUNT_COLUMNS:
-#             monthly = df.groupby('month')[num_col].count().reset_index()
-#             yearly = df.groupby('year')[num_col].count().reset_index()
-#         else:
-#             monthly = df.groupby('month')[num_col].sum().reset_index()
-#             yearly = df.groupby('year')[num_col].sum().reset_index()
+#heat map
+
+def heat_map(numerical_columns):
+    corr = df[numerical_columns].corr()
+
+    fig = go.Figure(
+        data=go.Heatmap(
+            z=corr.values,
+            x=corr.columns,
+            y=corr.columns,
+            colorscale="Viridis"
+        )
+    )
+
+    fig.update_layout(title="Correlation Heatmap")
+    return fig
+
+
+heat_maps.append([])
+fig = heat_map(numerical_columns)
+if fig:
+   heat_maps_check=1
+heat_maps[0].append([fig])
+for nl in numerical_columns:
+    heat_result[nl].append(fig)
+
+
+# histogram_charts
+
+def histogram_chart(num_col):
+    fig = go.Figure()
+    fig.add_trace(go.Histogram(
+        x=df[num_col],
+        nbinsx=30
+    ))
+
+    fig.update_layout(
+        title=f"Histogram of {num_col}",
+        xaxis_title=num_col,
+        yaxis_title="Count"
+    )
+    return fig
+
+i=0
+histogram_charts.append([])
+for n in numerical_columns:
+    fig = histogram_chart(n)
+    histogram_charts[0].append([])
+    histogram_charts[0][i].append(fig)
+    histogram_result[n].append(fig)
+    i+=1
+
+
+# scatter plot
+
+def scatter_plot(x_col, y_col):
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=df[x_col],
+        y=df[y_col],
+        mode="markers"
+    ))
+
+    fig.update_layout(
+        title=f"Scatter Plot: {x_col} vs {y_col}",
+        xaxis_title=x_col,
+        yaxis_title=y_col
+    )
+    return fig
+
+
+k=0
+l=0
+for i in range(len(numerical_columns)):
+    scatter_plots.append([])
+    for j in range(i+1,len(numerical_columns)):
+        d = numerical_columns[i]
+        n = numerical_columns[j]
+        fig = scatter_plot(d, n)
+        scatter_plots[k].append([])
+        scatter_plots[k][l].append(fig)
+        scatter_result[d].append(fig)
+        scatter_result[n].append(fig)
+        l+=1
+    k+=1
+    l=0
+
+
+# box plot
+
+def box_plot(num_col):
+    fig = go.Figure()
+    fig.add_trace(go.Box(
+        y=df[num_col],
+        boxmean=True
+    ))
+
+    fig.update_layout(
+        title=f"Box Plot of {num_col}",
+        yaxis_title=num_col
+    )
+    return fig
+
+
+i=0
+box_plots.append([])
+for n in numerical_columns:
+    fig = box_plot(n)
+    box_plots[0].append([])
+    box_plots[0][i].append(fig)
+    box_result[n].append(fig)
+    i+=1
+
+# area_plots
+
+def area_chart(date_col, num_col):
+    temp = df[[date_col, num_col]].dropna()
+
+    temp[date_col] = pd.to_datetime(
+        temp[date_col],
+        errors="coerce",
+        dayfirst=True
+    )
+
+    temp = temp.dropna(subset=[date_col])
+
+    temp = (
+        temp
+        .set_index(date_col)
+        .resample("ME")[num_col]
+        .sum()
+        .reset_index()
+    )
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=temp[date_col],
+        y=temp[num_col],
+        fill="tozeroy",
+        mode="lines"
+    ))
+
+    fig.update_layout(
+        title=f"Area Chart: {num_col}",
+        xaxis_title=date_col,
+        yaxis_title=num_col
+    )
+    return fig
+
+
+i=0
+j=0
+for d in date_columns:
+    area_charts.append([])
+    for n in numerical_columns:
+        fig = area_chart(d, n)
+        area_charts[i].append([])
+        area_charts[i][j].append(fig)
+        area_result[d].append(fig)
+        area_result[n].append(fig)
+        j+=1
+    i+=1
+    j=0
+
+
+#bubble_chart
+
+def bubble_chart(x_col, y_col, size_col):
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(
+        x=df[x_col],
+        y=df[y_col],
+        mode="markers",
+        marker=dict(
+            size=df[size_col],
+            sizemode="area",
+            sizeref=2.*max(df[size_col])/(40.**2),
+            showscale=True
+        )
+    ))
+
+    fig.update_layout(
+        title="Bubble Chart",
+        xaxis_title=x_col,
+        yaxis_title=y_col
+    )
+    return fig
+
+
+l=0
+m=0
+for i in range(len(numerical_columns)):
+    bubble_charts.append([])
+    for j in range(i + 1, len(numerical_columns)):
+        for k in range(j + 1, len(numerical_columns)):
+            x = numerical_columns[i]
+            y = numerical_columns[j]
+            size = numerical_columns[k]
+            fig=bubble_chart(x, y, size)
+            bubble_charts[l].append([])
+            bubble_charts[l][m].append(fig)
+            bubble_result[x].append(fig)
+            m+=1
+    l+=1
+    m=0
+
+# <-------------------------------------------------comming soon------------------------------------------------>
+
+# def tree_map(df, path_cols, value_col):
+#     fig = px.treemap(
+#         df,
+#         path=path_cols,
+#         values=value_col
+#     )
+
+#     fig.update_layout(title="Tree Map")
+#     return fig
+
+# fig = tree_map(
+#     df,
+#     path_cols=["country", "state", "city"],
+#     value_col="amount_collected"
+# )
+
+# fig.show()
+
+# fig = tree_map(
+#     df,
+#     path_cols=["department"],
+#     value_col="total_sales"
+# )
+
+# fig.show()
+
+# fig = tree_map(
+#     df,
+#     path_cols=["campaign", "agent_name"],
+#     value_col="total_calls"
+# )
+
+# fig.show()
+
+# <-------------------------------------------------comming soon------------------------------------------------>
 
 result = {
     k: list({id(fig): fig for fig in v}.values())
@@ -913,9 +1169,44 @@ pie_result = {
     k: list({id(fig): fig for fig in v}.values())
     for k, v in pie_result.items()
 }
+line_result = {
+    k: list({id(fig): fig for fig in v}.values())
+    for k, v in line_result.items()
+}
+heat_result = {
+    k: list({id(fig): fig for fig in v}.values())
+    for k, v in heat_result.items()
+}
+histogram_result = {
+    k: list({id(fig): fig for fig in v}.values())
+    for k, v in histogram_result.items()
+}
+scatter_result = {
+    k: list({id(fig): fig for fig in v}.values())
+    for k, v in scatter_result.items()
+}
+box_result = {
+    k: list({id(fig): fig for fig in v}.values())
+    for k, v in box_result.items()
+}
+area_result = {
+    k: list({id(fig): fig for fig in v}.values())
+    for k, v in area_result.items()
+}
+bubble_result = {
+    k: list({id(fig): fig for fig in v}.values())
+    for k, v in bubble_result.items()
+}
 
 filtered_result = {k: v for k, v in result.items() if v}
 filtered_pie_result = {k: v for k, v in pie_result.items() if v}
+filtered_line_result = {k: v for k, v in line_result.items() if v}
+filtered_heat_result = {k: v for k, v in heat_result.items() if v}
+filtered_histogram_result = {k: v for k, v in histogram_result.items() if v}
+filtered_scatter_result = {k: v for k, v in scatter_result.items() if v}
+filtered_box_result = {k: v for k, v in box_result.items() if v}
+filtered_area_result = {k: v for k, v in area_result.items() if v}
+filtered_bubble_result = {k: v for k, v in bubble_result.items() if v}
 
 i=-1
 for all in dia:
@@ -925,7 +1216,7 @@ for all in dia:
             for l in range(len(all[j][k])):
                 Dia_ID.append(str(i)+str(j)+str(k)+str(l))
 
-for i in range(7):
+for i in range(len(dia)):
     Access.append([])
     for val in (Dia_ID):
         if val[0]==str(i):
@@ -936,95 +1227,8 @@ for all in dia:
     for i in range(0,len(all)):
         for j in range(len(all[i])):
             for k in range(len(all[i][j])):
-                # all[i][j][k].show()
                 count+=1
 print("Total graphs displayed:",count)
-
-# def ensure_datetime(series):
-#     try:
-#         return pd.to_datetime(series, errors='coerce')
-#     except:
-#         return series
-
-# for d in date_columns:
-#     df[d] = ensure_datetime(df[d])
-#     if not pd.api.types.is_datetime64_any_dtype(df[d]):
-#         continue
-#     for num_col in numerical_columns:
-# # #Line Chart
-# #         fig_line = go.Figure()
-# #         fig_line.add_trace(go.Scatter(
-# #             x=df[d],
-# #             y=df[num_col],
-# #             mode='lines',
-# #             hovertemplate=
-# #                 "<b>Date:</b> %{x}<br>" +
-# #                 f"<b>{num_col}:</b> %{y}<extra></extra>"
-# #         ))
-# #         fig_line.update_layout(
-# #             title=f"Line Chart: {num_col} over {d}",
-# #             xaxis_title=d,
-# #             yaxis_title=num_col
-# #         )
-# #         fig_line.show()
-# # Scatter Plot
-#         # fig_scatter = go.Figure()
-#         # fig_scatter.add_trace(go.Scatter(
-#         #     x=df[d],
-#         #     y=df[num_col],
-#         #     mode='markers',
-#         #     hovertemplate=
-#         #         "<b>Date:</b> %{x}<br>" +
-#         #         f"<b>{num_col}:</b> %{y}<extra></extra>"
-#         # ))
-#         # fig_scatter.update_layout(
-#         #     title=f"Scatter Plot: {num_col} vs {d}",
-#         #     xaxis_title=d,
-#         #     yaxis_title=num_col
-#         # )
-#         # fig_scatter.show()
-# # Area Chart
-#         # fig_area = go.Figure()
-#         # fig_area.add_trace(go.Scatter(
-#         #     x=df[d],
-#         #     y=df[num_col],
-#         #     fill='tozeroy',
-#         #     mode='lines',
-#         #     hovertemplate=
-#         #         "<b>Date:</b> %{x}<br>" +
-#         #         f"<b>{num_col}:</b> %{y}<extra></extra>"
-#         # ))
-#         # fig_area.update_layout(
-#         #     title=f"Area Chart: {num_col} over {d}",
-#         #     xaxis_title=d,
-#         #     yaxis_title=num_col
-#         # )
-#         # fig_area.show()
-# # Bar Chart (Aggregated by Month/Year)
-#         df['year'] = df[d].dt.year
-#         df['month'] = df[d].dt.month
-
-#         monthly = df.groupby('month')[num_col].sum().reset_index()
-#         yearly = df.groupby('year')[num_col].sum().reset_index()
-
-# # # Rolling Average Chart (7-day)
-# #         df['rolling'] = df[num_col].rolling(7).mean()
-
-# #         fig_roll = go.Figure()
-# #         fig_roll.add_trace(go.Scatter(
-# #             x=df[d],
-# #             y=df['rolling'],
-# #             mode="lines",
-# #             hovertemplate=
-# #                 "<b>Date:</b> %{x}<br>" +
-# #                 f"<b>Rolling Avg ({num_col}):</b> %{y}<extra></extra>"
-# #         ))
-# #         fig_roll.update_layout(
-# #             title=f"7-Day Rolling Average of {num_col}",
-# #             xaxis_title=d,
-# #             yaxis_title=num_col
-# #         )
-# #         fig_roll.show()
 
 pc=2
 for i in range(len(Access[pc])):
@@ -1117,7 +1321,12 @@ if sidechart==0 or chart1==0 or chart2==0:
                 chart1=dia[int(i[0])][int(i[1])][int(i[2])][int(i[3])]
             elif chart2==0:
                 chart2=dia[int(i[0])][int(i[1])][int(i[2])][int(i[3])]
-            
+
+if heat_maps_check==1:
+   chart2=chart1
+   chart1=sidechart
+   sidechart=dia[8][0][0][0]
+
 a, b, c, d, A, B, C, D = 0, 0, 0, 0, 0, 0, 0, 0
 
 try:
@@ -1144,15 +1353,6 @@ except:
     except:
         u4,a,b,c,d,A,B,C,D=four(location_columns,u4,a,b,c,d,A,B,C,D)
 
-# print(p1)
-# print(p2)
-# print(p3)
-# print(p4)
-# print(sidechart)
-# print(chart1)
-# print(chart2)
-
-# print(dia)
 
 @app.get("/p1plot")
 def p1_plot():
@@ -1170,10 +1370,16 @@ def p3_plot():
 def p4_plot():
     fig_json = p4.to_plotly_json()   # <--- KEY STEP
     return JSONResponse(content=fig_json)
-@app.get("/sideplot")
-def side_plot():
-    fig_json = sidechart.to_plotly_json()   # <--- KEY STEP
-    return JSONResponse(content=fig_json)
+if heat_maps_check==1:
+    @app.get("/sideplot")
+    def side_plot():
+        fig_json = json.loads(sidechart.to_json())   # <--- KEY STEP
+        return JSONResponse(content=fig_json)
+else:
+    @app.get("/sideplot")
+    def side_plot():
+        fig_json = sidechart.to_plotly_json()   # <--- KEY STEP
+        return JSONResponse(content=fig_json)
 @app.get("/chart1plot")
 def chart1_plot():
     fig_json = chart1.to_plotly_json()   # <--- KEY STEP
@@ -1213,6 +1419,76 @@ def process_data_filtered_pie_result():
     response = {}
 
     for col, figs in filtered_pie_result.items():
+        if figs:  # only keys with values
+            response[col] = [fig.to_dict() for fig in figs]
+
+    return JSONResponse(content=response)
+
+@app.get("/process_filtered_line_result")
+def process_data_filtered_line_result():
+    response = {}
+
+    for col, figs in filtered_line_result.items():
+        if figs:  # only keys with values
+            response[col] = [fig.to_dict() for fig in figs]
+
+    return JSONResponse(content=response)
+
+@app.get("/process_filtered_heat_result")
+def process_data_filtered_heat_result():
+    response = {}
+
+    for col, figs in filtered_heat_result.items():
+        if figs:  # only keys with values
+            response[col] = [fig.to_dict() for fig in figs]
+
+    return JSONResponse(content=response)
+
+@app.get("/process_filtered_histogram_result")
+def process_data_filtered_histogram_result():
+    response = {}
+
+    for col, figs in filtered_histogram_result.items():
+        if figs:  # only keys with values
+            response[col] = [fig.to_dict() for fig in figs]
+
+    return JSONResponse(content=response)
+
+@app.get("/process_filtered_scatter_result")
+def process_data_filtered_scatter_result():
+    response = {}
+
+    for col, figs in filtered_scatter_result.items():
+        if figs:  # only keys with values
+            response[col] = [fig.to_dict() for fig in figs]
+
+    return JSONResponse(content=response)
+
+@app.get("/process_filtered_box_result")
+def process_data_filtered_box_result():
+    response = {}
+
+    for col, figs in filtered_box_result.items():
+        if figs:  # only keys with values
+            response[col] = [fig.to_dict() for fig in figs]
+
+    return JSONResponse(content=response)
+
+@app.get("/process_filtered_area_result")
+def process_data_filtered_area_result():
+    response = {}
+
+    for col, figs in filtered_area_result.items():
+        if figs:  # only keys with values
+            response[col] = [fig.to_dict() for fig in figs]
+
+    return JSONResponse(content=response)
+
+@app.get("/process_filtered_bubble_result")
+def process_data_filtered_bubble_result():
+    response = {}
+
+    for col, figs in filtered_bubble_result.items():
         if figs:  # only keys with values
             response[col] = [fig.to_dict() for fig in figs]
 

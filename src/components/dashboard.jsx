@@ -24,12 +24,19 @@ const Dashboard = () => {
   const [activeChartType, setActiveChartType] = useState(null);
 
   const [Rcharts, setRCharts] = useState({}); //bar
-
   const [PRcharts, setPRCharts] = useState({}); //pie
+  const [LRcharts, setLRCharts] = useState({}); //line
+  const [HRcharts, setHRCharts] = useState({}); //heat
+  const [HGRcharts, setHGRCharts] = useState({}); //histogram
+  const [SRcharts, setSRCharts] = useState({}); //scatter
+  const [BRcharts, setBRCharts] = useState({}); //box
+  const [ARcharts, setARCharts] = useState({}); //area
+  const [BLRcharts, setBLRCharts] = useState({}); //bubble
 
 
   const [currentIndex, setCurrentIndex] = useState(0); //grp setting
   const [currentFigures, setCurrentFigures] = useState([]); //grp setting
+
 
 
   /* -------------------- FETCHES -------------------- */
@@ -78,6 +85,55 @@ const Dashboard = () => {
       .then(data => setPRCharts(data))
       .catch(err => console.error(err));
   }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/process_filtered_line_result")
+      .then(res => res.json())
+      .then(data => setLRCharts(data))
+      .catch(err => console.error(err));
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/process_filtered_heat_result")
+      .then(res => res.json())
+      .then(data => setHRCharts(data))
+      .catch(err => console.error(err));
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/process_filtered_histogram_result")
+      .then(res => res.json())
+      .then(data => setHGRCharts(data))
+      .catch(err => console.error(err));
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/process_filtered_scatter_result")
+      .then(res => res.json())
+      .then(data => setSRCharts(data))
+      .catch(err => console.error(err));
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/process_filtered_box_result")
+      .then(res => res.json())
+      .then(data => setBRCharts(data))
+      .catch(err => console.error(err));
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/process_filtered_area_result")
+      .then(res => res.json())
+      .then(data => setARCharts(data))
+      .catch(err => console.error(err));
+  }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/process_filtered_bubble_result")
+      .then(res => res.json())
+      .then(data => setBLRCharts(data))
+      .catch(err => console.error(err));
+  }, []);
   /*------------------------grp_setting------------------------*/
 
   useEffect(() => {
@@ -95,8 +151,22 @@ const Dashboard = () => {
 
     if (activeChartType === "Bar chart") {
       selectedCharts = Rcharts;
+    } else if (activeChartType === "Line chart") {
+      selectedCharts = LRcharts;
     } else if (activeChartType === "Pie chart") {
       selectedCharts = PRcharts;
+    } else if (activeChartType === "Heat map") {
+      selectedCharts = HRcharts;
+    } else if (activeChartType === "Histogram chart") {
+      selectedCharts = HGRcharts;
+    } else if (activeChartType === "Scatter plot") {
+      selectedCharts = SRcharts;
+    } else if (activeChartType === "Box plot") {
+      selectedCharts = BRcharts;
+    } else if (activeChartType === "Area chart") {
+      selectedCharts = ARcharts;
+    } else if (activeChartType === "Bubble chart") {
+      selectedCharts = BLRcharts;
     } else {
       setCurrentFigures([]);
       return;
@@ -105,7 +175,7 @@ const Dashboard = () => {
     const figs = selectedCharts?.[activeCol] || [];
     setCurrentFigures(figs);
 
-  }, [activeCol, activeChartType, Rcharts, PRcharts]);
+  }, [activeCol, activeChartType, Rcharts, PRcharts, LRcharts, HRcharts, HGRcharts, SRcharts, BRcharts, ARcharts, BLRcharts]);
 
 
   /*------------------------grp_setting------------------------*/
