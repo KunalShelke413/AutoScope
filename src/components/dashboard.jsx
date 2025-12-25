@@ -26,7 +26,6 @@ const Dashboard = () => {
   const [Rcharts, setRCharts] = useState({}); //bar
   const [PRcharts, setPRCharts] = useState({}); //pie
   const [LRcharts, setLRCharts] = useState({}); //line
-  const [HRcharts, setHRCharts] = useState({}); //heat
   const [HGRcharts, setHGRCharts] = useState({}); //histogram
   const [SRcharts, setSRCharts] = useState({}); //scatter
   const [BRcharts, setBRCharts] = useState({}); //box
@@ -94,13 +93,6 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:8000/process_filtered_heat_result")
-      .then(res => res.json())
-      .then(data => setHRCharts(data))
-      .catch(err => console.error(err));
-  }, []);
-
-  useEffect(() => {
     fetch("http://localhost:8000/process_filtered_histogram_result")
       .then(res => res.json())
       .then(data => setHGRCharts(data))
@@ -155,9 +147,7 @@ const Dashboard = () => {
       selectedCharts = LRcharts;
     } else if (activeChartType === "Pie chart") {
       selectedCharts = PRcharts;
-    } else if (activeChartType === "Heat map") {
-      selectedCharts = HRcharts;
-    } else if (activeChartType === "Histogram chart") {
+    }else if (activeChartType === "Histogram chart") {
       selectedCharts = HGRcharts;
     } else if (activeChartType === "Scatter plot") {
       selectedCharts = SRcharts;
@@ -175,7 +165,7 @@ const Dashboard = () => {
     const figs = selectedCharts?.[activeCol] || [];
     setCurrentFigures(figs);
 
-  }, [activeCol, activeChartType, Rcharts, PRcharts, LRcharts, HRcharts, HGRcharts, SRcharts, BRcharts, ARcharts, BLRcharts]);
+  }, [activeCol, activeChartType, Rcharts, PRcharts, LRcharts, HGRcharts, SRcharts, BRcharts, ARcharts, BLRcharts]);
 
 
   /*------------------------grp_setting------------------------*/
@@ -378,13 +368,11 @@ const Dashboard = () => {
                   "Bar chart",
                   "Line chart",
                   "Pie chart",
-                  "Heat map",
                   "Histogram chart",
                   "Scatter plot",
                   "Box plot",
                   "Area chart",
-                  "Bubble chart",
-                  "Tree map"
+                  "Bubble chart"
                 ].map((type) => (
                   <li
                     key={type}

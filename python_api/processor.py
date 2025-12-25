@@ -9,6 +9,7 @@ import re
 import os
 import plotly.graph_objects as go
 import plotly.express as px
+from plotly.utils import PlotlyJSONEncoder
 
 app = FastAPI()
 app.add_middleware(
@@ -1424,23 +1425,26 @@ def process_data_filtered_pie_result():
 
     return JSONResponse(content=response)
 
+# @app.get("/process_filtered_line_result")
+# def process_data_filtered_line_result():
+#     response = {}
+
+#     for col, figs in filtered_line_result.items():
+#         if figs:  # only keys with values
+#             response[col] = [fig.to_json() for fig in figs]
+
+#     return JSONResponse(content=response)
+
 @app.get("/process_filtered_line_result")
 def process_data_filtered_line_result():
     response = {}
 
     for col, figs in filtered_line_result.items():
-        if figs:  # only keys with values
-            response[col] = [fig.to_dict() for fig in figs]
-
-    return JSONResponse(content=response)
-
-@app.get("/process_filtered_heat_result")
-def process_data_filtered_heat_result():
-    response = {}
-
-    for col, figs in filtered_heat_result.items():
-        if figs:  # only keys with values
-            response[col] = [fig.to_dict() for fig in figs]
+        if figs:
+            response[col] = [
+                json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
+                for fig in figs
+            ]
 
     return JSONResponse(content=response)
 
@@ -1479,10 +1483,23 @@ def process_data_filtered_area_result():
     response = {}
 
     for col, figs in filtered_area_result.items():
-        if figs:  # only keys with values
-            response[col] = [fig.to_dict() for fig in figs]
+        if figs:
+            response[col] = [
+                json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
+                for fig in figs
+            ]
 
     return JSONResponse(content=response)
+
+
+# @app.get("/process_filtered_area_result")
+# def process_data_filtered_area_result():
+#     response = {}
+
+#     for col, figs in filtered_area_result.items():
+#         if figs:  # only keys with values
+#             response[col] = [fig.to_json() for fig in figs]
+#     return JSONResponse(content=response)
 
 @app.get("/process_filtered_bubble_result")
 def process_data_filtered_bubble_result():
