@@ -549,7 +549,7 @@ scatter_plots=[]
 box_plots=[]
 area_charts=[]
 bubble_charts=[]
-dia=[single,N_single,P_single,mix,N_mix,L_mix,P_mix,line_charts,heat_maps,histogram_charts,scatter_plots,box_plots,area_charts,bubble_charts]
+dia=[mix,N_mix,P_single,single,N_mix,L_mix,P_single,line_charts,heat_maps,histogram_charts,scatter_plots,box_plots,area_charts,bubble_charts]
 Dia_ID=[]
 Access=[]
 bar_check=[]
@@ -897,7 +897,8 @@ def line_chart(date_col, num_col, freq="ME"):
     fig.update_layout(
         title=f"Line Chart: {num_col} over time",
         xaxis_title=date_col,
-        yaxis_title=num_col
+        yaxis_title=num_col,
+        margin=dict(t=30, b=10, l=10, r=10)
     )
 
     return fig
@@ -932,7 +933,8 @@ def heat_map(numerical_columns):
         )
     )
 
-    fig.update_layout(title="Correlation Heatmap")
+    fig.update_layout(title="Correlation Heatmap",
+                      margin=dict(t=30, b=10, l=10, r=10))
     return fig
 
 
@@ -957,7 +959,8 @@ def histogram_chart(num_col):
     fig.update_layout(
         title=f"Histogram of {num_col}",
         xaxis_title=num_col,
-        yaxis_title="Count"
+        yaxis_title="Count",
+        margin=dict(t=30, b=10, l=10, r=10)
     )
     return fig
 
@@ -984,7 +987,8 @@ def scatter_plot(x_col, y_col):
     fig.update_layout(
         title=f"Scatter Plot: {x_col} vs {y_col}",
         xaxis_title=x_col,
-        yaxis_title=y_col
+        yaxis_title=y_col,
+        margin=dict(t=30, b=10, l=10, r=10)
     )
     return fig
 
@@ -1017,7 +1021,8 @@ def box_plot(num_col):
 
     fig.update_layout(
         title=f"Box Plot of {num_col}",
-        yaxis_title=num_col
+        yaxis_title=num_col,
+        margin=dict(t=30, b=10, l=10, r=10)
     )
     return fig
 
@@ -1063,7 +1068,8 @@ def area_chart(date_col, num_col):
     fig.update_layout(
         title=f"Area Chart: {num_col}",
         xaxis_title=date_col,
-        yaxis_title=num_col
+        yaxis_title=num_col,
+        margin=dict(t=30, b=10, l=10, r=10)
     )
     return fig
 
@@ -1102,7 +1108,8 @@ def bubble_chart(x_col, y_col, size_col):
     fig.update_layout(
         title="Bubble Chart",
         xaxis_title=x_col,
-        yaxis_title=y_col
+        yaxis_title=y_col,
+        margin=dict(t=30, b=10, l=10, r=10)
     )
     return fig
 
@@ -1425,15 +1432,6 @@ def process_data_filtered_pie_result():
 
     return JSONResponse(content=response)
 
-# @app.get("/process_filtered_line_result")
-# def process_data_filtered_line_result():
-#     response = {}
-
-#     for col, figs in filtered_line_result.items():
-#         if figs:  # only keys with values
-#             response[col] = [fig.to_json() for fig in figs]
-
-#     return JSONResponse(content=response)
 
 @app.get("/process_filtered_line_result")
 def process_data_filtered_line_result():
@@ -1491,15 +1489,6 @@ def process_data_filtered_area_result():
 
     return JSONResponse(content=response)
 
-
-# @app.get("/process_filtered_area_result")
-# def process_data_filtered_area_result():
-#     response = {}
-
-#     for col, figs in filtered_area_result.items():
-#         if figs:  # only keys with values
-#             response[col] = [fig.to_json() for fig in figs]
-#     return JSONResponse(content=response)
 
 @app.get("/process_filtered_bubble_result")
 def process_data_filtered_bubble_result():
