@@ -6,9 +6,7 @@ import json
 import pandas as pd
 import numpy as np
 import re
-import os
 import plotly.graph_objects as go
-import plotly.express as px
 from plotly.utils import PlotlyJSONEncoder
 
 app = FastAPI()
@@ -18,22 +16,22 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-last_file = "../backend/uploads/data.csv"
-ext = os.path.splitext(last_file)[1]
+# last_file = "../backend/uploads/data.csv"
+# ext = os.path.splitext(last_file)[1]
 
 character_columns, time_columns, location_terms, Numerical_columns, Contact, SUM_COLUMNS, COUNT_COLUMNS= get_data()
 
-if ext==".csv":
-   df=pd.read_csv(last_file,encoding='unicode_escape')
-elif ext==".xlsx" or ext==".xls":
-   df=pd.read_excel(last_file)
-elif ext==".json":
-   df=pd.read_json(last_file)
+# if ext==".csv":
+#    df=pd.read_csv(last_file,encoding='unicode_escape')
+# elif ext==".xlsx" or ext==".xls":
+#    df=pd.read_excel(last_file)
+# elif ext==".json":
+#    df=pd.read_json(last_file)
 
-# csv=["Breast_cancer_data.csv","Canada.csv","categories.csv","Chocolate Sales.csv","Diwali Sales Data.csv","employees.csv","full_order_details.csv","Most Runs - 2022.csv","order_details.csv","Practicle 7 tableau_project_dataset (1).csv","products.csv","remain.csv","sales_data_sample.csv","Sales_Data_Big.csv","Sample - Superstore.csv","student_performance_dataset.csv","superstore_sales.csv","suppliers.csv","test_sheet.csv","try.csv","x_y_axis_terms.csv","Sales_without_NaNs.csv"]
-# i=21
-# df=pd.read_csv(csv[i],encoding='unicode_escape')
-# print(csv[i])
+csv=["Breast_cancer_data.csv","Canada.csv","categories.csv","Chocolate Sales.csv","Diwali Sales Data.csv","employees.csv","full_order_details.csv","Most Runs - 2022.csv","order_details.csv","Practicle 7 tableau_project_dataset (1).csv","products.csv","remain.csv","sales_data_sample.csv","Sales_Data_Big.csv","Sample - Superstore.csv","student_performance_dataset.csv","superstore_sales.csv","suppliers.csv","test_sheet.csv","try.csv","x_y_axis_terms.csv","Sales_without_NaNs.csv"]
+i=6
+df=pd.read_csv(csv[i],encoding='unicode_escape')
+print(csv[i])
 
 total_column_count=0
 total_row_count=0
@@ -509,7 +507,6 @@ for i in alpha_columns:
         elif j=="-":
             lct+=1
     if dct+lct==len(check):
-        print(i)
         COUNT_COLUMNS.append(i)
     dct=0
     lct=0
@@ -1364,40 +1361,43 @@ except:
 
 @app.get("/p1plot")
 def p1_plot():
-    fig_json = p1.to_plotly_json()   # <--- KEY STEP
+    fig_json = json.loads(json.dumps(p1, cls=PlotlyJSONEncoder))   # <--- KEY STEP
     return JSONResponse(content=fig_json)
 @app.get("/p2plot")
 def p1_plot():
-    fig_json = p2.to_plotly_json()   # <--- KEY STEP
+    fig_json = json.loads(json.dumps(p2, cls=PlotlyJSONEncoder))   # <--- KEY STEP
     return JSONResponse(content=fig_json)
 @app.get("/p3plot")
 def p3_plot():
-    fig_json = p3.to_plotly_json()   # <--- KEY STEP
+    fig_json = json.loads(json.dumps(p3, cls=PlotlyJSONEncoder))   # <--- KEY STEP
     return JSONResponse(content=fig_json)
 @app.get("/p4plot")
 def p4_plot():
-    fig_json = p4.to_plotly_json()   # <--- KEY STEP
+    fig_json = json.loads(json.dumps(p4, cls=PlotlyJSONEncoder))   # <--- KEY STEP
     return JSONResponse(content=fig_json)
 if heat_maps_check==1:
     @app.get("/sideplot")
     def side_plot():
-        fig_json = json.loads(sidechart.to_json())   # <--- KEY STEP
+        fig_json = json.loads(json.dumps(sidechart, cls=PlotlyJSONEncoder))   # <--- KEY STEP
         return JSONResponse(content=fig_json)
 else:
     @app.get("/sideplot")
     def side_plot():
-        fig_json = sidechart.to_plotly_json()   # <--- KEY STEP
+        fig_json = json.loads(json.dumps(sidechart, cls=PlotlyJSONEncoder))   # <--- KEY STEP
         return JSONResponse(content=fig_json)
 @app.get("/chart1plot")
 def chart1_plot():
-    fig_json = chart1.to_plotly_json()   # <--- KEY STEP
+    fig_json = json.loads(json.dumps(chart1, cls=PlotlyJSONEncoder))   # <--- KEY STEP
     return JSONResponse(content=fig_json)
 @app.get("/chart2plot")
 def chart2_plot():
-    fig_json = chart2.to_plotly_json()   # <--- KEY STEP
+    fig_json = json.loads(json.dumps(chart2, cls=PlotlyJSONEncoder))   # <--- KEY STEP
     return JSONResponse(content=fig_json)
 @app.get("/alpdes")
 def get_alpdes():
+    obj_cols = df.select_dtypes(include="object")
+    if obj_cols.empty:
+        return {"Categorical Data": ["Not Found"]}
     alpdes = df.describe(include="object")
     alpdes = alpdes.replace([np.inf, -np.inf], None)
     alpdes = alpdes.where(alpdes.notna(), None)
@@ -1417,8 +1417,11 @@ def process_data_filtered_result():
     response = {}
 
     for col, figs in filtered_result.items():
-        if figs:  # only keys with values
-            response[col] = [fig.to_dict() for fig in figs]
+        if figs:
+            response[col] = [
+                json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
+                for fig in figs
+            ]
 
     return JSONResponse(content=response)
 
@@ -1427,8 +1430,11 @@ def process_data_filtered_pie_result():
     response = {}
 
     for col, figs in filtered_pie_result.items():
-        if figs:  # only keys with values
-            response[col] = [fig.to_dict() for fig in figs]
+        if figs:
+            response[col] = [
+                json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
+                for fig in figs
+            ]
 
     return JSONResponse(content=response)
 
@@ -1451,8 +1457,11 @@ def process_data_filtered_histogram_result():
     response = {}
 
     for col, figs in filtered_histogram_result.items():
-        if figs:  # only keys with values
-            response[col] = [fig.to_dict() for fig in figs]
+        if figs:
+            response[col] = [
+                json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
+                for fig in figs
+            ]
 
     return JSONResponse(content=response)
 
@@ -1461,8 +1470,11 @@ def process_data_filtered_scatter_result():
     response = {}
 
     for col, figs in filtered_scatter_result.items():
-        if figs:  # only keys with values
-            response[col] = [fig.to_dict() for fig in figs]
+        if figs:
+            response[col] = [
+                json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
+                for fig in figs
+            ]
 
     return JSONResponse(content=response)
 
@@ -1471,8 +1483,11 @@ def process_data_filtered_box_result():
     response = {}
 
     for col, figs in filtered_box_result.items():
-        if figs:  # only keys with values
-            response[col] = [fig.to_dict() for fig in figs]
+        if figs:
+            response[col] = [
+                json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
+                for fig in figs
+            ]
 
     return JSONResponse(content=response)
 
@@ -1489,14 +1504,16 @@ def process_data_filtered_area_result():
 
     return JSONResponse(content=response)
 
-
 @app.get("/process_filtered_bubble_result")
 def process_data_filtered_bubble_result():
     response = {}
 
     for col, figs in filtered_bubble_result.items():
-        if figs:  # only keys with values
-            response[col] = [fig.to_dict() for fig in figs]
+        if figs:
+            response[col] = [
+                json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
+                for fig in figs
+            ]
 
     return JSONResponse(content=response)
 

@@ -366,11 +366,11 @@ const Dashboard = () => {
               <ul>
                 {[
                   "Bar chart",
-                  "Line chart",
                   "Pie chart",
                   "Histogram chart",
                   "Scatter plot",
                   "Box plot",
+                  "Line chart",
                   "Area chart",
                   "Bubble chart"
                 ].map((type) => (

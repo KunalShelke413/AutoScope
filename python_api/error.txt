@@ -1,13 +1,9 @@
-0-3grp  Breast_cancer_data.csv
-3-4grp  Chocolate Sales.csv
-6-4grp  full_order_details.csv
-8-0grp  order_details.csv
-17-4grp  suppliers.csv
-20-0grp  x_y_axis_terms.csv
+
+8-    chart1=dia[int(i[0])][int(i[1])][int(i[2])][int(i[3])]
+IndexError: list index out of range  -order_details.csv
 
 <--unique-->
-16-month chart  superstore_sales.csv
+16,14-size    sample superstore
 
-
-<----------------chart-------------->
-area
+17-     chart2=dia[int(i[0])][int(i[1])][int(i[2])][int(i[3])]
+IndexError: list index out of range   - suppliers.csv
