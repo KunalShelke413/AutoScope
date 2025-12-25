@@ -29,8 +29,8 @@ character_columns, time_columns, location_terms, Numerical_columns, Contact, SUM
 #    df=pd.read_json(last_file)
 
 csv=["Breast_cancer_data.csv","Canada.csv","categories.csv","Chocolate Sales.csv","Diwali Sales Data.csv","employees.csv","full_order_details.csv","Most Runs - 2022.csv","order_details.csv","Practicle 7 tableau_project_dataset (1).csv","products.csv","remain.csv","sales_data_sample.csv","Sales_Data_Big.csv","Sample - Superstore.csv","student_performance_dataset.csv","superstore_sales.csv","suppliers.csv","test_sheet.csv","try.csv","x_y_axis_terms.csv","Sales_without_NaNs.csv"]
-i=6
-df=pd.read_csv(csv[i],encoding='unicode_escape')
+i=8
+df=pd.read_csv("../module/"+csv[i],encoding='unicode_escape')
 print(csv[i])
 
 total_column_count=0
@@ -1095,7 +1095,7 @@ def bubble_chart(x_col, y_col, size_col):
         y=df[y_col],
         mode="markers",
         marker=dict(
-            size=df[size_col],
+            size=df[size_col].abs(), 
             sizemode="area",
             sizeref=2.*max(df[size_col])/(40.**2),
             showscale=True

@@ -1,9 +1,7 @@
 
-8-    chart1=dia[int(i[0])][int(i[1])][int(i[2])][int(i[3])]
-IndexError: list index out of range  -order_details.csv
-
+8-4grp  -order_details.csv
+17-4grp   - suppliers.csv
 <--unique-->
-16,14-size    sample superstore
 
-17-     chart2=dia[int(i[0])][int(i[1])][int(i[2])][int(i[3])]
-IndexError: list index out of range   - suppliers.csv
+
+

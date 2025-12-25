@@ -172,7 +172,7 @@ const Dashboard = () => {
 
   /* -------------------- LOADING -------------------- */
   if (!des || !ndes) {
-    return <p style={{ padding: "20px" }}>Loading dashboard...</p>;
+    return <p style={{ padding: "20px" }}>Loading dashboard... If file contain low data it will not procced forward (Needs data to make atleast 7 charts)</p>;
   }
 
   /* -------------------- DYNAMIC TABLE DATA -------------------- */
