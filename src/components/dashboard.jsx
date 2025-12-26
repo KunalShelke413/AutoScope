@@ -181,6 +181,19 @@ const Dashboard = () => {
   /*------------------------grp_setting------------------------*/
 
   useEffect(() => {
+    if (cols.length > 0 && !activeCol) {
+      setActiveCol(cols[0]);   // select first column
+    }
+  }, [cols, activeCol]);
+
+  useEffect(() => {
+    if (!activeChartType) {
+      setActiveChartType("Bar chart"); // default chart
+    }
+  }, [activeChartType]);
+
+
+  useEffect(() => {
     setCurrentIndex(0);
   }, [activeCol, activeChartType]);
 

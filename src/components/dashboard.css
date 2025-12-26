@@ -239,19 +239,22 @@ body {
 
 .left_button{
     position: absolute;
-    top:50%;
+    bottom: 10%;
     left:5px;
     transform: translateY(-50%);
 }
 .right_button{
     position: absolute;
-    top:50%;
+    bottom: 10%;
     right:5px;
     transform: translateY(-50%);
 }
 .summary{
     background-color: #fff;
+    overflow-x: auto;
 }
 .summary *{
     color: #000;
+    border: #000 solid 1px;
+    padding: 5px;
 }
