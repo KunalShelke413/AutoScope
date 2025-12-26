@@ -514,7 +514,7 @@ const Dashboard = () => {
                     <Plot
                       data={currentFigures[currentIndex].data}
                       layout={currentFigures[currentIndex].layout}
-                      style={{ width: "100%", height: "400px" }}
+                      style={{ width: "100%" }}
                     />
                   )}
 
@@ -548,7 +548,7 @@ const Dashboard = () => {
                 </>
               ) : (
                 <p style={{ padding: "10px", color: "black" }}>
-                  Select a column and chart type
+                  “This combination of column and chart type isn’t supported yet.”
                 </p>
               )}
             </div>
@@ -566,6 +566,7 @@ const Dashboard = () => {
         <h3>Data Preview (Tail)</h3>
         <Table rows={tailData} />
       </div>
+      <div><p className="Disclaimer">“<strong style={{color:"red"}}>Disclaimer:</strong> The results shown are automated and may contain inaccuracies. Use them as guidance only.”</p></div>
     </div>
   );
 };

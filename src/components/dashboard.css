@@ -128,8 +128,9 @@ body {
     color: black;
 }
 .summary_graph{
-    height: max-content;
+    height: 95vh;
     display: grid;
+    grid-template-rows: 15vh 80vh;
 }
 .col_and_grp{
     display: grid;
@@ -137,7 +138,7 @@ body {
 }
 .df_grp_box{
     display: grid;
-    grid-template-rows: 0.05fr 1fr;
+    grid-template-rows: 10vh 70vh;
 }
 .df_colname{
     background-color: #fff;
@@ -160,7 +161,6 @@ body {
 }
 
 .col-btn {
-  padding: 8px 12px;
   border: 1px solid #333;
   background: #fff;
   cursor: pointer;
@@ -229,7 +229,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 10px;
 }
 
 .nav_buttons button {
@@ -239,13 +238,13 @@ body {
 
 .left_button{
     position: absolute;
-    bottom: 10%;
+    bottom: 5%;
     left:5px;
     transform: translateY(-50%);
 }
 .right_button{
     position: absolute;
-    bottom: 10%;
+    bottom: 5%;
     right:5px;
     transform: translateY(-50%);
 }
@@ -257,4 +256,16 @@ body {
     color: #000;
     border: #000 solid 1px;
     padding: 5px;
+}
+.Disclaimer {
+  background-color: #ffffff;
+  color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 10px 16px;
+  font-size: 13px;
+  line-height: 1.5;
+  border-top: 1px solid #ddd;
 }

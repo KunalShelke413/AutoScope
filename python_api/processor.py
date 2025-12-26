@@ -652,7 +652,7 @@ for col_index, col_name in enumerate(X_Qualitative):
                 xaxis_title="Numerical Columns",
                 yaxis_title="Sum",
                 hoverlabel=dict(bgcolor="white"),
-                margin=dict(t=30, b=10, l=10, r=10)
+                margin=dict(t=50, b=10, l=10, r=10)
             )
             single[j].append([])
             single[j][i].append(fig)
@@ -693,7 +693,7 @@ for col_index, col_name in enumerate(X_Qualitative):
                 title=f"{num_col} by {col_name}",
                 xaxis_title=col_name,
                 yaxis_title=num_col,
-                margin=dict(t=30, b=10, l=10, r=10)
+                margin=dict(t=50, b=10, l=10, r=10)
             )
             mix[k].append([])
             mix[k][si].append(fig)
@@ -738,7 +738,7 @@ for col_index, col_name in enumerate(X_Quantitative):
                 xaxis_title="Numerical Columns",
                 yaxis_title="Sum",
                 hoverlabel=dict(bgcolor="white"),
-                margin=dict(t=30, b=10, l=10, r=10)
+                margin=dict(t=50, b=10, l=10, r=10)
             )
             N_single[j].append([])
             N_single[j][i].append(fig)
@@ -778,7 +778,7 @@ for col_index, col_name in enumerate(X_Quantitative):
                 title=f"{num_col} by {col_name}",
                 xaxis_title=col_name,
                 yaxis_title=num_col,
-                margin=dict(t=30, b=10, l=10, r=10)
+                margin=dict(t=50, b=10, l=10, r=10)
             )
             N_mix[k].append([])
             N_mix[k][si].append(fig)
@@ -826,7 +826,7 @@ for col_index, col_name in enumerate(location_columns):
             title=f"{num_col} by {col_name}",
             xaxis_title=col_name,
             yaxis_title=num_col,
-            margin=dict(t=30, b=10, l=10, r=10)
+            margin=dict(t=50, b=10, l=10, r=10)
         )
         L_mix[j].append([])
         L_mix[j][si].append(fig)
@@ -861,7 +861,7 @@ for i in column_name:
             title=f"Distribution of {i}",
             title_font=dict(size=13),
             # legend_title="Categories",
-            margin=dict(t=30, b=10, l=10, r=10)
+            margin=dict(t=50, b=10, l=10, r=10)
         )
         P_single[j].append([])
         P_single[j][si].append(fig)
@@ -891,7 +891,7 @@ for i in X_Qualitative:
            title=f"Distribution of {l} by {i}",
           #  legend_title=i,
            title_font=dict(size=13),
-           margin=dict(t=30, b=10, l=10, r=10)
+           margin=dict(t=50, b=10, l=10, r=10)
         )
         P_mix[j].append([])
         P_mix[j][si].append(fig)
@@ -933,7 +933,7 @@ def line_chart(date_col, num_col, freq="ME"):
         title=f"Line Chart: {num_col} over time",
         xaxis_title=date_col,
         yaxis_title=num_col,
-        margin=dict(t=30, b=10, l=10, r=10)
+        margin=dict(t=50, b=10, l=10, r=10)
     )
 
     return fig
@@ -972,7 +972,7 @@ def heat_map(numerical_columns):
     )
 
     fig.update_layout(title="Correlation Heatmap",
-                      margin=dict(t=30, b=10, l=10, r=10))
+                      margin=dict(t=50, b=10, l=10, r=10))
     return fig
 
 
@@ -998,7 +998,7 @@ def histogram_chart(num_col):
         title=f"Histogram of {num_col}",
         xaxis_title=num_col,
         yaxis_title="Count",
-        margin=dict(t=30, b=10, l=10, r=10)
+        margin=dict(t=50, b=10, l=10, r=10)
     )
     return fig
 
@@ -1028,7 +1028,7 @@ def scatter_plot(x_col, y_col):
         title=f"Scatter Plot: {x_col} vs {y_col}",
         xaxis_title=x_col,
         yaxis_title=y_col,
-        margin=dict(t=30, b=10, l=10, r=10)
+        margin=dict(t=50, b=10, l=10, r=10)
     )
     return fig
 
@@ -1065,7 +1065,7 @@ def box_plot(num_col):
     fig.update_layout(
         title=f"Box Plot of {num_col}",
         yaxis_title=num_col,
-        margin=dict(t=30, b=10, l=10, r=10)
+        margin=dict(t=50, b=10, l=10, r=10)
     )
     return fig
 
@@ -1114,7 +1114,7 @@ def area_chart(date_col, num_col):
         title=f"Area Chart: {num_col}",
         xaxis_title=date_col,
         yaxis_title=num_col,
-        margin=dict(t=30, b=10, l=10, r=10)
+        margin=dict(t=50, b=10, l=10, r=10)
     )
     return fig
 
@@ -1157,7 +1157,7 @@ def bubble_chart(x_col, y_col, size_col):
         title="Bubble Chart",
         xaxis_title=x_col,
         yaxis_title=y_col,
-        margin=dict(t=30, b=10, l=10, r=10)
+        margin=dict(t=50, b=10, l=10, r=10)
     )
     return fig
 
