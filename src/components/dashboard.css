@@ -140,12 +140,12 @@ body {
     grid-template-rows: 0.05fr 1fr;
 }
 .df_colname{
-    background-color: aliceblue;
+    background-color: #fff;
     color: black;
     border: solid 1px black;
 }
 .df_summary{
-    background-color: aliceblue;
+    background-color: #fff;
     color: black;
     border: solid 1px black;  
     height: 80vh; 
@@ -190,7 +190,7 @@ body {
 }
 
 .grp_type{
-    background-color: aliceblue;
+    background-color: #fff;
     color: black;
     border: solid 1px black;
 }
@@ -210,7 +210,7 @@ body {
     cursor: pointer;
 }
 .df_grp{
-    background-color: aliceblue;
+    background-color: #fff;
     color: black;
     border: solid 1px black;  
     position: relative;
@@ -248,4 +248,10 @@ body {
     top:50%;
     right:5px;
     transform: translateY(-50%);
+}
+.summary{
+    background-color: #fff;
+}
+.summary *{
+    color: #000;
 }

@@ -46,7 +46,8 @@ const Dashboard = () => {
   const [ARNotes, setARNotes] = useState({});
   const [BLRNotes, setBLRNotes] = useState({});
 
-  
+  const [headData, setHeadData] = useState([]);
+  const [tailData, setTailData] = useState([]);
 
   /* -------------------- FETCHES -------------------- */
   useEffect(() => {
@@ -168,6 +169,15 @@ const Dashboard = () => {
       .then(data => setBLRNotes(data))
       .catch(err => console.error(err));
   }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:8000/df_preview")
+      .then(res => res.json())
+      .then(data => {
+        setHeadData(data.head);
+        setTailData(data.tail);
+      });
+  }, []);
   /*------------------------grp_setting------------------------*/
 
   useEffect(() => {
@@ -222,6 +232,32 @@ const Dashboard = () => {
 
   }, [activeCol, activeChartType, Rcharts, PRcharts, LRcharts, HGRcharts, SRcharts, BRcharts, ARcharts, BLRcharts, RNotes, PRNotes, LRNotes, HGRNotes, SRNotes, BRNotes, ARNotes, BLRNotes]);
 
+  const Table = ({ rows }) => {
+    if (!rows || rows.length === 0) return <p>No data</p>;
+
+    const columns = Object.keys(rows[0]);
+
+    return (
+      <table border="1" style={{ width: "100%" }}>
+        <thead>
+          <tr>
+            {columns.map(col => (
+              <th key={col}>{col}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map((row, i) => (
+            <tr key={i}>
+              {columns.map(col => (
+                <td key={col}>{row[col]}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
+  };
 
   /*------------------------grp_setting------------------------*/
 
@@ -510,9 +546,13 @@ const Dashboard = () => {
       </div>
 
 
-      {/* <div className="summary">
-        {data ? data.summary : "summary"}
-      </div> */}
+      <div className="summary">
+        <h3>Data Preview (Head)</h3>
+        <Table rows={headData} />
+
+        <h3>Data Preview (Tail)</h3>
+        <Table rows={tailData} />
+      </div>
     </div>
   );
 };
