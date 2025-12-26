@@ -35,7 +35,16 @@ const Dashboard = () => {
 
   const [currentIndex, setCurrentIndex] = useState(0); //grp setting
   const [currentFigures, setCurrentFigures] = useState([]); //grp setting
+  const [currentNotes, setCurrentNotes] = useState([]); //abt-grp setting
 
+  const [RNotes, setRNotes] = useState({});
+  const [PRNotes, setPRNotes] = useState({});
+  const [LRNotes, setLRNotes] = useState({});
+  const [HGRNotes, setHGRNotes] = useState({});
+  const [SRNotes, setSRNotes] = useState({});
+  const [BRNotes, setBRNotes] = useState({});
+  const [ARNotes, setARNotes] = useState({});
+  const [BLRNotes, setBLRNotes] = useState({});
 
 
   /* -------------------- FETCHES -------------------- */
@@ -76,12 +85,20 @@ const Dashboard = () => {
       .then(res => res.json())
       .then(data => setRCharts(data))
       .catch(err => console.error(err));
+    fetch("http://localhost:8000/process_filtered_result_note")
+      .then(res => res.json())
+      .then(data => setRNotes(data))
+      .catch(err => console.error(err));
   }, []);
 
   useEffect(() => {
     fetch("http://localhost:8000/process_filtered_pie_result")
       .then(res => res.json())
       .then(data => setPRCharts(data))
+      .catch(err => console.error(err));
+    fetch("http://localhost:8000/process_filtered_pie_note")
+      .then(res => res.json())
+      .then(data => setPRNotes(data))
       .catch(err => console.error(err));
   }, []);
 
@@ -90,12 +107,20 @@ const Dashboard = () => {
       .then(res => res.json())
       .then(data => setLRCharts(data))
       .catch(err => console.error(err));
+    fetch("http://localhost:8000/process_filtered_line_note")
+      .then(res => res.json())
+      .then(data => setLRNotes(data))
+      .catch(err => console.error(err));
   }, []);
 
   useEffect(() => {
     fetch("http://localhost:8000/process_filtered_histogram_result")
       .then(res => res.json())
       .then(data => setHGRCharts(data))
+      .catch(err => console.error(err));
+    fetch("http://localhost:8000/process_filtered_histogram_note")
+      .then(res => res.json())
+      .then(data => setHGRNotes(data))
       .catch(err => console.error(err));
   }, []);
 
@@ -104,12 +129,20 @@ const Dashboard = () => {
       .then(res => res.json())
       .then(data => setSRCharts(data))
       .catch(err => console.error(err));
+    fetch("http://localhost:8000/process_filtered_scatter_note")
+      .then(res => res.json())
+      .then(data => setSRNotes(data))
+      .catch(err => console.error(err));
   }, []);
 
   useEffect(() => {
     fetch("http://localhost:8000/process_filtered_box_result")
       .then(res => res.json())
       .then(data => setBRCharts(data))
+      .catch(err => console.error(err));
+    fetch("http://localhost:8000/process_filtered_box_note")
+      .then(res => res.json())
+      .then(data => setBRNotes(data))
       .catch(err => console.error(err));
   }, []);
 
@@ -118,12 +151,20 @@ const Dashboard = () => {
       .then(res => res.json())
       .then(data => setARCharts(data))
       .catch(err => console.error(err));
+    fetch("http://localhost:8000/process_filtered_area_note")
+      .then(res => res.json())
+      .then(data => setARNotes(data))
+      .catch(err => console.error(err));
   }, []);
 
   useEffect(() => {
     fetch("http://localhost:8000/process_filtered_bubble_result")
       .then(res => res.json())
       .then(data => setBLRCharts(data))
+      .catch(err => console.error(err));
+    fetch("http://localhost:8000/process_filtered_bubble_note")
+      .then(res => res.json())
+      .then(data => setBLRNotes(data))
       .catch(err => console.error(err));
   }, []);
   /*------------------------grp_setting------------------------*/
@@ -136,36 +177,49 @@ const Dashboard = () => {
   useEffect(() => {
     if (!activeCol || !activeChartType) {
       setCurrentFigures([]);
+      setCurrentNotes([]);
       return;
     }
 
     let selectedCharts = null;
+    let selectedNote = null;
 
     if (activeChartType === "Bar chart") {
       selectedCharts = Rcharts;
+      selectedNote = RNotes;
     } else if (activeChartType === "Line chart") {
       selectedCharts = LRcharts;
+      selectedNote = LRNotes;
     } else if (activeChartType === "Pie chart") {
       selectedCharts = PRcharts;
-    }else if (activeChartType === "Histogram chart") {
+      selectedNote = PRNotes;
+    } else if (activeChartType === "Histogram chart") {
       selectedCharts = HGRcharts;
+      selectedNote = HGRNotes;
     } else if (activeChartType === "Scatter plot") {
       selectedCharts = SRcharts;
+      selectedNote = SRNotes;
     } else if (activeChartType === "Box plot") {
       selectedCharts = BRcharts;
+      selectedNote = BRNotes;
     } else if (activeChartType === "Area chart") {
       selectedCharts = ARcharts;
+      selectedNote = ARNotes;
     } else if (activeChartType === "Bubble chart") {
       selectedCharts = BLRcharts;
+      selectedNote = BLRNotes;
     } else {
       setCurrentFigures([]);
+      setCurrentNotes([]);
       return;
     }
 
     const figs = selectedCharts?.[activeCol] || [];
     setCurrentFigures(figs);
+    const nts = selectedNote?.[activeCol] || [];
+    setCurrentNotes(nts);
 
-  }, [activeCol, activeChartType, Rcharts, PRcharts, LRcharts, HGRcharts, SRcharts, BRcharts, ARcharts, BLRcharts]);
+  }, [activeCol, activeChartType, Rcharts, PRcharts, LRcharts, HGRcharts, SRcharts, BRcharts, ARcharts, BLRcharts, RNotes, PRNotes, LRNotes, HGRNotes, SRNotes, BRNotes, ARNotes, BLRNotes]);
 
 
   /*------------------------grp_setting------------------------*/
@@ -360,7 +414,20 @@ const Dashboard = () => {
           ))}
         </div>
         <div className="col_and_grp">
-          <div className="df_summary">about graph</div>
+          <div className="df_summary">
+            <h3>About Graph</h3>
+
+            {currentNotes.length > 0 ? (
+              <ul>
+                {currentNotes.map((note, i) => (
+                  <li key={i}>{note}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>Select a column and chart type</p>
+            )}
+          </div>
+
           <div className="df_grp_box">
             <div className="grp_type">
               <ul>

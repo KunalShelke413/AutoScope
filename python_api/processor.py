@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from storage import get_data
+import os
 import json
 import pandas as pd
 import numpy as np
@@ -16,22 +17,22 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-# last_file = "../backend/uploads/data.csv"
-# ext = os.path.splitext(last_file)[1]
+last_file = "../backend/uploads/data.csv"
+ext = os.path.splitext(last_file)[1]
 
 character_columns, time_columns, location_terms, Numerical_columns, Contact, SUM_COLUMNS, COUNT_COLUMNS= get_data()
 
-# if ext==".csv":
-#    df=pd.read_csv(last_file,encoding='unicode_escape')
-# elif ext==".xlsx" or ext==".xls":
-#    df=pd.read_excel(last_file)
-# elif ext==".json":
-#    df=pd.read_json(last_file)
+if ext==".csv":
+   df=pd.read_csv(last_file,encoding='unicode_escape')
+elif ext==".xlsx" or ext==".xls":
+   df=pd.read_excel(last_file)
+elif ext==".json":
+   df=pd.read_json(last_file)
 
-csv=["Breast_cancer_data.csv","Canada.csv","categories.csv","Chocolate Sales.csv","Diwali Sales Data.csv","employees.csv","full_order_details.csv","Most Runs - 2022.csv","order_details.csv","Practicle 7 tableau_project_dataset (1).csv","products.csv","remain.csv","sales_data_sample.csv","Sales_Data_Big.csv","Sample - Superstore.csv","student_performance_dataset.csv","superstore_sales.csv","suppliers.csv","test_sheet.csv","try.csv","x_y_axis_terms.csv","Sales_without_NaNs.csv"]
-i=8
-df=pd.read_csv("../module/"+csv[i],encoding='unicode_escape')
-print(csv[i])
+# csv=["Breast_cancer_data.csv","Canada.csv","categories.csv","Chocolate Sales.csv","Diwali Sales Data.csv","employees.csv","full_order_details.csv","Most Runs - 2022.csv","order_details.csv","Practicle 7 tableau_project_dataset (1).csv","products.csv","remain.csv","sales_data_sample.csv","Sales_Data_Big.csv","Sample - Superstore.csv","student_performance_dataset.csv","superstore_sales.csv","suppliers.csv","test_sheet.csv","try.csv","x_y_axis_terms.csv","Sales_without_NaNs.csv"]
+# i=3
+# df=pd.read_csv("../module/"+csv[i],encoding='unicode_escape')
+# print(csv[i])
 
 total_column_count=0
 total_row_count=0
@@ -608,6 +609,15 @@ box_result = {col: [] for col in column_name}
 area_result = {col: [] for col in column_name}
 bubble_result = {col: [] for col in column_name}
 
+result_note= {col: [] for col in column_name}
+pie_note = {col: [] for col in column_name}
+line_note = {col: [] for col in column_name}
+histogram_note = {col: [] for col in column_name}
+scatter_note = {col: [] for col in column_name}
+box_note = {col: [] for col in column_name}
+area_note = {col: [] for col in column_name}
+bubble_note = {col: [] for col in column_name}
+
 # Bar charts>>>
 j=0
 k=0
@@ -616,13 +626,15 @@ for col_index, col_name in enumerate(X_Qualitative):
     unique_vals = df[col_name].unique()
     if len(unique_vals) < 3 or len(unique_vals)>15:
         single.append([])
-        # grouped = df.groupby(col_name)[numerical_columns].sum()
         if numerical_columns in SUM_COLUMNS:
             grouped = df.groupby(col_name)[numerical_columns].sum()
+            note = f"This graph compares {col_name} with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain sum of all numerical columns.\n"
         elif numerical_columns in COUNT_COLUMNS:
             grouped = df.groupby(col_name)[numerical_columns].count()
+            note = f"This graph compares {col_name} with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain count of all numerical columns.\n"
         else:
             grouped = df.groupby(col_name)[numerical_columns].sum()
+            note = f"This graph compares {col_name} with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain sum of all numerical columns.\n"
         i=0
         for category in unique_vals:
             fig = go.Figure()
@@ -645,6 +657,7 @@ for col_index, col_name in enumerate(X_Qualitative):
             single[j].append([])
             single[j][i].append(fig)
             result[col_name].append(fig)
+            result_note[col_name].append(note)
             i=i+1
         j=j+1
     else:
@@ -654,12 +667,16 @@ for col_index, col_name in enumerate(X_Qualitative):
             # grouped = df.groupby(col_name)[num_col].sum()
             if num_col in SUM_COLUMNS:
                 grouped = df.groupby(col_name)[num_col].sum()
+                note = f"This graph compares {col_name} with {num_col}.\nThis graph contain sum of {num_col}.\n"
             elif num_col in COUNT_COLUMNS:
                 grouped = df.groupby(col_name)[num_col].count()
+                note = f"This graph compares {col_name} with {num_col}.\nThis graph contain count of {num_col}.\n"
             elif col_name in COUNT_COLUMNS:
                 grouped = df.groupby(col_name)[num_col].count()
+                note = f"This graph compares {col_name} with {num_col}.\nThis graph contain count of {num_col}.\n"
             else:
                 grouped = df.groupby(col_name)[num_col].sum()
+                note = f"This graph compares {col_name} with {num_col}.\nThis graph contain sum of {num_col}.\n"
             fig = go.Figure()
             x_vals = list(grouped.index)
             y_vals = grouped.values.tolist()
@@ -682,8 +699,11 @@ for col_index, col_name in enumerate(X_Qualitative):
             mix[k][si].append(fig)
             result[col_name].append(fig)
             result[num_col].append(fig)
+            result_note[col_name].append(note)
+            result_note[num_col].append(note)
             si=si+1
         k=k+1
+
 
 j=0
 k=0
@@ -692,13 +712,15 @@ for col_index, col_name in enumerate(X_Quantitative):
     unique_vals = df[col_name].unique()
     if len(unique_vals) < 3:
         N_single.append([])
-        # grouped = df.groupby(col_name)[numerical_columns].sum()
         if numerical_columns in SUM_COLUMNS:
             grouped = df.groupby(col_name)[numerical_columns].sum()
+            note = f"This graph compares {col_name} with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain sum of all numerical columns.\n"
         elif numerical_columns in COUNT_COLUMNS:
             grouped = df.groupby(col_name)[numerical_columns].count()
+            note = f"This graph compares {col_name} with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain count of all numerical columns.\n"
         else:
             grouped = df.groupby(col_name)[numerical_columns].sum()
+            note = f"This graph compares {col_name} with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain sum of all numerical columns.\n"
         i=0
         for category in unique_vals:
             fig = go.Figure()
@@ -721,21 +743,25 @@ for col_index, col_name in enumerate(X_Quantitative):
             N_single[j].append([])
             N_single[j][i].append(fig)
             result[col_name].append(fig)
+            result_note[col_name].append(note)
             i=i+1
         j=j+1
     else:
         N_mix.append([])
         si=0
         for num_col in numerical_columns:
-            # grouped = df.groupby(col_name)[num_col].sum()
             if num_col in SUM_COLUMNS:
                 grouped = df.groupby(col_name)[num_col].sum()
+                note = f"This graph compares {col_name} with {num_col}.\nThis graph contain sum of {num_col}.\n"
             elif num_col in COUNT_COLUMNS:
                 grouped = df.groupby(col_name)[num_col].count()
+                note = f"This graph compares {col_name} with {num_col}.\nThis graph contain count of {num_col}.\n"
             elif col_name in COUNT_COLUMNS:
                 grouped = df.groupby(col_name)[num_col].count()
+                note = f"This graph compares {col_name} with {num_col}.\nThis graph contain count of {num_col}.\n"
             else:
                 grouped = df.groupby(col_name)[num_col].sum()
+                note = f"This graph compares {col_name} with {num_col}.\nThis graph contain sum of {num_col}.\n"
             x_vals = list(grouped.index)
             y_vals = grouped.values.tolist()
             fig = go.Figure()
@@ -758,6 +784,8 @@ for col_index, col_name in enumerate(X_Quantitative):
             N_mix[k][si].append(fig)
             result[col_name].append(fig)
             result[num_col].append(fig)
+            result_note[col_name].append(note)
+            result_note[num_col].append(note)
             si=si+1
         k=k+1
 
@@ -767,18 +795,21 @@ for col_index, col_name in enumerate(location_columns):
     L_mix.append([])
     si=0
     for num_col in numerical_columns:
-        
-        # grouped = df.groupby(col_name)[num_col].sum()
         if num_col in SUM_COLUMNS:
             grouped = df.groupby(col_name)[num_col].sum()
+            note = f"This graph compares {col_name} with {num_col}.\nThis graph contain sum of {num_col}.\n"
         elif col_name in SUM_COLUMNS:
             grouped = df.groupby(col_name)[num_col].sum()
+            note = f"This graph compares {col_name} with {num_col}.\nThis graph contain sum of {num_col}.\n"
         elif num_col in COUNT_COLUMNS:
             grouped = df.groupby(col_name)[num_col].count()
+            note = f"This graph compares {col_name} with {num_col}.\nThis graph contain count of {num_col}.\n"
         elif col_name in COUNT_COLUMNS:
             grouped = df.groupby(col_name)[num_col].count()
+            note = f"This graph compares {col_name} with {num_col}.\nThis graph contain count of {num_col}.\n"
         else:
             grouped = df.groupby(col_name)[num_col].sum()
+            note = f"This graph compares {col_name} with {num_col}.\nThis graph contain sum of {num_col}.\n"
         x_vals = list(grouped.index)
         y_vals = grouped.values.tolist()
         fig = go.Figure()
@@ -801,6 +832,8 @@ for col_index, col_name in enumerate(location_columns):
         L_mix[j][si].append(fig)
         result[col_name].append(fig)
         result[num_col].append(fig)
+        result_note[col_name].append(note)
+        result_note[num_col].append(note)
         si=si+1
     j=j+1
 
@@ -811,6 +844,7 @@ for i in column_name:
     si=0
     if len(df[i].unique()) <= 8 and len(df[i].unique())>1:
         P_single.append([])
+        note = f"This Pie chart is for {i}.\n"
         counts = df[i].value_counts()
         fig = go.Figure()
         # labels = counts.index
@@ -832,6 +866,7 @@ for i in column_name:
         P_single[j].append([])
         P_single[j][si].append(fig)
         pie_result[i].append(fig)
+        pie_note[i].append(note)
         si=si+1
         j=j+1
 
@@ -841,6 +876,7 @@ for i in X_Qualitative:
     for l in numerical_columns:
         si=0
         grouped = df.groupby(i)[l].sum()
+        note = f"This Pie chart is for {i} and {l}.\nIt divdied by {i} and calculated by {l}.\n"
         fig = go.Figure()
         labels = grouped.index.astype("category").codes
         labels = labels.astype("int16")
@@ -861,6 +897,8 @@ for i in X_Qualitative:
         P_mix[j][si].append(fig)
         pie_result[i].append(fig)
         pie_result[l].append(fig)
+        pie_note[i].append(note)
+        pie_note[l].append(note)
         si=si+1
     j=j+1
 # line chart
@@ -907,10 +945,13 @@ for d in date_columns:
     line_charts.append([])
     for n in numerical_columns:
         fig = line_chart(d, n)
+        note=f"This line chart is {d} wise analysis of {n}."
         line_charts[i].append([])
         line_charts[i][j].append(fig)
         line_result[d].append(fig)
         line_result[n].append(fig)
+        line_note[d].append(note)
+        line_note[n].append(note)
         j+=1
     i+=1
     j=0
@@ -965,9 +1006,11 @@ i=0
 histogram_charts.append([])
 for n in numerical_columns:
     fig = histogram_chart(n)
+    note=f"This Histogram is based on numerical_column {n}."
     histogram_charts[0].append([])
     histogram_charts[0][i].append(fig)
     histogram_result[n].append(fig)
+    histogram_note[n].append(note)
     i+=1
 
 
@@ -998,10 +1041,13 @@ for i in range(len(numerical_columns)):
         d = numerical_columns[i]
         n = numerical_columns[j]
         fig = scatter_plot(d, n)
+        note=f"This scatter plot is based on {d} and {n}"
         scatter_plots[k].append([])
         scatter_plots[k][l].append(fig)
         scatter_result[d].append(fig)
         scatter_result[n].append(fig)
+        scatter_note[d].append(note)
+        scatter_note[n].append(note)
         l+=1
     k+=1
     l=0
@@ -1028,9 +1074,11 @@ i=0
 box_plots.append([])
 for n in numerical_columns:
     fig = box_plot(n)
+    note=f"This box plot is on {n} column."
     box_plots[0].append([])
     box_plots[0][i].append(fig)
     box_result[n].append(fig)
+    box_note[n].append(note)
     i+=1
 
 # area_plots
@@ -1077,10 +1125,13 @@ for d in date_columns:
     area_charts.append([])
     for n in numerical_columns:
         fig = area_chart(d, n)
+        note=f"This area chart is on {d} and {n}."
         area_charts[i].append([])
         area_charts[i][j].append(fig)
         area_result[d].append(fig)
         area_result[n].append(fig)
+        area_note[d].append(note)
+        area_note[n].append(note)
         j+=1
     i+=1
     j=0
@@ -1124,6 +1175,7 @@ for i in range(len(numerical_columns)):
             bubble_charts[l].append([])
             bubble_charts[l][m].append(fig)
             bubble_result[x].append(fig)
+            bubble_note[x].append(note)
             m+=1
     l+=1
     m=0
@@ -1212,6 +1264,57 @@ filtered_scatter_result = {k: v for k, v in scatter_result.items() if v}
 filtered_box_result = {k: v for k, v in box_result.items() if v}
 filtered_area_result = {k: v for k, v in area_result.items() if v}
 filtered_bubble_result = {k: v for k, v in bubble_result.items() if v}
+
+result_note = {
+    k: list({id(fig): fig for fig in v}.values())
+    for k, v in result_note.items()
+}
+pie_note = {
+    k: list({id(fig): fig for fig in v}.values())
+    for k, v in pie_note.items()
+}
+line_note = {
+    k: list({id(fig): fig for fig in v}.values())
+    for k, v in line_note.items()
+}
+histogram_note = {
+    k: list({id(fig): fig for fig in v}.values())
+    for k, v in histogram_note.items()
+}
+scatter_note = {
+    k: list({id(fig): fig for fig in v}.values())
+    for k, v in scatter_note.items()
+}
+box_note = {
+    k: list({id(fig): fig for fig in v}.values())
+    for k, v in box_note.items()
+}
+area_note = {
+    k: list({id(fig): fig for fig in v}.values())
+    for k, v in area_note.items()
+}
+bubble_note = {
+    k: list({id(fig): fig for fig in v}.values())
+    for k, v in bubble_note.items()
+}
+
+filtered_result_note = {k: v for k, v in result_note.items() if v}
+filtered_pie_note = {k: v for k, v in pie_note.items() if v}
+filtered_line_note = {k: v for k, v in line_note.items() if v}
+filtered_histogram_note = {k: v for k, v in histogram_note.items() if v}
+filtered_scatter_note = {k: v for k, v in scatter_note.items() if v}
+filtered_box_note = {k: v for k, v in box_note.items() if v}
+filtered_area_note = {k: v for k, v in area_note.items() if v}
+filtered_bubble_note = {k: v for k, v in bubble_note.items() if v}
+
+print(filtered_result_note)
+print(filtered_pie_note)
+print(filtered_line_note)
+print(filtered_histogram_note)
+print(filtered_scatter_note)
+print(filtered_box_note)
+print(filtered_area_note)
+print(filtered_bubble_note)
 
 i=-1
 for all in dia:
@@ -1308,9 +1411,13 @@ for i in range(len(Access)):
     except IndexError:
         continue
 
+if heat_maps_check==1:
+   sidechart=dia[8][0][0][0]
+
 for i in range(len(Access)):
     try:
-        bar_check,sidechart=B_check(i,bar_check,sidechart)
+        if sidechart==0:
+            bar_check,sidechart=B_check(i,bar_check,sidechart)
         bar_check,chart1=B_check(i,bar_check,chart1)
         bar_check,chart2=B_check(i,bar_check,chart2)
         if chart1!=0 and chart2!=0 and sidechart!=0 :
@@ -1326,11 +1433,6 @@ if sidechart==0 or chart1==0 or chart2==0:
                 chart1=dia[int(i[0])][int(i[1])][int(i[2])][int(i[3])]
             elif chart2==0:
                 chart2=dia[int(i[0])][int(i[1])][int(i[2])][int(i[3])]
-
-if heat_maps_check==1:
-   chart2=chart1
-   chart1=sidechart
-   sidechart=dia[8][0][0][0]
 
 a, b, c, d, A, B, C, D = 0, 0, 0, 0, 0, 0, 0, 0
 
@@ -1516,6 +1618,52 @@ def process_data_filtered_bubble_result():
             ]
 
     return JSONResponse(content=response)
+
+def notes_response(note_dict):
+    response = {}
+    for key, notes in note_dict.items():
+        if notes:
+            response[key] = notes
+    return JSONResponse(content=response)
+
+@app.get("/process_filtered_result_note")
+def get_filtered_result_note():
+    return notes_response(filtered_result_note)
+
+
+@app.get("/process_filtered_pie_note")
+def get_filtered_pie_note():
+    return notes_response(filtered_pie_note)
+
+
+@app.get("/process_filtered_box_note")
+def get_filtered_box_note():
+    return notes_response(filtered_box_note)
+
+
+@app.get("/process_filtered_line_note")
+def get_filtered_line_note():
+    return notes_response(filtered_line_note)
+
+
+@app.get("/process_filtered_histogram_note")
+def get_filtered_histogram_note():
+    return notes_response(filtered_histogram_note)
+
+
+@app.get("/process_filtered_scatter_note")
+def get_filtered_scatter_note():
+    return notes_response(filtered_scatter_note)
+
+
+@app.get("/process_filtered_area_note")
+def get_filtered_area_note():
+    return notes_response(filtered_area_note)
+
+
+@app.get("/process_filtered_bubble_note")
+def get_filtered_bubble_note():
+    return notes_response(filtered_bubble_note)
 
 @app.get("/process")
 def process_data():
