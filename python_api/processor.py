@@ -1307,14 +1307,6 @@ filtered_box_note = {k: v for k, v in box_note.items() if v}
 filtered_area_note = {k: v for k, v in area_note.items() if v}
 filtered_bubble_note = {k: v for k, v in bubble_note.items() if v}
 
-print(filtered_result_note)
-print(filtered_pie_note)
-print(filtered_line_note)
-print(filtered_histogram_note)
-print(filtered_scatter_note)
-print(filtered_box_note)
-print(filtered_area_note)
-print(filtered_bubble_note)
 
 i=-1
 for all in dia:
@@ -1664,6 +1656,13 @@ def get_filtered_area_note():
 @app.get("/process_filtered_bubble_note")
 def get_filtered_bubble_note():
     return notes_response(filtered_bubble_note)
+
+@app.get("/df_preview")
+def df_preview():
+    return {
+        "head": df.head().to_dict(orient="records"),
+        "tail": df.tail().to_dict(orient="records")
+    }
 
 @app.get("/process")
 def process_data():

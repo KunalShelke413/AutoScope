@@ -46,6 +46,7 @@ const Dashboard = () => {
   const [ARNotes, setARNotes] = useState({});
   const [BLRNotes, setBLRNotes] = useState({});
 
+  
 
   /* -------------------- FETCHES -------------------- */
   useEffect(() => {
@@ -348,10 +349,12 @@ const Dashboard = () => {
           )}
         </div>
       </div>
+      {/* <------------------------------------------------------------------------------------> */}
+
       <div className="info">
         <div className="alpha">
           <div className="title_name">Categorical Columns</div>
-          <div >
+          <div className="alpt">
             <table style={{ width: "100%", borderCollapse: "collapse" }}>
               <thead style={{ position: "sticky", top: 0, background: "red" }}>
                 <tr>
@@ -400,6 +403,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+
+
+      {/* <------------------------------------------------------------------------------------> */}
       <div className="summary_title"><p>Describe columns and Grap based on columns:</p></div>
       <div className="summary_graph">
         <div className="df_colname">
@@ -415,16 +421,16 @@ const Dashboard = () => {
         </div>
         <div className="col_and_grp">
           <div className="df_summary">
-            <h3>About Graph</h3>
+            <h3 style={{ color: "black" }}>About Graphs</h3>
 
             {currentNotes.length > 0 ? (
               <ul>
                 {currentNotes.map((note, i) => (
-                  <li key={i}>{note}</li>
+                  <li className="summ_grp" key={i} style={{ color: "black" }}>{note}</li>
                 ))}
               </ul>
             ) : (
-              <p>Select a column and chart type</p>
+              <p style={{ color: "black" }}>Select a column and chart type</p>
             )}
           </div>
 
@@ -465,7 +471,7 @@ const Dashboard = () => {
 
                   {currentFigures.length > 1 && (
                     <div className="nav_buttons">
-                      <button
+                      <button className="left_button"
                         onClick={() =>
                           setCurrentIndex(i => Math.max(i - 1, 0))
                         }
@@ -474,11 +480,11 @@ const Dashboard = () => {
                         ◀
                       </button>
 
-                      <span style={{ margin: "0 10px" }}>
+                      <span style={{ color: "black" }}>
                         {currentIndex + 1} / {currentFigures.length}
                       </span>
 
-                      <button
+                      <button className="right_button"
                         onClick={() =>
                           setCurrentIndex(i =>
                             Math.min(i + 1, currentFigures.length - 1)
@@ -492,7 +498,7 @@ const Dashboard = () => {
                   )}
                 </>
               ) : (
-                <p style={{ padding: "10px" }}>
+                <p style={{ padding: "10px", color: "black" }}>
                   Select a column and chart type
                 </p>
               )}
@@ -504,9 +510,9 @@ const Dashboard = () => {
       </div>
 
 
-      <div className="summary">
+      {/* <div className="summary">
         {data ? data.summary : "summary"}
-      </div>
+      </div> */}
     </div>
   );
 };
@@ -520,7 +526,8 @@ const thStyle = {
 const tdStyle = {
   border: "1px solid gray",
   padding: "6px",
-  fontSize: "13px"
+  fontSize: "13px",
+  color: "black"
 };
 
 export default Dashboard;
