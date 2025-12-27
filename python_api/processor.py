@@ -15,9 +15,11 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 last_file = "../backend/uploads/data.csv"
 ext = os.path.splitext(last_file)[1]
 
