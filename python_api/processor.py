@@ -653,12 +653,22 @@ for col_index, col_name in enumerate(X_Qualitative):
                 "<b>Value:</b> %{y}<br>" +
                 "<extra></extra>"
             ))
+            fig.update_traces(
+                marker=dict(
+                    line=dict(
+                    color="black",
+                    width=1.5
+                    )
+                )
+            )
             fig.update_layout(
                 title=f"{category} summary for column {col_name}",
                 xaxis_title="Numerical Columns",
                 yaxis_title="Sum",
                 hoverlabel=dict(bgcolor="white"),
-                margin=dict(t=50, b=10, l=10, r=10)
+                margin=dict(t=50, b=10, l=10, r=10),
+                plot_bgcolor= "rgba(138, 43,226,1)", 
+                font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
             )
             note=f"Bar chart:- {category} summary for column {col_name}.   "+note
 
@@ -700,11 +710,21 @@ for col_index, col_name in enumerate(X_Qualitative):
                 "<b>Value:</b> %{y}<br>" +
                 "<extra></extra>"
             ))
+            fig.update_traces(
+                marker=dict(
+                    line=dict(
+                    color="black",
+                    width=1.5
+                    )
+                )
+            )
             fig.update_layout(
                 title=f"{num_col} by {col_name}",
                 xaxis_title=col_name,
                 yaxis_title=num_col,
-                margin=dict(t=50, b=10, l=10, r=10)
+                margin=dict(t=50, b=10, l=10, r=10),
+                plot_bgcolor= "rgba(138, 43,226,1)", 
+                font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
             )
             mix[k].append([])
             mix[k][si].append(fig)
@@ -746,12 +766,22 @@ for col_index, col_name in enumerate(X_Quantitative):
                 "<b>Value:</b> %{y}<br>" +
                 "<extra></extra>"
             ))
+            fig.update_traces(
+                marker=dict(
+                    line=dict(
+                    color="black",
+                    width=1.5
+                    )
+                )
+            )
             fig.update_layout(
                 title=f"{category} summary for column {col_name}",
                 xaxis_title="Numerical Columns",
                 yaxis_title="Sum",
                 hoverlabel=dict(bgcolor="white"),
-                margin=dict(t=50, b=10, l=10, r=10)
+                margin=dict(t=50, b=10, l=10, r=10),
+                plot_bgcolor= "rgba(138, 43,226,1)", 
+                font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
             )
             N_single[j].append([])
             N_single[j][i].append(fig)
@@ -789,11 +819,21 @@ for col_index, col_name in enumerate(X_Quantitative):
                 "<b>Value:</b> %{y}<br>" +
                 "<extra></extra>"
             ))
+            fig.update_traces(
+                marker=dict(
+                    line=dict(
+                    color="black",
+                    width=1.5
+                    )
+                )
+            )
             fig.update_layout(
                 title=f"{num_col} by {col_name}",
                 xaxis_title=col_name,
                 yaxis_title=num_col,
-                margin=dict(t=50, b=10, l=10, r=10)
+                margin=dict(t=50, b=10, l=10, r=10),
+                plot_bgcolor= "rgba(138, 43,226,1)", 
+                font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
             )
             N_mix[k].append([])
             N_mix[k][si].append(fig)
@@ -839,11 +879,21 @@ for col_index, col_name in enumerate(location_columns):
             "<b>Value:</b> %{y}<br>" +
             "<extra></extra>"
         ))
+        fig.update_traces(
+                marker=dict(
+                    line=dict(
+                    color="black",
+                    width=1.5
+                    )
+                )
+            )
         fig.update_layout(
             title=f"{num_col} by {col_name}",
             xaxis_title=col_name,
             yaxis_title=num_col,
-            margin=dict(t=50, b=10, l=10, r=10)
+            margin=dict(t=50, b=10, l=10, r=10),
+            plot_bgcolor= "rgba(138, 43,226,1)", 
+            font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
         )
         L_mix[j].append([])
         L_mix[j][si].append(fig)
@@ -876,11 +926,22 @@ for i in column_name:
             hole=0.4,
             hovertemplate="<b>%{label}</b><br>Count: %{value}<extra></extra>"
         ))
+        fig.update_traces(
+            marker=dict(
+                line=dict(
+                color="black",
+                width=1.5
+                )
+            )
+        )
+
         fig.update_layout(
             title=f"Distribution of {i}",
             title_font=dict(size=13),
             # legend_title="Categories",
-            margin=dict(t=50, b=10, l=10, r=10)
+            margin=dict(t=50, b=10, l=10, r=10),
+            plot_bgcolor= "rgba(138, 43,226,1)", 
+            font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
         )
         P_single[j].append([])
         P_single[j][si].append(fig)
@@ -908,11 +969,21 @@ for i in X_Qualitative:
             hole=0.4,
             hovertemplate="<b>%{label}</b><br>Value: %{value}<extra></extra>"
         ))
+        fig.update_traces(
+            marker=dict(
+                line=dict(
+                color="black",
+                width=1.5
+                )
+            )
+        )
         fig.update_layout(
            title=f"Distribution of {l} by {i}",
           #  legend_title=i,
            title_font=dict(size=13),
-           margin=dict(t=50, b=10, l=10, r=10)
+           margin=dict(t=50, b=10, l=10, r=10),
+           plot_bgcolor= "rgba(138, 43,226,1)", 
+           font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
         )
         P_mix[j].append([])
         P_mix[j][si].append(fig)
@@ -949,12 +1020,22 @@ def line_chart(date_col, num_col, freq="ME"):
         y=temp[num_col],
         mode="lines+markers"
     ))
+    fig.update_traces(
+        mode="lines+markers",
+        line=dict(color="black", width=2),
+        marker=dict(
+            size=6,
+            line=dict(color="black", width=1)
+        )
+    )
 
     fig.update_layout(
         title=f"Line Chart: {num_col} over time",
         xaxis_title=date_col,
         yaxis_title=num_col,
-        margin=dict(t=50, b=10, l=10, r=10)
+        margin=dict(t=50, b=10, l=10, r=10),
+        plot_bgcolor= "rgba(138, 43,226,1)", 
+        font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
     )
 
     return fig
@@ -993,9 +1074,16 @@ def heat_map(numerical_columns):
             colorscale="Viridis"
         )
     )
+    fig.update_traces(
+        xgap=1,
+        ygap=1
+    )
 
     fig.update_layout(title="Correlation Heatmap",
-                      margin=dict(t=50, b=10, l=10, r=10))
+                      margin=dict(t=50, b=10, l=10, r=10),
+                      plot_bgcolor= "rgba(138, 43,226,1)", 
+                      font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)")
+    
     return fig
 
 
@@ -1016,12 +1104,22 @@ def histogram_chart(num_col):
         x=df[num_col],
         nbinsx=30
     ))
+    fig.update_traces(
+        marker=dict(
+            line=dict(
+                color="black",
+                width=1
+            )
+        )
+    )
 
     fig.update_layout(
         title=f"Histogram of {num_col}",
         xaxis_title=num_col,
         yaxis_title="Count",
-        margin=dict(t=50, b=10, l=10, r=10)
+        margin=dict(t=50, b=10, l=10, r=10),
+        plot_bgcolor= "rgba(138, 43,226,1)", 
+        font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
     )
     return fig
 
@@ -1048,12 +1146,22 @@ def scatter_plot(x_col, y_col):
         y=df[y_col],
         mode="markers"
     ))
+    fig.update_traces(
+        marker=dict(
+            line=dict(
+                color="black",
+                width=1
+            )
+        )
+    )
 
     fig.update_layout(
         title=f"Scatter Plot: {x_col} vs {y_col}",
         xaxis_title=x_col,
         yaxis_title=y_col,
-        margin=dict(t=50, b=10, l=10, r=10)
+        margin=dict(t=50, b=10, l=10, r=10),
+        plot_bgcolor= "rgba(138, 43,226,1)", 
+        font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
     )
     return fig
 
@@ -1088,11 +1196,16 @@ def box_plot(num_col):
         y=df[num_col],
         boxmean=True
     ))
+    fig.update_traces(
+        line=dict(color="black")
+    )
 
     fig.update_layout(
         title=f"Box Plot of {num_col}",
         yaxis_title=num_col,
-        margin=dict(t=50, b=10, l=10, r=10)
+        margin=dict(t=50, b=10, l=10, r=10),
+        plot_bgcolor= "rgba(138, 43,226,1)", 
+        font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
     )
     return fig
 
@@ -1138,12 +1251,20 @@ def area_chart(date_col, num_col):
         fill="tozeroy",
         mode="lines"
     ))
+    fig.update_traces(
+        line=dict(
+            color="black",
+            width=2
+        )
+    )
 
     fig.update_layout(
         title=f"Area Chart: {num_col}",
         xaxis_title=date_col,
         yaxis_title=num_col,
-        margin=dict(t=50, b=10, l=10, r=10)
+        margin=dict(t=50, b=10, l=10, r=10),
+        plot_bgcolor= "rgba(138, 43,226,1)", 
+        font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
     )
     return fig
 
@@ -1183,12 +1304,22 @@ def bubble_chart(x_col, y_col, size_col):
             showscale=True
         )
     ))
+    fig.update_traces(
+        marker=dict(
+            line=dict(
+                color="black",
+                width=2
+            )
+        )
+    )
 
     fig.update_layout(
         title="Bubble Chart",
         xaxis_title=x_col,
         yaxis_title=y_col,
-        margin=dict(t=50, b=10, l=10, r=10)
+        margin=dict(t=50, b=10, l=10, r=10),
+        plot_bgcolor= "rgba(138, 43,226,1)", 
+        font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
     )
     return fig
 

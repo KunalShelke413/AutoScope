@@ -289,95 +289,69 @@ const Dashboard = () => {
 
   return (
     <div className="dmain">
-      <div className="dcont">
-        <div className="dfstc">
-          <div className="dcontainer">
-            <div className="dfirst">
-              <div id="one" className="dcol">
-                <div style={{ color: "black" }}>{data ? data.onename : "fst"}</div>
-                <div style={{ color: "black" }}>{data ? data.one : "fst"}</div>
-              </div>
-              <div id="two" className="dcol">
-                <div style={{ color: "black" }}>{data ? data.twoname : "fst"}</div>
-                <div style={{ color: "black" }}>{data ? data.two : "snd"}</div>
-              </div>
-              <div id="three" className="dcol">
-                <div style={{ color: "black" }}>{data ? data.threename : "fst"}</div>
-                <div style={{ color: "black" }}>{data ? data.three : "trd"}</div>
-              </div>
-              <div id="four" className="dcol">
-                <div style={{ color: "black" }}>{data ? data.fourname : "fst"}</div>
-                <div style={{ color: "black" }}>{data ? data.four : "fth"}</div>
-              </div>
-            </div>
-
-            <div className="dsecond">
-              <div id="five" className="dcol1">
-                {/*<div>{data ? data.fivename : "fst"}</div>
-                <div>{data ? data.five : "fft"}</div>*/}
-                {pc1 && (
-                  <Plot
-                    data={pc1.data}
-                    layout={pc1.layout}
-                    style={{ width: "100%", height: "100%" }}
-                  />
-                )}
-              </div>
-              <div id="six" className="dcol1">
-                {/*<div>{data ? data.sixname : "fst"}</div>
-                <div>{data ? data.six : "sth"}</div>*/}
-                {pc2 && (
-                  <Plot
-                    data={pc2.data}
-                    layout={pc2.layout}
-                    style={{ width: "100%", height: "100%" }}
-                  />
-                )}
-              </div>
-              <div id="seven" className="dcol1">
-                {/*<div>{data ? data.sevenname : "fst"}</div>
-                <div>{data ? data.seven : "svt"}</div>*/}
-                {pc3 && (
-                  <Plot
-                    data={pc3.data}
-                    layout={pc3.layout}
-                    style={{ width: "100%", height: "100%" }}
-                  />
-                )}
-              </div>
-              <div id="eight" className="dcol1">
-                {/*<div>{data ? data.eightname : "fst"}</div>
-                <div>{data ? data.eight : "eth"}</div>*/}
-                {pc4 && (
-                  <Plot
-                    data={pc4.data}
-                    layout={pc4.layout}
-                    style={{ width: "100%", height: "100%" }}
-                  />
-                )}
-              </div>
-            </div>
-          </div>
+      <div className="AutoScope">
+        <p>
+          <strong><span style={{ color: "red" }}>A</span>uto<span style={{ color: "red" }}>S</span>cope</strong>
+        </p>
+      </div>
+      <div className="KPI_boards">
+        <div id="one" className="kpi">
+          <div>{data ? data.onename : "fst"}</div>
+          <div>{data ? data.one : "fst"}</div>
         </div>
-
-        <div className="dsndc">
-          <div id="sidechart" className="dsidechart">
-            {/* <div>{data ? data.sidechartname : "fst"}</div>
-            <div>{data ? data.sidechart : "nth"}</div> */}
-            {sidec && (
-              <Plot
-                data={sidec.data}
-                layout={sidec.layout}
-                style={{ width: "100%", height: "100%" }}
-              />
-            )}
-          </div>
+        <div id="two" className="kpi">
+          <div>{data ? data.twoname : "fst"}</div>
+          <div>{data ? data.two : "snd"}</div>
+        </div>
+        <div id="three" className="kpi">
+          <div>{data ? data.threename : "fst"}</div>
+          <div>{data ? data.three : "trd"}</div>
+        </div>
+        <div id="four" className="kpi">
+          <div>{data ? data.fourname : "fst"}</div>
+          <div>{data ? data.four : "fth"}</div>
         </div>
       </div>
-      <div className="dlower">
-        <div id="chart1" className="dchart">
-          {/* {data ? data.chart1name : "fst"}
-          {data ? data.chart1 : "tth"} */}
+      <div className="pie_board">
+        <div id="five" className="pie">
+          {pc1 && (
+            <Plot
+              data={pc1.data}
+              layout={pc1.layout}
+              style={{ width: "100%", height: "100%" }}
+            />
+          )}
+        </div>
+        <div id="six" className="pie">
+          {pc2 && (
+            <Plot
+              data={pc2.data}
+              layout={pc2.layout}
+              style={{ width: "100%", height: "100%" }}
+            />
+          )}
+        </div>
+        <div id="seven" className="pie">
+          {pc3 && (
+            <Plot
+              data={pc3.data}
+              layout={pc3.layout}
+              style={{ width: "100%", height: "100%" }}
+            />
+          )}
+        </div>
+        <div id="eight" className="pie">
+          {pc4 && (
+            <Plot
+              data={pc4.data}
+              layout={pc4.layout}
+              style={{ width: "100%", height: "100%" }}
+            />
+          )}
+        </div>
+      </div>
+      <div className="chart_board">
+        <div id="chart1" className="chart">
           {c1 && (
             <Plot
               data={c1.data}
@@ -386,9 +360,16 @@ const Dashboard = () => {
             />
           )}
         </div>
-        <div id="chart2" className="dchart">
-          {/* {data ? data.chart2name : "fst"}
-          {data ? data.chart2 : "elv"} */}
+        <div id="sidechart" className="chart">
+          {sidec && (
+            <Plot
+              data={sidec.data}
+              layout={sidec.layout}
+              style={{ width: "100%", height: "100%" }}
+            />
+          )}
+        </div>
+        <div id="chart2" className="chart">
           {c2 && (
             <Plot
               data={c2.data}
@@ -398,8 +379,6 @@ const Dashboard = () => {
           )}
         </div>
       </div>
-      {/* <------------------------------------------------------------------------------------> */}
-
       <div className="info">
         <div className="alpha">
           <div className="title_name">Categorical Columns</div>
@@ -452,10 +431,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-
-
-      {/* <------------------------------------------------------------------------------------> */}
-      <div className="summary_title"><p>Describe columns and Grap based on columns:</p></div>
+      <div className="summary_title">
+        <p>Describe columns and Grap based on columns:</p>
+      </div>
       <div className="summary_graph">
         <div className="df_colname">
           {cols.map((col, index) => (
@@ -470,19 +448,18 @@ const Dashboard = () => {
         </div>
         <div className="col_and_grp">
           <div className="df_summary">
-            <h3 style={{ color: "black" }}>About Graphs</h3>
+            <h3 style={{ color: "white" }}>About Graphs:</h3>
 
             {currentNotes.length > 0 ? (
               <ul style={{ listStyleType: "decimal" }}>
                 {currentNotes.map((note, i) => (
-                  <li className="summ_grp" key={i} style={{ color: "black",whiteSpace: "pre-line" }}>{note}</li>
+                  <li className="summ_grp" key={i} style={{ color: "white", whiteSpace: "pre-line" }}>{note}</li>
                 ))}
               </ul>
             ) : (
-              <p style={{ color: "black" }}>Select a column and chart type</p>
+              <p style={{ color: "white" }}>Select a column and chart type</p>
             )}
           </div>
-
           <div className="df_grp_box">
             <div className="grp_type">
               <ul>
@@ -506,7 +483,6 @@ const Dashboard = () => {
                 ))}
               </ul>
             </div>
-
             <div className="df_grp">
               {currentFigures.length > 0 ? (
                 <>
@@ -552,21 +528,19 @@ const Dashboard = () => {
                 </p>
               )}
             </div>
-
-
           </div>
         </div>
       </div>
-
-
       <div className="summary">
-        <h3>Data Preview (Head)</h3>
+        <div><h5>Data Preview (Head)</h5></div>
         <div className="summary_table"><Table rows={headData} /></div>
 
-        <h3>Data Preview (Tail)</h3>
+        <h5>Data Preview (Tail)</h5>
         <div className="summary_table"><Table rows={tailData} /></div>
       </div>
-      <div><p className="Disclaimer">“<strong style={{color:"red"}}>Disclaimer:</strong> The results shown are automated and may contain inaccuracies. Use them as guidance only.”</p></div>
+      <div>
+        <p className="Disclaimer">“<strong style={{color:"red"}}>Disclaimer:</strong> The results shown are automated and may contain inaccuracies. Use them as guidance only.”</p>
+      </div>
     </div>
   );
 };
@@ -581,7 +555,8 @@ const tdStyle = {
   border: "1px solid gray",
   padding: "6px",
   fontSize: "13px",
-  color: "black"
+  color: "white",
+  backgroundColor: "blueviolet"
 };
 
 export default Dashboard;

@@ -1,8 +1,8 @@
-* {
+ * {
     color: rgb(253, 253, 253);
 }
 b{
-    color: #000;
+    color: #fff;
 }
 
 body {
@@ -12,155 +12,99 @@ body {
 
 .dmain {
     height: 100vh;
-    margin: 0% 0.1%;
+    margin: 0%;
     overflow-y: auto;
     scrollbar-width: none;
-    /* position: relative;
-    top: 0%;
-    left: 1px; */
+    background-color: rgb(71, 3, 134);
 }
 
-.dcont {
+.AutoScope p{
+    font-size: 30px;
+}
+
+.KPI_boards{
+    background-color: blueviolet;
+    padding:5px;
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
 }
-
-.dcontainer {
+.kpi{
+    background-color: rgb(71, 3, 134);
+    padding: 5px;
+    margin: 1%;
+    border-radius: 15px;
+    color: aliceblue;
     display: grid;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
-
-.dfirst,
-.dsecond {
+.pie_board{
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 5px;
 }
-
-.dcol {
-    color:black;
-    margin: 0.5px;
-    border: solid 1px gray;
-    height: 15vh;
+.pie{
+    border-radius: 15px;
+    height: 35vh;
+    width: 98%;
+    margin: 1%;
+}
+.chart_board{
+    padding:1px 5px;
     display: grid;
-    grid-template-rows: 1fr 2fr;
-    align-items: top;
-    justify-items: center;
-    background-color: rgb(252, 252, 252);
+    grid-template-columns: 1fr 1fr 1fr;
 }
-
-.dcol1 {
-    margin: 0.5px;
-    border: solid 1px gray;
-    height: 30vh;
-    /* display: grid;
-    grid-template-rows: 0.1fr 2.9fr;
-    align-items: top;
-    justify-items: center; */
+.chart{
+    margin:0% 1%;
+    height: 45vh;
 }
-
-.dsidechart {
-    margin: 0.5px;
-    border: solid 1px gray;
-    height: calc(45vh + 1px)
-}
-
-.dlower {
-    height: calc(55vh - 6px);
-    width: calc(100% - 3px);
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-}
-
-.dchart {
-    margin: 0%;
-    border: solid 1px gray;
-}
-
-#chart1 {
-    margin-top: 1px;
-    margin-left: 1px;
-    width: 100%;
-}
-
-#chart2 {
-    margin-top: 1px;
-    margin-left: 2px;
-    width: 100%;
-}
-
 .info{
-    height: max-content;
-    width: 100%;
-    background-color: #fff;
-    display: grid;
-    grid-template-rows: 0.6fr 1fr;
+    padding: 4px 5px;
 }
-.alpha{
-    height: 100%;
-    width: 100%;
-    border: solid 1px gray;
+.alpt,.numb{
+    padding: 5px;
     overflow-x: auto;
     scrollbar-width: none;
 }
-.numb{
-    height: 100%;
-    width: 100%;
-    border: solid 1px gray;
-    overflow-x: auto;
-    scrollbar-width: none;
+.alpt:hover{
+    scrollbar-width: 1px;
 }
-
-.title_name{
-    color: #000;
+.numb:hover{
+    scrollbar-width: 1px;
 }
-/* .df_summary {
-  background-image: url("../assets/bullet_point.jpg");
-  background-size: contain;        
-  background-position: center;
-  background-repeat: no-repeat;
-} */
-
 .summary_title{
-    padding: 5px 0px;
-    background-color: #fff;
-    border:solid 1px #000;
-}
-.summary_title p{
-    color: black;
+    padding: 5px;
 }
 .summary_graph{
-    height: 95vh;
+    padding: 5px;
     display: grid;
-    grid-template-rows: 15vh 80vh;
+    grid-template-rows: 10vh 80vh;
 }
 .col_and_grp{
+    padding: 2px;
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
 .df_grp_box{
     display: grid;
     grid-template-rows: 10vh 70vh;
+    padding: 2px;
 }
 .df_colname{
-    background-color: #fff;
-    color: black;
-    border: solid 1px black;
+    background-color: blueviolet;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom:5px;
+    border-radius: 15px;
 }
-.df_summary{
-    background-color: #fff;
-    color: black;
-    border: solid 1px black;  
-    height: 80vh;
-    overflow-x:auto;
+.df_colname button{
+    color: #fff;
+    background-color: rgb(71, 3, 134);
+    margin: 2px;
+    height: 50%;
 }
-
-.df_colname {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: center;
-  padding: 5px;
-}
-
 .col-btn {
   border: 1px solid #333;
   background: #fff;
@@ -168,32 +112,44 @@ body {
   border-radius: 5px;
   color:black;
 }
-
 .col-btn.active {
   background: black;
   color: white;
 }
-
 .col-btn {
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
-
 .col-btn:hover {
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+}
+.df_summary{
+    padding: 5px;
+    margin:0px 2px ;
+    border-radius: 15px;
+    overflow-y: auto;
+    border: #000 solid 1px;
+    scrollbar-width: none;
+    background-color: rgb(138, 43, 226);
+}
+.df_summary:hover{
+    scrollbar-width: auto;
 }
 
 .df_grp {
   background-image: url("../assets/grp.png");
-  background-size: contain;        /* or contain */
+  background-size: contain; 
   background-position: center;
   background-repeat: no-repeat;
 }
 
 .grp_type{
-    background-color: #fff;
-    color: black;
+    background-color: blueviolet;
     border: solid 1px black;
+    border-radius: 15px 15px 0px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .grp_type ul{
     list-style: none;
@@ -203,18 +159,25 @@ body {
     flex-direction: row;
 }
 .grp_type ul li{
-    color: black;
+    color: white;
+    background-color: rgb(71, 3, 134);
     border: solid 1px gray;
     margin: 1px;
+    font-size: 95%;
     text-align: center;
     box-shadow: 0 2px 10px rgba(0,0,0,0.15);
     cursor: pointer;
 }
+.grp_type ul li:hover{
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+    transform: translateY(-1px);
+}
 .df_grp{
-    background-color: #fff;
+    background-color: blueviolet;
     color: black;
     border: solid 1px black;  
     position: relative;
+    border-radius: 0px 0px 15px 15px;
 }
 .grp_type li {
   cursor: pointer;
@@ -230,6 +193,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: blueviolet;
 }
 
 .nav_buttons button {
@@ -239,40 +203,41 @@ body {
 
 .left_button{
     position: absolute;
-    bottom: 5%;
+    bottom: 1%;
     left:5px;
     transform: translateY(-50%);
 }
 .right_button{
     position: absolute;
-    bottom: 5%;
+    bottom: 1%;
     right:5px;
     transform: translateY(-50%);
 }
 .summary{
-    background-color: #fff;
+    padding: 5px;
+    margin: 5px;
 }
 .summary_table{
-    overflow-x: auto;
-    scrollbar-width: none;
+    background-color: blueviolet;
+    border:black 1px;
+    border-radius: 5px;
+    padding: 2px;
 }
-.summary *{
-    color: #000;
+.summary table{
+    border: black solid 1px;
 }
-
-.summary_table *{
+.summary th,tr,td{
     border: #000 solid 1px;
-    padding: 5px;
+    text-align: center;
 }
 .Disclaimer {
-  background-color: #ffffff;
-  color: #000000;
+  background-color: rgb(71, 3, 134);
+  color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 10px 16px;
+  padding: 5px;
   font-size: 13px;
   line-height: 1.5;
-  border-top: 1px solid #ddd;
 }
