@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from storage import get_data
+from function import note4bar,note4area,note4pie,note4histogram,note4scatter,note4boxplot,note4line,note4bubble
 import os
 import json
 import pandas as pd
@@ -628,13 +629,16 @@ for col_index, col_name in enumerate(X_Qualitative):
         single.append([])
         if numerical_columns in SUM_COLUMNS:
             grouped = df.groupby(col_name)[numerical_columns].sum()
-            note = f"This graph compares {col_name} with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain sum of all numerical columns.\n"
+            note = f"{num_col} by {col_name}\nThis graph use {col_name} for comparing with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain sum of all numerical columns. \n "
         elif numerical_columns in COUNT_COLUMNS:
             grouped = df.groupby(col_name)[numerical_columns].count()
-            note = f"This graph compares {col_name} with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain count of all numerical columns.\n"
+            note = f"{num_col} by {col_name}\nThis graph use {col_name} for comparing with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain count of all numerical columns. \n"
         else:
             grouped = df.groupby(col_name)[numerical_columns].sum()
-            note = f"This graph compares {col_name} with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain sum of all numerical columns.\n"
+            note = f"{num_col} by {col_name}\nThis graph use {col_name} for comparing with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain sum of all numerical columns. \n "
+        
+        new_note=note4bar(grouped)
+        note=note+new_note
         i=0
         for category in unique_vals:
             fig = go.Figure()
@@ -654,6 +658,8 @@ for col_index, col_name in enumerate(X_Qualitative):
                 hoverlabel=dict(bgcolor="white"),
                 margin=dict(t=50, b=10, l=10, r=10)
             )
+            note=f"Bar chart:- {category} summary for column {col_name}.   "+note
+
             single[j].append([])
             single[j][i].append(fig)
             result[col_name].append(fig)
@@ -667,16 +673,19 @@ for col_index, col_name in enumerate(X_Qualitative):
             # grouped = df.groupby(col_name)[num_col].sum()
             if num_col in SUM_COLUMNS:
                 grouped = df.groupby(col_name)[num_col].sum()
-                note = f"This graph compares {col_name} with {num_col}.\nThis graph contain sum of {num_col}.\n"
+                note = f"{num_col} by {col_name}\nThis graph use {num_col} for comparing with {col_name}.\nThis graph contain sum of {col_name}.\n "
             elif num_col in COUNT_COLUMNS:
                 grouped = df.groupby(col_name)[num_col].count()
-                note = f"This graph compares {col_name} with {num_col}.\nThis graph contain count of {num_col}.\n"
+                note =  f"{num_col} by {col_name}\nThis graph use {num_col} for comparing with {col_name}.\nThis graph contain count of {col_name}.\n"
             elif col_name in COUNT_COLUMNS:
                 grouped = df.groupby(col_name)[num_col].count()
-                note = f"This graph compares {col_name} with {num_col}.\nThis graph contain count of {num_col}.\n"
+                note =  f"{num_col} by {col_name}\nThis graph use {num_col} for comparing with {col_name}.\nThis graph contain count of {col_name}.\n "
             else:
                 grouped = df.groupby(col_name)[num_col].sum()
-                note = f"This graph compares {col_name} with {num_col}.\nThis graph contain sum of {num_col}.\n"
+                note = f"{num_col} by {col_name}\nThis graph use {num_col} for comparing with {col_name}.\nThis graph contain sum of {col_name}.\n "
+            
+            new_note=note4bar(grouped)
+            note=note+new_note
             fig = go.Figure()
             x_vals = list(grouped.index)
             y_vals = grouped.values.tolist()
@@ -714,13 +723,15 @@ for col_index, col_name in enumerate(X_Quantitative):
         N_single.append([])
         if numerical_columns in SUM_COLUMNS:
             grouped = df.groupby(col_name)[numerical_columns].sum()
-            note = f"This graph compares {col_name} with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain sum of all numerical columns.\n"
+            note = f"{num_col} by {col_name}\nThis graph use {col_name} for comparing with all numerical columns: {', '.join(numerical_columns)}. \n  This graph contain sum of all numerical columns. \n  "
         elif numerical_columns in COUNT_COLUMNS:
             grouped = df.groupby(col_name)[numerical_columns].count()
-            note = f"This graph compares {col_name} with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain count of all numerical columns.\n"
+            note = f"{num_col} by {col_name}\nThis graph use {col_name} for comparing with all numerical columns: {', '.join(numerical_columns)}.  \n This graph contain count of all numerical columns. \n  "
         else:
             grouped = df.groupby(col_name)[numerical_columns].sum()
-            note = f"This graph compares {col_name} with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain sum of all numerical columns.\n"
+            note = f"{num_col} by {col_name}\nThis graph use {col_name} for comparing with all numerical columns: {', '.join(numerical_columns)}. \n  This graph contain sum of all numerical columns. \n  "
+        new_note=note4bar(grouped)
+        note=note+new_note
         i=0
         for category in unique_vals:
             fig = go.Figure()
@@ -752,16 +763,18 @@ for col_index, col_name in enumerate(X_Quantitative):
         for num_col in numerical_columns:
             if num_col in SUM_COLUMNS:
                 grouped = df.groupby(col_name)[num_col].sum()
-                note = f"This graph compares {col_name} with {num_col}.\nThis graph contain sum of {num_col}.\n"
+                note = f"{num_col} by {col_name}\nThis graph use {num_col} for comparing with {col_name}. \n  This graph contain sum of {col_name}. \n  "
             elif num_col in COUNT_COLUMNS:
                 grouped = df.groupby(col_name)[num_col].count()
-                note = f"This graph compares {col_name} with {num_col}.\nThis graph contain count of {num_col}.\n"
+                note = f"{num_col} by {col_name}\nThis graph use {num_col} for comparing with {col_name}.  \n This graph contain count of {col_name}. \n  "
             elif col_name in COUNT_COLUMNS:
                 grouped = df.groupby(col_name)[num_col].count()
-                note = f"This graph compares {col_name} with {num_col}.\nThis graph contain count of {num_col}.\n"
+                note = f"{num_col} by {col_name}\nThis graph use {num_col} for comparing with {col_name}.  \n This graph contain count of {col_name}. \n  "
             else:
                 grouped = df.groupby(col_name)[num_col].sum()
-                note = f"This graph compares {col_name} with {num_col}.\nThis graph contain sum of {num_col}.\n"
+                note = f"{num_col} by {col_name}\nThis graph use {num_col} for comparing with {col_name}.  \n This graph contain sum of {col_name}. \n  "
+            new_note=note4bar(grouped)
+            note=note+new_note
             x_vals = list(grouped.index)
             y_vals = grouped.values.tolist()
             fig = go.Figure()
@@ -797,19 +810,21 @@ for col_index, col_name in enumerate(location_columns):
     for num_col in numerical_columns:
         if num_col in SUM_COLUMNS:
             grouped = df.groupby(col_name)[num_col].sum()
-            note = f"This graph compares {col_name} with {num_col}.\nThis graph contain sum of {num_col}.\n"
+            note = f"{num_col} by {col_name}\nThis graph use {num_col} for comparing with {col_name}.  \n This graph contain sum of {col_name}. \n  "
         elif col_name in SUM_COLUMNS:
             grouped = df.groupby(col_name)[num_col].sum()
-            note = f"This graph compares {col_name} with {num_col}.\nThis graph contain sum of {num_col}.\n"
+            note = f"{num_col} by {col_name}\nThis graph use {num_col} for comparing with {col_name}. \n  This graph contain sum of {col_name}. \n  "
         elif num_col in COUNT_COLUMNS:
             grouped = df.groupby(col_name)[num_col].count()
-            note = f"This graph compares {col_name} with {num_col}.\nThis graph contain count of {num_col}.\n"
+            note = f"{num_col} by {col_name}\nThis graph use {num_col} for comparing with {col_name}. \n  This graph contain count of {col_name}.  \n "
         elif col_name in COUNT_COLUMNS:
             grouped = df.groupby(col_name)[num_col].count()
-            note = f"This graph compares {col_name} with {num_col}.\nThis graph contain count of {num_col}.\n"
+            note = f"{num_col} by {col_name}\nThis graph use {num_col} for comparing with {col_name}. \n  This graph contain count of {col_name}. \n  "
         else:
             grouped = df.groupby(col_name)[num_col].sum()
-            note = f"This graph compares {col_name} with {num_col}.\nThis graph contain sum of {num_col}.\n"
+            note = f"{num_col} by {col_name}\nThis graph use {num_col} for comparing with {col_name}. \n  This graph contain sum of {col_name}. \n  "
+        new_note=note4bar(grouped)
+        note=note+new_note
         x_vals = list(grouped.index)
         y_vals = grouped.values.tolist()
         fig = go.Figure()
@@ -844,8 +859,10 @@ for i in column_name:
     si=0
     if len(df[i].unique()) <= 8 and len(df[i].unique())>1:
         P_single.append([])
-        note = f"This Pie chart is for {i}.\n"
+        note = f"This Pie chart is for {i}."
         counts = df[i].value_counts()
+        new_note=note4pie(counts)
+        note=note+new_note
         fig = go.Figure()
         # labels = counts.index
         labels = counts.index.astype("category").codes
@@ -876,7 +893,9 @@ for i in X_Qualitative:
     for l in numerical_columns:
         si=0
         grouped = df.groupby(i)[l].sum()
-        note = f"This Pie chart is for {i} and {l}.\nIt divdied by {i} and calculated by {l}.\n"
+        note = f"This Pie chart is for {i} and {l}.\nIt divdied by {i} and calculated by {l}. \n  "
+        new_note=note4pie(grouped)
+        note=note+new_note
         fig = go.Figure()
         labels = grouped.index.astype("category").codes
         labels = labels.astype("int16")
@@ -945,7 +964,9 @@ for d in date_columns:
     line_charts.append([])
     for n in numerical_columns:
         fig = line_chart(d, n)
-        note=f"This line chart is {d} wise analysis of {n}."
+        note=f"This line chart is {d} wise analysis of {n}.\n"
+        new_note= note4line(df[n], d,n)
+        note+=new_note
         line_charts[i].append([])
         line_charts[i][j].append(fig)
         line_result[d].append(fig)
@@ -1006,7 +1027,9 @@ i=0
 histogram_charts.append([])
 for n in numerical_columns:
     fig = histogram_chart(n)
-    note=f"This Histogram is based on numerical_column {n}."
+    note=f"This Histogram is based on numerical_column {n}.\n"
+    new_note=note4histogram(df[n])
+    note+=new_note
     histogram_charts[0].append([])
     histogram_charts[0][i].append(fig)
     histogram_result[n].append(fig)
@@ -1041,7 +1064,9 @@ for i in range(len(numerical_columns)):
         d = numerical_columns[i]
         n = numerical_columns[j]
         fig = scatter_plot(d, n)
-        note=f"This scatter plot is based on {d} and {n}"
+        note=f"This scatter plot is based on {d} and {n} \n"
+        new_note = note4scatter(df[d], df[n], d, n)
+        note+=new_note
         scatter_plots[k].append([])
         scatter_plots[k][l].append(fig)
         scatter_result[d].append(fig)
@@ -1074,7 +1099,9 @@ i=0
 box_plots.append([])
 for n in numerical_columns:
     fig = box_plot(n)
-    note=f"This box plot is on {n} column."
+    note=f"This box plot is on {n} column.\n"
+    new_note=note4boxplot(df[n], n)
+    note+=new_note
     box_plots[0].append([])
     box_plots[0][i].append(fig)
     box_result[n].append(fig)
@@ -1126,6 +1153,8 @@ for d in date_columns:
     for n in numerical_columns:
         fig = area_chart(d, n)
         note=f"This area chart is on {d} and {n}."
+        new_note=note4area(df[n], d,n)
+        note+=new_note
         area_charts[i].append([])
         area_charts[i][j].append(fig)
         area_result[d].append(fig)
@@ -1172,6 +1201,7 @@ for i in range(len(numerical_columns)):
             y = numerical_columns[j]
             size = numerical_columns[k]
             fig=bubble_chart(x, y, size)
+            note = note4bubble(df[x], df[y], df[size], x, y, size)
             bubble_charts[l].append([])
             bubble_charts[l][m].append(fig)
             bubble_result[x].append(fig)

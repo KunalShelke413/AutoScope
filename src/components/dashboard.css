@@ -149,7 +149,8 @@ body {
     background-color: #fff;
     color: black;
     border: solid 1px black;  
-    height: 80vh; 
+    height: 80vh;
+    overflow-x:auto;
 }
 
 .df_colname {
@@ -250,10 +251,16 @@ body {
 }
 .summary{
     background-color: #fff;
+}
+.summary_table{
     overflow-x: auto;
+    scrollbar-width: none;
 }
 .summary *{
     color: #000;
+}
+
+.summary_table *{
     border: #000 solid 1px;
     padding: 5px;
 }

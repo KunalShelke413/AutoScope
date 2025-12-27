@@ -473,9 +473,9 @@ const Dashboard = () => {
             <h3 style={{ color: "black" }}>About Graphs</h3>
 
             {currentNotes.length > 0 ? (
-              <ul>
+              <ul style={{ listStyleType: "decimal" }}>
                 {currentNotes.map((note, i) => (
-                  <li className="summ_grp" key={i} style={{ color: "black" }}>{note}</li>
+                  <li className="summ_grp" key={i} style={{ color: "black",whiteSpace: "pre-line" }}>{note}</li>
                 ))}
               </ul>
             ) : (
@@ -561,10 +561,10 @@ const Dashboard = () => {
 
       <div className="summary">
         <h3>Data Preview (Head)</h3>
-        <Table rows={headData} />
+        <div className="summary_table"><Table rows={headData} /></div>
 
         <h3>Data Preview (Tail)</h3>
-        <Table rows={tailData} />
+        <div className="summary_table"><Table rows={tailData} /></div>
       </div>
       <div><p className="Disclaimer">“<strong style={{color:"red"}}>Disclaimer:</strong> The results shown are automated and may contain inaccuracies. Use them as guidance only.”</p></div>
     </div>
