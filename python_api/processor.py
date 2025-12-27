@@ -631,13 +631,13 @@ for col_index, col_name in enumerate(X_Qualitative):
         single.append([])
         if numerical_columns in SUM_COLUMNS:
             grouped = df.groupby(col_name)[numerical_columns].sum()
-            note = f"{num_col} by {col_name}\nThis graph use {col_name} for comparing with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain sum of all numerical columns. \n "
+            note = f"Numerical_columns by {col_name}\nThis graph use {col_name} for comparing with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain sum of all numerical columns. \n "
         elif numerical_columns in COUNT_COLUMNS:
             grouped = df.groupby(col_name)[numerical_columns].count()
-            note = f"{num_col} by {col_name}\nThis graph use {col_name} for comparing with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain count of all numerical columns. \n"
+            note = f"Numerical_columns by {col_name}\nThis graph use {col_name} for comparing with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain count of all numerical columns. \n"
         else:
             grouped = df.groupby(col_name)[numerical_columns].sum()
-            note = f"{num_col} by {col_name}\nThis graph use {col_name} for comparing with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain sum of all numerical columns. \n "
+            note = f"Numerical_columns by {col_name}\nThis graph use {col_name} for comparing with all numerical columns: {', '.join(numerical_columns)}.\nThis graph contain sum of all numerical columns. \n "
         
         new_note=note4bar(grouped)
         note=note+new_note
@@ -725,13 +725,13 @@ for col_index, col_name in enumerate(X_Quantitative):
         N_single.append([])
         if numerical_columns in SUM_COLUMNS:
             grouped = df.groupby(col_name)[numerical_columns].sum()
-            note = f"{num_col} by {col_name}\nThis graph use {col_name} for comparing with all numerical columns: {', '.join(numerical_columns)}. \n  This graph contain sum of all numerical columns. \n  "
+            note = f"Numerical_columns by {col_name}\nThis graph use {col_name} for comparing with all numerical columns: {', '.join(numerical_columns)}. \n  This graph contain sum of all numerical columns. \n  "
         elif numerical_columns in COUNT_COLUMNS:
             grouped = df.groupby(col_name)[numerical_columns].count()
-            note = f"{num_col} by {col_name}\nThis graph use {col_name} for comparing with all numerical columns: {', '.join(numerical_columns)}.  \n This graph contain count of all numerical columns. \n  "
+            note = f"Numerical_columns by {col_name}\nThis graph use {col_name} for comparing with all numerical columns: {', '.join(numerical_columns)}.  \n This graph contain count of all numerical columns. \n  "
         else:
             grouped = df.groupby(col_name)[numerical_columns].sum()
-            note = f"{num_col} by {col_name}\nThis graph use {col_name} for comparing with all numerical columns: {', '.join(numerical_columns)}. \n  This graph contain sum of all numerical columns. \n  "
+            note = f"Numerical_columns by {col_name}\nThis graph use {col_name} for comparing with all numerical columns: {', '.join(numerical_columns)}. \n  This graph contain sum of all numerical columns. \n  "
         new_note=note4bar(grouped)
         note=note+new_note
         i=0
