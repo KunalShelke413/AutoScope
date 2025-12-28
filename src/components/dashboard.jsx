@@ -4,6 +4,8 @@ import Plot from "react-plotly.js";
 
 const Dashboard = () => {
   /* -------------------- STATES -------------------- */
+  const [fileName, setFileName] = useState("");
+
   const [data, setData] = useState(null);
 
   const [pc1, setPc1] = useState(null); //k_pie1
@@ -50,6 +52,16 @@ const Dashboard = () => {
   const [tailData, setTailData] = useState([]);
 
   /* -------------------- FETCHES -------------------- */
+  useEffect(() => {
+    fetch("http://localhost:3000/uploaded-file-info")
+      .then(res => res.json())
+      .then(data => {
+        setFileName(data.fileName);
+      })
+      .catch(console.error);
+  }, []);
+
+
   useEffect(() => {
     fetch("http://localhost:8000/process")
       .then(res => res.json())
@@ -276,7 +288,7 @@ const Dashboard = () => {
 
   /* -------------------- LOADING -------------------- */
   if (!des || !ndes) {
-    return <p style={{ padding: "20px" }}>Loading dashboard... If file contain low data it will not procced forward (Needs data to make atleast 7 charts)</p>;
+    return <p style={{ padding: "20px" }}>Loading dashboard… The dashboard requires sufficient data to generate at least 7 charts. If the uploaded file contains too little data, it will not proceed.</p>;
   }
 
   /* -------------------- DYNAMIC TABLE DATA -------------------- */
@@ -291,7 +303,7 @@ const Dashboard = () => {
     <div className="dmain">
       <div className="AutoScope">
         <p>
-          <strong><span style={{ color: "red" }}>A</span>uto<span style={{ color: "red" }}>S</span>cope</strong>
+          <strong><span style={{ color: "red" }}>A</span>uto<span style={{ color: "red" }}>S</span>cope</strong> <span style={{fontSize:"15px"}}>- Uploaded File: <strong>{fileName || "—"}</strong></span>
         </p>
       </div>
       <div className="KPI_boards">
@@ -446,6 +458,75 @@ const Dashboard = () => {
             </button>
           ))}
         </div>
+        <div className="df_grp_box_mobile">
+            <div className="grp_type">
+              <ul>
+                {[
+                  "Bar chart",
+                  "Pie chart",
+                  "Histogram chart",
+                  "Scatter plot",
+                  "Box plot",
+                  "Line chart",
+                  "Area chart",
+                  "Bubble chart"
+                ].map((type) => (
+                  <li
+                    key={type}
+                    className={activeChartType === type ? "active" : ""}
+                    onClick={() => setActiveChartType(type)}
+                  >
+                    {type}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="df_grp">
+              {currentFigures.length > 0 ? (
+                <>
+                  {currentFigures[currentIndex] && (
+                    <Plot
+                      data={currentFigures[currentIndex].data}
+                      layout={currentFigures[currentIndex].layout}
+                      style={{ width: "100%" }}
+                    />
+                  )}
+
+                  {currentFigures.length > 1 && (
+                    <div className="nav_buttons">
+                      <button className="left_button"
+                        onClick={() =>
+                          setCurrentIndex(i => Math.max(i - 1, 0))
+                        }
+                        disabled={currentIndex === 0}
+                      >
+                        ◀
+                      </button>
+
+                      <span style={{ color: "black" }}>
+                        {currentIndex + 1} / {currentFigures.length}
+                      </span>
+
+                      <button className="right_button"
+                        onClick={() =>
+                          setCurrentIndex(i =>
+                            Math.min(i + 1, currentFigures.length - 1)
+                          )
+                        }
+                        disabled={currentIndex === currentFigures.length - 1}
+                      >
+                        ▶
+                      </button>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <p style={{ padding: "10px", color: "black" }}>
+                  “This combination of column and chart type isn’t supported yet.”
+                </p>
+              )}
+            </div>
+          </div>
         <div className="col_and_grp">
           <div className="df_summary">
             <h3 style={{ color: "white" }}>About Graphs:</h3>

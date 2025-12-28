@@ -1,4 +1,4 @@
- * {
+* {
     color: rgb(253, 253, 253);
 }
 b{
@@ -9,235 +9,466 @@ body {
     margin: 0%;
     padding: 0%;
 }
+@media (min-width: 1024px) {
+    .dmain {
+        height: 100vh;
+        margin: 0%;
+        overflow-y: auto;
+        scrollbar-width: none;
+        background-color: rgb(71, 3, 134);
+    }
 
-.dmain {
-    height: 100vh;
-    margin: 0%;
-    overflow-y: auto;
-    scrollbar-width: none;
-    background-color: rgb(71, 3, 134);
-}
+    .AutoScope p{
+        font-size: 30px;
+    }
 
-.AutoScope p{
-    font-size: 30px;
-}
+    .KPI_boards{
+        background-color: blueviolet;
+        padding:5px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+    .kpi{
+        background-color: rgb(71, 3, 134);
+        padding: 5px;
+        margin: 1%;
+        border-radius: 15px;
+        color: aliceblue;
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .pie_board{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        padding: 5px;
+    }
+    .pie{
+        border-radius: 15px;
+        height: 35vh;
+        width: 98%;
+        margin: 1%;
+    }
+    .chart_board{
+        padding:1px 5px;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    .chart{
+        margin:0% 1%;
+        height: 45vh;
+    }
+    .info{
+        padding: 4px 5px;
+    }
+    .alpt,.numb{
+        padding: 5px;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+    .alpt:hover{
+        scrollbar-width: 1px;
+    }
+    .numb:hover{
+        scrollbar-width: 1px;
+    }
+    .summary_title{
+        padding: 5px;
+    }
+    .summary_graph{
+        padding: 5px;
+        display: grid;
+        grid-template-rows: 10vh 80vh;
+    }
+    .col_and_grp{
+        padding: 2px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    .df_grp_box{
+        display: grid;
+        grid-template-rows: 10vh 70vh;
+        padding: 2px;
+    }
+    .df_grp_box_mobile{
+        display: none;
+    }
+    .df_colname{
+        background-color: blueviolet;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom:5px;
+        border-radius: 15px;
+    }
+    .df_colname button{
+        color: #fff;
+        background-color: rgb(71, 3, 134);
+        margin: 2px;
+        height: 50%;
+    }
+    .col-btn {
+      border: 1px solid #333;
+      background: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+      color:black;
+    }
+    .col-btn.active {
+      background: black;
+      color: white;
+    }
+    .col-btn {
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .col-btn:hover {
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+      transform: translateY(-1px);
+    }
+    .df_summary{
+        padding: 5px;
+        margin:0px 2px ;
+        border-radius: 15px;
+        overflow-y: auto;
+        border: #000 solid 1px;
+        scrollbar-width: none;
+        background-color: rgb(138, 43, 226);
+    }
+    .df_summary:hover{
+        scrollbar-width: auto;
+    }
 
-.KPI_boards{
-    background-color: blueviolet;
-    padding:5px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    .df_grp {
+      background-image: url("../assets/grp.png");
+      background-size: contain; 
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .grp_type{
+        background-color: blueviolet;
+        border: solid 1px black;
+        border-radius: 15px 15px 0px 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .grp_type ul{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: row;
+    }
+    .grp_type ul li{
+        color: white;
+        background-color: rgb(71, 3, 134);
+        border: solid 1px gray;
+        margin: 1px;
+        font-size: 95%;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        cursor: pointer;
+    }
+    .grp_type ul li:hover{
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+        transform: translateY(-1px);
+    }
+    .df_grp{
+        background-color: blueviolet;
+        color: black;
+        border: solid 1px black;  
+        position: relative;
+        border-radius: 0px 0px 15px 15px;
+    }
+    .grp_type li {
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .grp_type li.active {
+      background-color: #000;
+      color: #fff;
+    }
+
+    .nav_buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: blueviolet;
+    }
+
+    .nav_buttons button {
+      padding: 5px 12px;
+      cursor: pointer;
+    }
+
+    .left_button{
+        position: absolute;
+        bottom: 1%;
+        left:5px;
+        transform: translateY(-50%);
+    }
+    .right_button{
+        position: absolute;
+        bottom: 1%;
+        right:5px;
+        transform: translateY(-50%);
+    }
+    .summary{
+        padding: 5px;
+        margin: 5px;
+    }
+    .summary_table{
+        background-color: blueviolet;
+        border:black 1px;
+        border-radius: 5px;
+        padding: 2px;
+    }
+    .summary table{
+        border: black solid 1px;
+    }
+    .summary th,tr,td{
+        border: #000 solid 1px;
+        text-align: center;
+    }
+    .Disclaimer {
+      background-color: rgb(71, 3, 134);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 5px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
 }
-.kpi{
-    background-color: rgb(71, 3, 134);
-    padding: 5px;
-    margin: 1%;
-    border-radius: 15px;
-    color: aliceblue;
-    display: grid;
-    justify-content: center;
-    align-items: center;
+@media(max-width:1024px){
+    .dmain {
+        height: 100vh;
+        margin: 0%;
+        overflow-y: auto;
+        scrollbar-width: none;
+        background-color: rgb(71, 3, 134);
+    }
+
+    .AutoScope p{
+        font-size: 30px;
+    }
+
+    .KPI_boards{
+        background-color: blueviolet;
+        padding:5px;
+    }
+    .kpi{
+        background-color: rgb(71, 3, 134);
+        padding: 5px;
+        margin: 1%;
+        border-radius: 15px;
+        color: aliceblue;
+        display: grid;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+    .pie_board{
+        padding: 5px;
+    }
+    .pie{
+        border-radius: 15px;
+        height: 35vh;
+        width: 98%;
+        margin: 1%;
+    }
+    .chart_board{
+        padding:1px 5px;
+    }
+    .chart{
+        margin:0% 1%;
+        height: 45vh;
+    }
+    .info{
+        padding: 4px 5px;
+    }
+    .alpt,.numb{
+        padding: 5px;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+    .alpt:hover{
+        scrollbar-width: 1px;
+    }
+    .numb:hover{
+        scrollbar-width: 1px;
+    }
+    .summary_title{
+        padding: 5px;
+    }
+    .summary_graph{
+        padding: 5px;
+    }
+    .col_and_grp{
+        padding: 2px;
+    }
+    .df_grp_box{
+        display: none;
+    }
+    .df_colname{
+        background-color: blueviolet;
+        display: flex;
+        flex-wrap: nowrap;
+        font-size: 65%;
+        margin-bottom:5px;
+        border-radius: 15px;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+    .df_colname button{
+        color: #fff;
+        background-color: rgb(71, 3, 134);
+        margin: 2px;
+        height: 50%;
+    }
+    .col-btn {
+      border: 1px solid #333;
+      background: #fff;
+      cursor: pointer;
+      border-radius: 5px;
+      color:black;
+    }
+    .col-btn.active {
+      background: black;
+      color: white;
+    }
+    .col-btn {
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    .col-btn:hover {
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+      transform: translateY(-1px);
+    }
+    .df_summary{
+        padding: 5px;
+        margin:0px 2px ;
+        overflow-y: auto;
+        border: #000 solid 1px;
+        height: 50vh;
+        scrollbar-width: none;
+        background-color: rgb(138, 43, 226);
+    }
+    .df_summary:hover{
+        scrollbar-width: auto;
+    }
+
+    .df_grp {
+      background-image: url("../assets/grp.png");
+      background-size: contain; 
+      background-position: center;
+      background-repeat: no-repeat;
+      margin: 5px;
+    }
+
+    .grp_type{
+        background-color: blueviolet;
+        border: solid 1px black;
+        border-radius: 15px 15px 0px 0px;
+        display: flex;
+    }
+    .grp_type ul{
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: row;
+    }
+    .grp_type ul li{
+        color: white;
+        background-color: rgb(71, 3, 134);
+        border: solid 1px gray;
+        margin: 1px;
+        font-size: 65%;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+        cursor: pointer;
+    }
+    .grp_type ul li:hover{
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+        transform: translateY(-1px);
+    }
+    .df_grp{
+        background-color: blueviolet;
+        color: black;
+        border: solid 1px black;  
+        position: relative;
+        border-radius: 0px 0px 15px 15px;
+    }
+    .grp_type li {
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .grp_type li.active {
+      background-color: #000;
+      color: #fff;
+    }
+
+    .nav_buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: blueviolet;
+    }
+
+    .nav_buttons button {
+      padding: 5px 12px;
+      cursor: pointer;
+    }
+
+    .left_button{
+        position: absolute;
+        bottom: 1%;
+        left:5px;
+        transform: translateY(-50%);
+    }
+    .right_button{
+        position: absolute;
+        bottom: 1%;
+        right:5px;
+        transform: translateY(-50%);
+    }
+    .summary{
+        padding: 5px;
+        margin: 5px;
+    }
+    .summary_table{
+        background-color: blueviolet;
+        border:black 1px;
+        border-radius: 5px;
+        padding: 2px;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+    .summary_table:hover{
+        scrollbar-width: 1px;
+    }
+    .summary table{
+        border: black solid 1px;
+    }
+    .summary th,tr,td{
+        border: #000 solid 1px;
     text-align: center;
-}
-.pie_board{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    padding: 5px;
-}
-.pie{
-    border-radius: 15px;
-    height: 35vh;
-    width: 98%;
-    margin: 1%;
-}
-.chart_board{
-    padding:1px 5px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-}
-.chart{
-    margin:0% 1%;
-    height: 45vh;
-}
-.info{
-    padding: 4px 5px;
-}
-.alpt,.numb{
-    padding: 5px;
-    overflow-x: auto;
-    scrollbar-width: none;
-}
-.alpt:hover{
-    scrollbar-width: 1px;
-}
-.numb:hover{
-    scrollbar-width: 1px;
-}
-.summary_title{
-    padding: 5px;
-}
-.summary_graph{
-    padding: 5px;
-    display: grid;
-    grid-template-rows: 10vh 80vh;
-}
-.col_and_grp{
-    padding: 2px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-}
-.df_grp_box{
-    display: grid;
-    grid-template-rows: 10vh 70vh;
-    padding: 2px;
-}
-.df_colname{
-    background-color: blueviolet;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom:5px;
-    border-radius: 15px;
-}
-.df_colname button{
-    color: #fff;
-    background-color: rgb(71, 3, 134);
-    margin: 2px;
-    height: 50%;
-}
-.col-btn {
-  border: 1px solid #333;
-  background: #fff;
-  cursor: pointer;
-  border-radius: 5px;
-  color:black;
-}
-.col-btn.active {
-  background: black;
-  color: white;
-}
-.col-btn {
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
-}
-.col-btn:hover {
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
-  transform: translateY(-1px);
-}
-.df_summary{
-    padding: 5px;
-    margin:0px 2px ;
-    border-radius: 15px;
-    overflow-y: auto;
-    border: #000 solid 1px;
-    scrollbar-width: none;
-    background-color: rgb(138, 43, 226);
-}
-.df_summary:hover{
-    scrollbar-width: auto;
-}
-
-.df_grp {
-  background-image: url("../assets/grp.png");
-  background-size: contain; 
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.grp_type{
-    background-color: blueviolet;
-    border: solid 1px black;
-    border-radius: 15px 15px 0px 0px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.grp_type ul{
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: row;
-}
-.grp_type ul li{
-    color: white;
-    background-color: rgb(71, 3, 134);
-    border: solid 1px gray;
-    margin: 1px;
-    font-size: 95%;
-    text-align: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-    cursor: pointer;
-}
-.grp_type ul li:hover{
-    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
-    transform: translateY(-1px);
-}
-.df_grp{
-    background-color: blueviolet;
-    color: black;
-    border: solid 1px black;  
-    position: relative;
-    border-radius: 0px 0px 15px 15px;
-}
-.grp_type li {
-  cursor: pointer;
-  padding: 8px;
-}
-
-.grp_type li.active {
-  background-color: #000;
-  color: #fff;
-}
-
-.nav_buttons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: blueviolet;
-}
-
-.nav_buttons button {
-  padding: 5px 12px;
-  cursor: pointer;
-}
-
-.left_button{
-    position: absolute;
-    bottom: 1%;
-    left:5px;
-    transform: translateY(-50%);
-}
-.right_button{
-    position: absolute;
-    bottom: 1%;
-    right:5px;
-    transform: translateY(-50%);
-}
-.summary{
-    padding: 5px;
-    margin: 5px;
-}
-.summary_table{
-    background-color: blueviolet;
-    border:black 1px;
-    border-radius: 5px;
-    padding: 2px;
-}
-.summary table{
-    border: black solid 1px;
-}
-.summary th,tr,td{
-    border: #000 solid 1px;
-    text-align: center;
-}
-.Disclaimer {
-  background-color: rgb(71, 3, 134);
-  color: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 5px;
-  font-size: 13px;
-  line-height: 1.5;
+    }
+    .Disclaimer {
+      background-color: rgb(71, 3, 134);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 5px;
+      font-size: 13px;
+      line-height: 1.5;
+    }
 }

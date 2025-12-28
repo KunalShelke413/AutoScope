@@ -19,8 +19,18 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+UPLOAD_DIR = "../backend/uploads"
+SUPPORTED_EXTS = (".csv", ".xlsx", ".json")
 
-last_file = "../backend/uploads/data.csv"
+files = [
+    f for f in os.listdir(UPLOAD_DIR)
+    if f.lower().endswith(SUPPORTED_EXTS)
+]
+
+if not files:
+    raise FileNotFoundError("No uploaded data file found")
+
+last_file = os.path.join(UPLOAD_DIR, files[0])
 ext = os.path.splitext(last_file)[1]
 
 character_columns, time_columns, location_terms, Numerical_columns, Contact, SUM_COLUMNS, COUNT_COLUMNS= get_data()
