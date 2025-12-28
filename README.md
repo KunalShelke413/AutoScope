@@ -129,7 +129,7 @@ AutoScope/
 ├── src/
 │   └── public/
 │
-├── backend/           # Python backend
+├── backend/           
 │   ├── uploads/
 │   └── server.js
 │   
