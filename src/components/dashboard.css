@@ -97,10 +97,12 @@ body {
     .df_colname{
         background-color: blueviolet;
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
         align-items: center;
         margin-bottom:5px;
         border-radius: 15px;
+        padding-bottom: 10px;
     }
     .df_colname button{
         color: #fff;
@@ -222,9 +224,11 @@ body {
     }
     .summary_table{
         background-color: blueviolet;
-        border:black 1px;
+        border:black solid 1px;
         border-radius: 5px;
         padding: 2px;
+        overflow-x: auto;
+        scrollbar-width: none;
     }
     .summary table{
         border: black solid 1px;
