@@ -61,133 +61,39 @@ const Dashboard = () => {
       .catch(console.error);
   }, []);
 
-
-  useEffect(() => {
-    fetch("http://localhost:8000/process")
-      .then(res => res.json())
-      .then(setData)
-      .catch(console.error);
-  }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/p1plot").then(r => r.json()).then(setPc1);
-    fetch("http://localhost:8000/p2plot").then(r => r.json()).then(setPc2);
-    fetch("http://localhost:8000/p3plot").then(r => r.json()).then(setPc3);
-    fetch("http://localhost:8000/p4plot").then(r => r.json()).then(setPc4);
-  }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/sideplot").then(r => r.json()).then(setSidec);
-    fetch("http://localhost:8000/chart1plot").then(r => r.json()).then(setC1);
-    fetch("http://localhost:8000/chart2plot").then(r => r.json()).then(setC2);
-  }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/alpdes").then(r => r.json()).then(setDes);
-    fetch("http://localhost:8000/numdes").then(r => r.json()).then(setNdes);
-  }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/allcol")
-      .then(r => r.json())
-      .then(data => setCols(data.columns))
-      .catch(err => console.error(err));
-  }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/process_filtered_result")
-      .then(res => res.json())
-      .then(data => setRCharts(data))
-      .catch(err => console.error(err));
-    fetch("http://localhost:8000/process_filtered_result_note")
-      .then(res => res.json())
-      .then(data => setRNotes(data))
-      .catch(err => console.error(err));
-  }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/process_filtered_pie_result")
-      .then(res => res.json())
-      .then(data => setPRCharts(data))
-      .catch(err => console.error(err));
-    fetch("http://localhost:8000/process_filtered_pie_note")
-      .then(res => res.json())
-      .then(data => setPRNotes(data))
-      .catch(err => console.error(err));
-  }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/process_filtered_line_result")
-      .then(res => res.json())
-      .then(data => setLRCharts(data))
-      .catch(err => console.error(err));
-    fetch("http://localhost:8000/process_filtered_line_note")
-      .then(res => res.json())
-      .then(data => setLRNotes(data))
-      .catch(err => console.error(err));
-  }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/process_filtered_histogram_result")
-      .then(res => res.json())
-      .then(data => setHGRCharts(data))
-      .catch(err => console.error(err));
-    fetch("http://localhost:8000/process_filtered_histogram_note")
-      .then(res => res.json())
-      .then(data => setHGRNotes(data))
-      .catch(err => console.error(err));
-  }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/process_filtered_scatter_result")
-      .then(res => res.json())
-      .then(data => setSRCharts(data))
-      .catch(err => console.error(err));
-    fetch("http://localhost:8000/process_filtered_scatter_note")
-      .then(res => res.json())
-      .then(data => setSRNotes(data))
-      .catch(err => console.error(err));
-  }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/process_filtered_box_result")
-      .then(res => res.json())
-      .then(data => setBRCharts(data))
-      .catch(err => console.error(err));
-    fetch("http://localhost:8000/process_filtered_box_note")
-      .then(res => res.json())
-      .then(data => setBRNotes(data))
-      .catch(err => console.error(err));
-  }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/process_filtered_area_result")
-      .then(res => res.json())
-      .then(data => setARCharts(data))
-      .catch(err => console.error(err));
-    fetch("http://localhost:8000/process_filtered_area_note")
-      .then(res => res.json())
-      .then(data => setARNotes(data))
-      .catch(err => console.error(err));
-  }, []);
-
-  useEffect(() => {
-    fetch("http://localhost:8000/process_filtered_bubble_result")
-      .then(res => res.json())
-      .then(data => setBLRCharts(data))
-      .catch(err => console.error(err));
-    fetch("http://localhost:8000/process_filtered_bubble_note")
-      .then(res => res.json())
-      .then(data => setBLRNotes(data))
-      .catch(err => console.error(err));
-  }, []);
-
   useEffect(() => {
     fetch("http://localhost:8000/df_preview")
       .then(res => res.json())
       .then(data => {
+        setData(data);
         setHeadData(data.head);
         setTailData(data.tail);
+        setBLRNotes(data.fbun);
+        setBLRCharts(data.pfbur);
+        setARNotes(data.fan);
+        setARCharts(data.pfar);
+        setBRNotes(data.fbn);
+        setBRCharts(data.pfbr);
+        setSRNotes(data.fsn);
+        setSRCharts(data.pfsr);
+        setHGRNotes(data.fhn);
+        setHGRCharts(data.pfhr);
+        setLRNotes(data.fln);
+        setLRCharts(data.pflr);
+        setPRNotes(data.fpn);
+        setPRCharts(data.pfpr);
+        setRNotes(data.frn);
+        setRCharts(data.pfr);
+        setCols(data.columns);
+        setNdes(data.numdes);
+        setDes(data.alpdes);
+        setC2(data.chart2plot);
+        setC1(data.chart1plot);
+        setSidec(data.sideplot);
+        setPc1(data.p1_plot);
+        setPc2(data.p2_plot);
+        setPc3(data.p3_plot);
+        setPc4(data.p4_plot);
       });
   }, []);
   /*------------------------grp_setting------------------------*/
