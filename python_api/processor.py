@@ -1600,24 +1600,28 @@ def run_full_analysis():
                 elif chart2==0:
                     chart2=dia[int(i[0])][int(i[1])][int(i[2])][int(i[3])]
 
-    a, b, c, d, A, B, C, D = 0, 0, 0, 0, 0, 0, 0, 0
+    a, b, c, d,ac, bc, cc, dc, A, B, C, D = 0, 0, 0, 0, 0, 0, 0, 0,0, 0, 0, 0
 
     try:
         for i in numerical_columns:
             if df[i].sum() not in u4 and a==0:
                 a=df[i].sum()
+                ac=df[i].count()
                 u4.append(a)
                 A="Total "+i
             elif df[i].sum() not in u4 and b==0:
                 b=df[i].sum()
+                bc=df[i].count()
                 u4.append(b)
                 B="Total "+i
             elif df[i].sum() not in u4 and c==0:
                 c=df[i].sum()
+                cc=df[i].count()
                 u4.append(c)
                 C="Total "+i
             elif df[i].sum() not in u4:
                 d=df[i].sum()
+                dc=df[i].count()
                 u4.append(d)
                 D="Total "+i
     except:
@@ -1625,14 +1629,14 @@ def run_full_analysis():
             u4,a,b,c,d,A,B,C,D=four(alpha_columns,u4,a,b,c,d,A,B,C,D)
         except:
             u4,a,b,c,d,A,B,C,D=four(location_columns,u4,a,b,c,d,A,B,C,D)
-    return df,p1, p2, p3, p4, heat_maps_check, sidechart, chart1, chart2, column_name, filtered_result, filtered_pie_result, filtered_line_result, filtered_histogram_result, filtered_scatter_result, filtered_box_result, filtered_area_result, filtered_bubble_result, filtered_result_note, filtered_pie_note, filtered_box_note,filtered_line_note, filtered_histogram_note, filtered_scatter_note, filtered_area_note, filtered_bubble_note ,A, B, C, D,a, b, c, d
+    return ac,bc,cc,dc,df,p1, p2, p3, p4, heat_maps_check, sidechart, chart1, chart2, column_name, filtered_result, filtered_pie_result, filtered_line_result, filtered_histogram_result, filtered_scatter_result, filtered_box_result, filtered_area_result, filtered_bubble_result, filtered_result_note, filtered_pie_note, filtered_box_note,filtered_line_note, filtered_histogram_note, filtered_scatter_note, filtered_area_note, filtered_bubble_note ,A, B, C, D,a, b, c, d
 
     
 
 
 @app.get("/df_preview")
 def df_preview():
-    df,p1, p2, p3, p4, heat_maps_check, sidechart, chart1, chart2, column_name, filtered_result, filtered_pie_result, filtered_line_result, filtered_histogram_result, filtered_scatter_result, filtered_box_result, filtered_area_result, filtered_bubble_result, filtered_result_note, filtered_pie_note, filtered_box_note,filtered_line_note, filtered_histogram_note, filtered_scatter_note, filtered_area_note, filtered_bubble_note ,A, B, C, D,a, b, c, d=run_full_analysis()
+    ac,bc,cc,dc,df,p1, p2, p3, p4, heat_maps_check, sidechart, chart1, chart2, column_name, filtered_result, filtered_pie_result, filtered_line_result, filtered_histogram_result, filtered_scatter_result, filtered_box_result, filtered_area_result, filtered_bubble_result, filtered_result_note, filtered_pie_note, filtered_box_note,filtered_line_note, filtered_histogram_note, filtered_scatter_note, filtered_area_note, filtered_bubble_note ,A, B, C, D,a, b, c, d=run_full_analysis()
     
     
     fig_json_p1 = json.loads(json.dumps(p1, cls=PlotlyJSONEncoder))
@@ -1754,12 +1758,16 @@ def df_preview():
 
         "onename": str(A),
         "one": int(a),
+        "onec": int(ac),
         "twoname": str(B),
         "two": int(b),
+        "twoc": int(bc),
         "threename": str(C),
         "three": int(c),
+        "threec": int(cc),
         "fourname": str(D),
         "four": int(d),
+        "fourc": int(dc),
 
         "summary": "go"
     }

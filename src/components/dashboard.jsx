@@ -7,6 +7,10 @@ const Dashboard = () => {
   const [fileName, setFileName] = useState("");
 
   const [data, setData] = useState(null);
+  const [selectedOne, setSelectedOne] = useState("sum");
+  const [selectedTwo, setSelectedTwo] = useState("sum");
+  const [selectedThree, setSelectedThree] = useState("sum");
+  const [selectedFour, setSelectedFour] = useState("sum");
 
   const [pc1, setPc1] = useState(null); //k_pie1
   const [pc2, setPc2] = useState(null); //k_pie2
@@ -203,31 +207,106 @@ const Dashboard = () => {
 
   const numColumns = Object.keys(ndes);
   const numRows = Object.keys(ndes[numColumns[0]]);
-
-
+  
   return (
     <div className="dmain">
       <div className="AutoScope">
         <p>
-          <strong><span style={{ color: "red" }}>A</span>uto<span style={{ color: "red" }}>S</span>cope</strong> <span style={{fontSize:"15px"}}>- Uploaded File: <strong>{fileName || "—"}</strong></span>
+          <strong><span style={{ color: "red" }}>A</span>uto<span style={{ color: "red" }}>S</span>cope</strong> <span style={{ fontSize: "15px" }}>- Uploaded File: <strong>{fileName || "—"}</strong></span>
         </p>
       </div>
       <div className="KPI_boards">
         <div id="one" className="kpi">
+
+          <div className="f1">
+            <select
+              value={selectedOne}
+              onChange={(e) => setSelectedOne(e.target.value)}
+            >
+              <option value="sum">Sum</option>
+              <option value="count">Count</option>
+            </select>
+          </div>
+
           <div>{data ? data.onename : "fst"}</div>
-          <div>{data ? data.one : "fst"}</div>
+
+          <div>
+            {data
+              ? selectedOne === "sum"
+                ? data.one
+                : data.onec
+              : "fst"}
+          </div>
+
         </div>
         <div id="two" className="kpi">
-          <div>{data ? data.twoname : "fst"}</div>
-          <div>{data ? data.two : "snd"}</div>
+
+          <div className="f1">
+            <select
+              value={selectedTwo}
+              onChange={(e) => setSelectedTwo(e.target.value)}
+            >
+              <option value="sum">Sum</option>
+              <option value="count">Count</option>
+            </select>
+          </div>
+
+          <div>{data ? data.twoname : "snd"}</div>
+
+          <div>
+            {data
+              ? selectedTwo === "sum"
+                ? data.two
+                : data.twoc
+              : "snd"}
+          </div>
+
         </div>
         <div id="three" className="kpi">
-          <div>{data ? data.threename : "fst"}</div>
-          <div>{data ? data.three : "trd"}</div>
+
+          <div className="f1">
+            <select
+              value={selectedThree}
+              onChange={(e) => setSelectedThree(e.target.value)}
+            >
+              <option value="sum">Sum</option>
+              <option value="count">Count</option>
+            </select>
+          </div>
+
+          <div>{data ? data.threename : "trd"}</div>
+
+          <div>
+            {data
+              ? selectedThree === "sum"
+                ? data.three
+                : data.threec
+              : "trd"}
+          </div>
+
         </div>
         <div id="four" className="kpi">
-          <div>{data ? data.fourname : "fst"}</div>
-          <div>{data ? data.four : "fth"}</div>
+
+          <div className="f1">
+            <select
+              value={selectedFour}
+              onChange={(e) => setSelectedFour(e.target.value)}
+            >
+              <option value="sum">Sum</option>
+              <option value="count">Count</option>
+            </select>
+          </div>
+
+          <div>{data ? data.fourname : "frth"}</div>
+
+          <div>
+            {data
+              ? selectedFour === "sum"
+                ? data.four
+                : data.fourc
+              : "frth"}
+          </div>
+
         </div>
       </div>
       <div className="pie_board">
@@ -365,74 +444,74 @@ const Dashboard = () => {
           ))}
         </div>
         <div className="df_grp_box_mobile">
-            <div className="grp_type">
-              <ul>
-                {[
-                  "Bar chart",
-                  "Pie chart",
-                  "Histogram chart",
-                  "Scatter plot",
-                  "Box plot",
-                  "Line chart",
-                  "Area chart",
-                  "Bubble chart"
-                ].map((type) => (
-                  <li
-                    key={type}
-                    className={activeChartType === type ? "active" : ""}
-                    onClick={() => setActiveChartType(type)}
-                  >
-                    {type}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="df_grp">
-              {currentFigures.length > 0 ? (
-                <>
-                  {currentFigures[currentIndex] && (
-                    <Plot
-                      data={currentFigures[currentIndex].data}
-                      layout={currentFigures[currentIndex].layout}
-                      style={{ width: "100%" }}
-                    />
-                  )}
-
-                  {currentFigures.length > 1 && (
-                    <div className="nav_buttons">
-                      <button className="left_button"
-                        onClick={() =>
-                          setCurrentIndex(i => Math.max(i - 1, 0))
-                        }
-                        disabled={currentIndex === 0}
-                      >
-                        ◀
-                      </button>
-
-                      <span style={{ color: "black" }}>
-                        {currentIndex + 1} / {currentFigures.length}
-                      </span>
-
-                      <button className="right_button"
-                        onClick={() =>
-                          setCurrentIndex(i =>
-                            Math.min(i + 1, currentFigures.length - 1)
-                          )
-                        }
-                        disabled={currentIndex === currentFigures.length - 1}
-                      >
-                        ▶
-                      </button>
-                    </div>
-                  )}
-                </>
-              ) : (
-                <p style={{ padding: "10px", color: "black" }}>
-                  “This combination of column and chart type isn’t supported yet.”
-                </p>
-              )}
-            </div>
+          <div className="grp_type">
+            <ul>
+              {[
+                "Bar chart",
+                "Pie chart",
+                "Histogram chart",
+                "Scatter plot",
+                "Box plot",
+                "Line chart",
+                "Area chart",
+                "Bubble chart"
+              ].map((type) => (
+                <li
+                  key={type}
+                  className={activeChartType === type ? "active" : ""}
+                  onClick={() => setActiveChartType(type)}
+                >
+                  {type}
+                </li>
+              ))}
+            </ul>
           </div>
+          <div className="df_grp">
+            {currentFigures.length > 0 ? (
+              <>
+                {currentFigures[currentIndex] && (
+                  <Plot
+                    data={currentFigures[currentIndex].data}
+                    layout={currentFigures[currentIndex].layout}
+                    style={{ width: "100%" }}
+                  />
+                )}
+
+                {currentFigures.length > 1 && (
+                  <div className="nav_buttons">
+                    <button className="left_button"
+                      onClick={() =>
+                        setCurrentIndex(i => Math.max(i - 1, 0))
+                      }
+                      disabled={currentIndex === 0}
+                    >
+                      ◀
+                    </button>
+
+                    <span style={{ color: "black" }}>
+                      {currentIndex + 1} / {currentFigures.length}
+                    </span>
+
+                    <button className="right_button"
+                      onClick={() =>
+                        setCurrentIndex(i =>
+                          Math.min(i + 1, currentFigures.length - 1)
+                        )
+                      }
+                      disabled={currentIndex === currentFigures.length - 1}
+                    >
+                      ▶
+                    </button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <p style={{ padding: "10px", color: "black" }}>
+                “This combination of column and chart type isn’t supported yet.”
+              </p>
+            )}
+          </div>
+        </div>
         <div className="col_and_grp">
           <div className="df_summary">
             <h3 style={{ color: "white" }}>About Graphs:</h3>
@@ -526,7 +605,7 @@ const Dashboard = () => {
         <div className="summary_table"><Table rows={tailData} /></div>
       </div>
       <div>
-        <p className="Disclaimer">“<strong style={{color:"red"}}>Disclaimer:</strong> The results shown are automated and may contain inaccuracies. Use them as guidance only.”</p>
+        <p className="Disclaimer">“<strong style={{ color: "red" }}>Disclaimer:</strong> The results shown are automated and may contain inaccuracies. Use them as guidance only.”</p>
       </div>
     </div>
   );
