@@ -207,7 +207,27 @@ const Dashboard = () => {
 
   const numColumns = Object.keys(ndes);
   const numRows = Object.keys(ndes[numColumns[0]]);
-  
+
+  const getAvailableCharts = () => {
+    if (!activeCol) return [];
+
+    const types = [];
+
+    if (Rcharts?.[activeCol]?.length) types.push("Bar chart");
+    if (PRcharts?.[activeCol]?.length) types.push("Pie chart");
+    if (HGRcharts?.[activeCol]?.length) types.push("Histogram chart");
+    if (SRcharts?.[activeCol]?.length) types.push("Scatter plot");
+    if (BRcharts?.[activeCol]?.length) types.push("Box plot");
+    if (LRcharts?.[activeCol]?.length) types.push("Line chart");
+    if (ARcharts?.[activeCol]?.length) types.push("Area chart");
+    if (BLRcharts?.[activeCol]?.length) types.push("Bubble chart");
+
+    return types;
+  };
+
+  const availableCharts = getAvailableCharts();
+
+
   return (
     <div className="dmain">
       <div className="AutoScope">
@@ -446,16 +466,7 @@ const Dashboard = () => {
         <div className="df_grp_box_mobile">
           <div className="grp_type">
             <ul>
-              {[
-                "Bar chart",
-                "Pie chart",
-                "Histogram chart",
-                "Scatter plot",
-                "Box plot",
-                "Line chart",
-                "Area chart",
-                "Bubble chart"
-              ].map((type) => (
+              {availableCharts.map((type) => (
                 <li
                   key={type}
                   className={activeChartType === type ? "active" : ""}
@@ -529,16 +540,7 @@ const Dashboard = () => {
           <div className="df_grp_box">
             <div className="grp_type">
               <ul>
-                {[
-                  "Bar chart",
-                  "Pie chart",
-                  "Histogram chart",
-                  "Scatter plot",
-                  "Box plot",
-                  "Line chart",
-                  "Area chart",
-                  "Bubble chart"
-                ].map((type) => (
+                {availableCharts.map((type) => (
                   <li
                     key={type}
                     className={activeChartType === type ? "active" : ""}
