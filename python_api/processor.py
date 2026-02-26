@@ -1723,6 +1723,7 @@ def df_preview():
 
 
     return {
+        "preview":df.to_dict(orient="records"),
         "head": df.head().to_dict(orient="records"),
         "tail": df.tail().to_dict(orient="records"),
 

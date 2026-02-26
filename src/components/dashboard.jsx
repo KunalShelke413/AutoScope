@@ -52,6 +52,7 @@ const Dashboard = () => {
   const [ARNotes, setARNotes] = useState({});
   const [BLRNotes, setBLRNotes] = useState({});
 
+  const [preview, setPreview] = useState([]);
   const [headData, setHeadData] = useState([]);
   const [tailData, setTailData] = useState([]);
 
@@ -70,6 +71,7 @@ const Dashboard = () => {
       .then(res => res.json())
       .then(data => {
         setData(data);
+        setPreview(data.preview)
         setHeadData(data.head);
         setTailData(data.tail);
         setBLRNotes(data.fbun);
@@ -605,6 +607,10 @@ const Dashboard = () => {
 
         <h5>Data Preview (Tail)</h5>
         <div className="summary_table"><Table rows={tailData} /></div>
+      </div>
+      <div className="summary">
+        <div><h5>Data Preview</h5></div>
+        <div className="summary_table"><Table rows={preview} /></div>
       </div>
       <div>
         <p className="Disclaimer">“<strong style={{ color: "red" }}>Disclaimer:</strong> The results shown are automated and may contain inaccuracies. Use them as guidance only.”</p>
