@@ -56,6 +56,19 @@ const Dashboard = () => {
   const [headData, setHeadData] = useState([]);
   const [tailData, setTailData] = useState([]);
 
+  const [TitleDroper, setTitleDroper] = useState({})
+  const [selectedFive, setSelectedFive] = useState(null);
+  const [selectedSix, setSelectedSix] = useState(null);
+  const [selectedSeven, setSelectedSeven] = useState(null);
+  const [selectedEight, setSelectedEight] = useState(null);
+  const [selectedChart1, setSelectedChart1] = useState(null);
+  const [selectedSidechart, setSelectedSidechart] = useState(null);
+  const [selectedChart2, setSelectedChart2] = useState(null);
+
+  const [TitleDroperChart1, setTitleDroperChart1] = useState({});
+  const [TitleDroperSidechart, setTitleDroperSidechart] = useState({});
+  const [TitleDroperChart2, setTitleDroperChart2] = useState({});
+
   /* -------------------- FETCHES -------------------- */
   useEffect(() => {
     fetch("http://localhost:3000/uploaded-file-info")
@@ -100,6 +113,7 @@ const Dashboard = () => {
         setPc2(data.p2_plot);
         setPc3(data.p3_plot);
         setPc4(data.p4_plot);
+        setTitleDroper(data.title_droper)
       });
   }, []);
   /*------------------------grp_setting------------------------*/
@@ -109,6 +123,7 @@ const Dashboard = () => {
       setActiveCol(cols[0]);   // select first column
     }
   }, [cols, activeCol]);
+
 
   useEffect(() => {
     if (!activeChartType) {
@@ -333,69 +348,286 @@ const Dashboard = () => {
       </div>
       <div className="pie_board">
         <div id="five" className="pie">
-          {pc1 && (
+
+          {/* Dropdown only if dynamic graphs exist */}
+          {Object.keys(TitleDroper).length > 0 && (
+            <select
+              value={selectedFive || ""}
+              onChange={(e) => setSelectedFive(e.target.value)}
+              style={{
+                marginBottom: "10px",
+                padding: "6px",
+                width: "100%"
+              }}
+            >
+              <option value="">Select another graph</option>
+              {Object.keys(TitleDroper).map((title, index) => (
+                <option key={index} value={title}>
+                  {title}
+                </option>
+              ))}
+            </select>
+          )}
+
+          {/* Show selected graph OR default fetched graph */}
+          {selectedFive && TitleDroper[selectedFive] ? (
             <Plot
-              data={pc1.data}
-              layout={pc1.layout}
+              data={TitleDroper[selectedFive].data}
+              layout={TitleDroper[selectedFive].layout}
               style={{ width: "100%", height: "100%" }}
             />
+          ) : (
+            pc1 && (
+              <Plot
+                data={pc1.data}
+                layout={pc1.layout}
+                style={{ width: "100%", height: "100%" }}
+              />
+            )
           )}
+
         </div>
         <div id="six" className="pie">
-          {pc2 && (
+
+          {/* Dropdown only if dynamic graphs exist */}
+          {Object.keys(TitleDroper).length > 0 && (
+            <select
+              value={selectedSix || ""}
+              onChange={(e) => setSelectedSix(e.target.value)}
+              style={{
+                marginBottom: "10px",
+                padding: "6px",
+                width: "100%"
+              }}
+            >
+              <option value="">Select another graph</option>
+              {Object.keys(TitleDroper).map((title, index) => (
+                <option key={index} value={title}>
+                  {title}
+                </option>
+              ))}
+            </select>
+          )}
+
+          {/* Show selected graph OR default fetched graph */}
+          {selectedSix && TitleDroper[selectedSix] ? (
             <Plot
-              data={pc2.data}
-              layout={pc2.layout}
+              data={TitleDroper[selectedSix].data}
+              layout={TitleDroper[selectedSix].layout}
               style={{ width: "100%", height: "100%" }}
             />
+          ) : (
+            pc2 && (
+              <Plot
+                data={pc2.data}
+                layout={pc2.layout}
+                style={{ width: "100%", height: "100%" }}
+              />
+            )
           )}
+
         </div>
         <div id="seven" className="pie">
-          {pc3 && (
+
+          {/* Dropdown only if dynamic graphs exist */}
+          {Object.keys(TitleDroper).length > 0 && (
+            <select
+              value={selectedSeven || ""}
+              onChange={(e) => setSelectedSeven(e.target.value)}
+              style={{
+                marginBottom: "10px",
+                padding: "6px",
+                width: "100%"
+              }}
+            >
+              <option value="">Select another graph</option>
+              {Object.keys(TitleDroper).map((title, index) => (
+                <option key={index} value={title}>
+                  {title}
+                </option>
+              ))}
+            </select>
+          )}
+
+          {/* Show selected graph OR default fetched graph */}
+          {selectedSeven && TitleDroper[selectedSeven] ? (
             <Plot
-              data={pc3.data}
-              layout={pc3.layout}
+              data={TitleDroper[selectedSeven].data}
+              layout={TitleDroper[selectedSeven].layout}
               style={{ width: "100%", height: "100%" }}
             />
+          ) : (
+            pc3 && (
+              <Plot
+                data={pc3.data}
+                layout={pc3.layout}
+                style={{ width: "100%", height: "100%" }}
+              />
+            )
           )}
+
         </div>
         <div id="eight" className="pie">
-          {pc4 && (
+
+          {/* Dropdown only if dynamic graphs exist */}
+          {Object.keys(TitleDroper).length > 0 && (
+            <select
+              value={selectedEight || ""}
+              onChange={(e) => setSelectedEight(e.target.value)}
+              style={{
+                marginBottom: "10px",
+                padding: "6px",
+                width: "100%"
+              }}
+            >
+              <option value="">Select another graph</option>
+              {Object.keys(TitleDroper).map((title, index) => (
+                <option key={index} value={title}>
+                  {title}
+                </option>
+              ))}
+            </select>
+          )}
+
+          {/* Show selected graph OR default fetched graph */}
+          {selectedEight && TitleDroper[selectedEight] ? (
             <Plot
-              data={pc4.data}
-              layout={pc4.layout}
+              data={TitleDroper[selectedEight].data}
+              layout={TitleDroper[selectedEight].layout}
               style={{ width: "100%", height: "100%" }}
             />
+          ) : (
+            pc4 && (
+              <Plot
+                data={pc4.data}
+                layout={pc4.layout}
+                style={{ width: "100%", height: "100%" }}
+              />
+            )
           )}
+
         </div>
       </div>
       <div className="chart_board">
         <div id="chart1" className="chart">
-          {c1 && (
+
+          {/* Dropdown only if dynamic graphs exist */}
+          {Object.keys(TitleDroper).length > 0 && (
+            <select
+              value={selectedChart1 || ""}
+              onChange={(e) => setSelectedChart1(e.target.value)}
+              style={{
+                marginBottom: "10px",
+                padding: "6px",
+                width: "100%"
+              }}
+            >
+              <option value="">Select another graph</option>
+              {Object.keys(TitleDroper).map((title, index) => (
+                <option key={index} value={title}>
+                  {title}
+                </option>
+              ))}
+            </select>
+          )}
+
+          {/* Show selected graph OR default fetched graph */}
+          {selectedChart1 && TitleDroper[selectedChart1] ? (
             <Plot
-              data={c1.data}
-              layout={c1.layout}
+              data={TitleDroper[selectedChart1].data}
+              layout={TitleDroper[selectedChart1].layout}
               style={{ width: "100%", height: "100%" }}
             />
+          ) : (
+            c1 && (
+              <Plot
+                data={c1.data}
+                layout={c1.layout}
+                style={{ width: "100%", height: "100%" }}
+              />
+            )
           )}
+
         </div>
         <div id="sidechart" className="chart">
-          {sidec && (
+
+          {/* Dropdown only if dynamic graphs exist */}
+          {Object.keys(TitleDroper).length > 0 && (
+            <select
+              value={selectedSidechart || ""}
+              onChange={(e) => setSelectedSidechart(e.target.value)}
+              style={{
+                marginBottom: "10px",
+                padding: "6px",
+                width: "100%"
+              }}
+            >
+              <option value="">Select another graph</option>
+              {Object.keys(TitleDroper).map((title, index) => (
+                <option key={index} value={title}>
+                  {title}
+                </option>
+              ))}
+            </select>
+          )}
+
+          {/* Show selected graph OR default fetched graph */}
+          {selectedSidechart && TitleDroper[selectedSidechart] ? (
             <Plot
-              data={sidec.data}
-              layout={sidec.layout}
+              data={TitleDroper[selectedSidechart].data}
+              layout={TitleDroper[selectedSidechart].layout}
               style={{ width: "100%", height: "100%" }}
             />
+          ) : (
+            sidec && (
+              <Plot
+                data={sidec.data}
+                layout={sidec.layout}
+                style={{ width: "100%", height: "100%" }}
+              />
+            )
           )}
+
         </div>
         <div id="chart2" className="chart">
-          {c2 && (
+
+          {/* Dropdown only if dynamic graphs exist */}
+          {Object.keys(TitleDroper).length > 0 && (
+            <select
+              value={selectedChart2 || ""}
+              onChange={(e) => setSelectedChart2(e.target.value)}
+              style={{
+                marginBottom: "10px",
+                padding: "6px",
+                width: "100%"
+              }}
+            >
+              <option value="">Select another graph</option>
+              {Object.keys(TitleDroper).map((title, index) => (
+                <option key={index} value={title}>
+                  {title}
+                </option>
+              ))}
+            </select>
+          )}
+
+          {/* Show selected graph OR default fetched graph */}
+          {selectedChart2 && TitleDroper[selectedChart2] ? (
             <Plot
-              data={c2.data}
-              layout={c2.layout}
+              data={TitleDroper[selectedChart2].data}
+              layout={TitleDroper[selectedChart2].layout}
               style={{ width: "100%", height: "100%" }}
             />
+          ) : (
+            c2 && (
+              <Plot
+                data={c2.data}
+                layout={c2.layout}
+                style={{ width: "100%", height: "100%" }}
+              />
+            )
           )}
+
         </div>
       </div>
       <div className="info">
