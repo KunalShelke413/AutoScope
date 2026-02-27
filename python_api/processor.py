@@ -683,7 +683,7 @@ def run_full_analysis():
                     font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
                 )
                 note=f"Bar chart:- {category} summary for column {col_name}.   "+note
-                title_droper[fig.layout.title.text] = fig.to_json()
+                title_droper[fig.layout.title.text] =json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
                 single[j].append([])
                 single[j][i].append(fig)
                 result[col_name].append(fig)
@@ -738,7 +738,7 @@ def run_full_analysis():
                     plot_bgcolor= "rgba(138, 43,226,1)", 
                     font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
                 )
-                title_droper[fig.layout.title.text] = fig.to_json()
+                title_droper[fig.layout.title.text] =json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
                 mix[k].append([])
                 mix[k][si].append(fig)
                 result[col_name].append(fig)
@@ -796,7 +796,7 @@ def run_full_analysis():
                     plot_bgcolor= "rgba(138, 43,226,1)", 
                     font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
                 )
-                title_droper[fig.layout.title.text] = fig.to_json()
+                title_droper[fig.layout.title.text] =json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
                 N_single[j].append([])
                 N_single[j][i].append(fig)
                 result[col_name].append(fig)
@@ -849,7 +849,7 @@ def run_full_analysis():
                     plot_bgcolor= "rgba(138, 43,226,1)", 
                     font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
                 )
-                title_droper[fig.layout.title.text] = fig.to_json()
+                title_droper[fig.layout.title.text] =json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
                 N_mix[k].append([])
                 N_mix[k][si].append(fig)
                 result[col_name].append(fig)
@@ -910,7 +910,7 @@ def run_full_analysis():
                 plot_bgcolor= "rgba(138, 43,226,1)", 
                 font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
             )
-            title_droper[fig.layout.title.text] = fig.to_json()
+            title_droper[fig.layout.title.text] =json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
             L_mix[j].append([])
             L_mix[j][si].append(fig)
             result[col_name].append(fig)
@@ -959,7 +959,7 @@ def run_full_analysis():
                 plot_bgcolor= "rgba(138, 43,226,1)", 
                 font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
             )
-            title_droper[fig.layout.title.text] = fig.to_json()
+            title_droper[fig.layout.title.text] =json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
             P_single[j].append([])
             P_single[j][si].append(fig)
             pie_result[i].append(fig)
@@ -1002,7 +1002,7 @@ def run_full_analysis():
                plot_bgcolor= "rgba(138, 43,226,1)", 
                font=dict(color="white"),paper_bgcolor= "rgba(138, 43,226,1)"
             )
-            title_droper[fig.layout.title.text] = fig.to_json()
+            title_droper[fig.layout.title.text] =json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
             P_mix[j].append([])
             P_mix[j][si].append(fig)
             pie_result[i].append(fig)
@@ -1068,7 +1068,7 @@ def run_full_analysis():
             note=f"This line chart is {d} wise analysis of {n}.\n"
             new_note= note4line(df[n], d,n)
             note+=new_note
-            title_droper[fig.layout.title.text] = fig.to_json()
+            title_droper[fig.layout.title.text] =json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
             line_charts[i].append([])
             line_charts[i][j].append(fig)
             line_result[d].append(fig)
@@ -1110,7 +1110,7 @@ def run_full_analysis():
     fig = heat_map(numerical_columns)
     if fig:
        heat_maps_check=1
-       title_droper[fig.layout.title.text] = fig.to_json()
+       title_droper[fig.layout.title.text] =json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
     heat_maps[0].append([fig])
     for nl in numerical_columns:
         heat_result[nl].append(fig)
@@ -1150,7 +1150,7 @@ def run_full_analysis():
         note=f"This Histogram is based on numerical_column {n}.\n"
         new_note=note4histogram(df[n])
         note+=new_note
-        title_droper[fig.layout.title.text] = fig.to_json()
+        title_droper[fig.layout.title.text] =json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
         histogram_charts[0].append([])
         histogram_charts[0][i].append(fig)
         histogram_result[n].append(fig)
@@ -1199,7 +1199,7 @@ def run_full_analysis():
             new_note = note4scatter(df[d], df[n], d, n)
             note+=new_note
             scatter_plots[k].append([])
-            title_droper[fig.layout.title.text] = fig.to_json()
+            title_droper[fig.layout.title.text] =json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
             scatter_plots[k][l].append(fig)
             scatter_result[d].append(fig)
             scatter_result[n].append(fig)
@@ -1240,7 +1240,7 @@ def run_full_analysis():
         new_note=note4boxplot(df[n], n)
         note+=new_note
         box_plots[0].append([])
-        title_droper[fig.layout.title.text] = fig.to_json()
+        title_droper[fig.layout.title.text] =json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
         box_plots[0][i].append(fig)
         box_result[n].append(fig)
         box_note[n].append(note)
@@ -1301,7 +1301,7 @@ def run_full_analysis():
             note=f"This area chart is on {d} and {n}."
             new_note=note4area(df[n], d,n)
             note+=new_note
-            title_droper[fig.layout.title.text] = fig.to_json()
+            title_droper[fig.layout.title.text] =json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
             area_charts[i].append([])
             area_charts[i][j].append(fig)
             area_result[d].append(fig)
@@ -1360,7 +1360,7 @@ def run_full_analysis():
                 fig=bubble_chart(x, y, size)
                 note = note4bubble(df[x], df[y], df[size], x, y, size)
                 bubble_charts[l].append([])
-                title_droper[fig.layout.title.text] = fig.to_json()
+                title_droper[fig.layout.title.text] =json.loads(json.dumps(fig, cls=PlotlyJSONEncoder))
                 bubble_charts[l][m].append(fig)
                 bubble_result[x].append(fig)
                 bubble_note[x].append(note)

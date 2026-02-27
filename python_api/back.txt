@@ -1,34 +1,40 @@
-      <div className="chart_board">
         <div id="chart1" className="chart">
-          {c1 && (
-            <Plot
-              data={c1.data}
-              layout={c1.layout}
-              style={{ width: "100%", height: "100%" }}
-            />
-          )}
-        </div>
-        <div id="sidechart" className="chart">
-          {sidec && (
-            <Plot
-              data={sidec.data}
-              layout={sidec.layout}
-              style={{ width: "100%", height: "100%" }}
-            />
-          )}
-        </div>
-        <div id="chart2" className="chart">
-          {c2 && (
-            <Plot
-              data={c2.data}
-              layout={c2.layout}
-              style={{ width: "100%", height: "100%" }}
-            />
-          )}
-        </div>
-      </div>
 
+          {/* Dropdown only if dynamic graphs exist */}
+          {Object.keys(TitleDroper).length > 0 && (
+            <select
+              value={selectedChart1 || ""}
+              onChange={(e) => setSelectedChart1(e.target.value)}
+              style={{
+                marginBottom: "10px",
+                padding: "6px",
+                width: "100%"
+              }}
+            >
+              <option value="">Select another graph</option>
+              {Object.keys(TitleDroper).map((title, index) => (
+                <option key={index} value={title}>
+                  {title}
+                </option>
+              ))}
+            </select>
+          )}
 
-        const [selectedChart1, setSelectedChart1] = useState(null);
-  const [selectedSidechart, setSelectedSidechart] = useState(null);
-  const [selectedChart2, setSelectedChart2] = useState(null);
+          {/* Show selected graph OR default fetched graph */}
+          {selectedChart1 && TitleDroper[selectedChart1] ? (
+            <Plot
+              data={TitleDroper[selectedChart1].data}
+              layout={TitleDroper[selectedChart1].layout}
+              style={{ width: "100%", height: "100%" }}
+            />
+          ) : (
+            c1 && (
+              <Plot
+                data={c1.data}
+                layout={c1.layout}
+                style={{ width: "100%", height: "100%" }}
+              />
+            )
+          )}
+
+        </div>

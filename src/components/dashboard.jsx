@@ -65,9 +65,6 @@ const Dashboard = () => {
   const [selectedSidechart, setSelectedSidechart] = useState(null);
   const [selectedChart2, setSelectedChart2] = useState(null);
 
-  const [TitleDroperChart1, setTitleDroperChart1] = useState({});
-  const [TitleDroperSidechart, setTitleDroperSidechart] = useState({});
-  const [TitleDroperChart2, setTitleDroperChart2] = useState({});
 
   /* -------------------- FETCHES -------------------- */
   useEffect(() => {
@@ -243,7 +240,8 @@ const Dashboard = () => {
   };
 
   const availableCharts = getAvailableCharts();
-
+  console.log("pc1",pc1)
+  console.log("slc1",TitleDroper[selectedChart1])
 
   return (
     <div className="dmain">
